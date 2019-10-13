@@ -193,10 +193,10 @@ typeset -aU fpath
 #		rd 	rmdir
 #		d 	dirs -v (lists last used directories)
 #
-#		ta		tmux attach -t
-#		tad		tmux attach -d -t
-#		ts		tmux new-session -s
-#		tl		tmux list-sessions
+#		ta	tmux attach -t
+#		tad	tmux attach -d -t
+#		ts	tmux new-session -s
+#		tl	tmux list-sessions
 #		tksv	tmux kill-server
 #		tkss	tmux kill-session -t
 #
@@ -223,34 +223,34 @@ typeset -aU fpath
 #		Ctrl-u	Kill whole line
 #		Ctrl-v	Quoted insert
 #		Ctrl-w Backward kill word
-#		Ctrl-× Ctrl-e		Edit command line in vim
-#		Ctrl-x Ctrl-x		Exchange point and mark
+#		Ctrl-× Ctrl-e	Edit command line in vim
+#		Ctrl-x Ctrl-x	Exchange point and mark
 #		Ctrl-x c	Correct word
 #		Ctrl-x m	Most recent file
 #		Ctrl-x r	History incremental search backward
 #		Ctrl-x s	History incremental search forward
 #		Ctrl-Alt-h	Backward kill word
 #		Ctrl-Alt-l	Clear screen
-#		Alt-'			Quote line
-#		Alt-a			Accept and hold
-#		Alt-b			Backward word
-#		Alt-c			Capitalize word
-#		Alt-f			Forward word
-#		Alt-h			Run help
-#		Alt-l			Run command ls
-#		Alt-p			History search backward
-#		Alt-q			Push line
-#		Alt-t			Transpose words
+#		Alt-'		Quote line
+#		Alt-a		Accept and hold
+#		Alt-b		Backward word
+#		Alt-c		Capitalize word
+#		Alt-f		Forward word
+#		Alt-h		Run help
+#		Alt-l		Run command ls
+#		Alt-p		History search backward
+#		Alt-q		Push line
+#		Alt-t		Transpose words
 #
 #	Default functions
-#		take	create a new directory and change to it, will create intermediate directories as required
+#		take			create a new directory and change to it, will create intermediate directories as required
 #		x/extract		extract an archive
 #		zsh_stats		get a list of the top 20 commands and how many times they have been run
-#		upgrade_oh_my_zsh			Upgrade Oh-my-zsh
-#		uninstall_oh_my_zsh		Uninstall Oh-my-zsh
-#		alias_value						Get the value of an alias
-#		omz_urlencode					URL-encode a string (RFC 2396)
-#		omz_urldecode					URL-decode a string (RFC 2396)
+#		upgrade_oh_my_zsh	Upgrade Oh-my-zsh
+#		uninstall_oh_my_zsh	Uninstall Oh-my-zsh
+#		alias_value		Get the value of an alias
+#		omz_urlencode		URL-encode a string (RFC 2396)
+#		omz_urldecode		URL-decode a string (RFC 2396)
 
 # Global aliases
 alias tmux="tmux -2 -u" # force 256 colors AND UTF-8
