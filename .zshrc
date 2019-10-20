@@ -230,7 +230,6 @@ typeset -aU fpath
 #		Ctrl-x r	History incremental search backward
 #		Ctrl-x s	History incremental search forward
 #		Ctrl-Alt-h	Backward kill word
-#		Ctrl-Alt-l	Clear screen
 #		Alt-'		Quote line
 #		Alt-a		Accept and hold
 #		Alt-b		Backward word
