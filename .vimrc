@@ -6,7 +6,7 @@
 "   Ctrl-w + v : split vertically
 "   Ctrl-w + s : split horizontally
 "   Ctrl-w + c : close the current pane
-"   Ctrl-w +  : move the current pane into its own tab
+"   Ctrl-w + T : move the current pane into its own tab
 "   :e <file> : edit a file in a new buffer
 "   :bn : go to next buffer
 "   :bp : go to previous buffer
@@ -64,6 +64,8 @@
 "   b (or B) : jump backwards to the start of a word (B: can contain
 "   punctuation)
 "   % : move to matching character (supported pairs: '()','{}','[]'
+"   * : next search occurrence
+"   # : previous search occurrence
 "   ^ : jump to the first non blank character of the line
 "   g_ : jump to the last non blank character of the line
 "   gg : go to the first line of the document
@@ -186,7 +188,7 @@ set wildmenu
 set wildmode=list:longest,full    " have command-line completion <Tab>
 set wrap
 
-" set powershell
+" set powerline
 set rtp+=/usr/share/vim/addons/
 
 " -----------------------------------------------------------------------------
