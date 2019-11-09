@@ -21,7 +21,7 @@
 "   :tabn : go to next tab
 "   :tabp : got to previous tab
 "   :tabc : close the current tab
-"   :tabo : colse all tabs except the current one
+"   :tabo : close all tabs except the current one
 "   :tabr : go to first tab
 "   :tabl : go to last tab
 "   :tabm : move the current tab to the last position
