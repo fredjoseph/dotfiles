@@ -46,6 +46,8 @@
 	dh = diff HEAD  # diff between the Working Directory and the HEAD (for tracking files)
 	dt = difftool
 	dtc = difftool --cached
+	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
+	di = !"d() { git diff --patch-with-stat HEAD~$1; }; d"
 	#############
 	f = fetch
 	fo = fetch origin
@@ -56,7 +58,7 @@
 	g = grep -Ii # Print lines matching a pattern
 	gp = grep -I -P # Use Perl-compatible regular expressions for patterns.
 	#############
-	l = log --oneline
+	l = log --oneline --graph
 	lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
 	lgg = !sh -c 'git lg --grep="$@"' -
 	#############
@@ -187,3 +189,6 @@
 	today = shortlog --since=midnight
 [pull]
 	rebase = true
+[help]
+	# Automatically correct and execute mistyped commands
+	autocorrect = 1
