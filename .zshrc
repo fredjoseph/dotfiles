@@ -80,7 +80,7 @@ plugins=(git colored-man-pages common-aliases extract tmux)
 export NVM_LAZY_LOAD=true
 export NVM_DIR="$HOME/.nvm"
 
-plugins+=(debian docker docker-compose autojump zsh-syntax-highlighting k zsh-nvm zsh-better-npm-completion)
+plugins+=(debian docker docker-compose autojump zsh-syntax-highlighting k zsh-nvm zsh-better-npm-completion yarn)
 
 source $ZSH/oh-my-zsh.sh
 
