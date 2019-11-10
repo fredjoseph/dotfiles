@@ -16,12 +16,17 @@
 	#############
 	br = branch
 	bra = branch -a  # list all branches
+	branches = !git bra
 	brd = branch -d  # branch delete <branchName>
 	brdd = branch -D # force branch delete <branchName>
 	brr = branch -r  # list remote branches
 	bru = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"    # set <branchName>'s upstream branch
 	brc = rev-parse --abbrev-ref HEAD
 	brm = branch --merged # List merged branches into HEAD (or into <branchName>)
+	# Find branches containing commit
+	fb = "!f() { git branch -a --contains $1; }; f"
+	# Remove branches that have already been merged with master (a.k.a 'delete merged')
+	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git remote -v update -p"
 	#############
 	ci = commit
 	cim = commit -m
@@ -41,13 +46,13 @@
 	#############
 	desc = describe --tags --always # describes the branch state
 	#############
-	d = diff    # diff between the Working Directory and the Staging Area (for tracking files)
-	dc = diff --cached  # diff between the Staging Area and the HEAD
-	dh = diff HEAD  # diff between the Working Directory and the HEAD (for tracking files)
+	d = diff --patch-with-stat # diff between the Working Directory and the Staging Area (for tracking files)
+	dc = diff --patch-with-stat --cached  # diff between the Staging Area and the HEAD
+	dh = diff --patch-with-stat HEAD  # diff between the Working Directory and the HEAD (for tracking files)
+	# `git dn $number` shows the diff between the state `$number` revisions ago and the current state
+	dn = !"d() { git diff --patch-with-stat HEAD~${1-0}; }; d"
 	dt = difftool
 	dtc = difftool --cached
-	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
-	di = !"d() { git diff --patch-with-stat HEAD~$1; }; d"
 	#############
 	f = fetch
 	fo = fetch origin
@@ -60,7 +65,7 @@
 	#############
 	l = log --oneline --graph
 	lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
-	lgg = !sh -c 'git lg --grep="$@"' -
+	lgg = !"f() { git lg --grep=\"$@\"; };f"
 	#############
 	ls = ls-files
 	lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
@@ -117,6 +122,9 @@
 	rbi = rebase --interactive
 	rbia = rebase --interactive --autosquash
 	rbs = rebase --skip
+	# Interactive rebase with the given number of latest commits
+	rbin = "!r() { git rebase -i HEAD~${1-1}; }; r"
+	reb = !git rbin
 	#############
 	re = reset
 	rh = reset HEAD
@@ -131,6 +139,7 @@
 	ra = remote add
 	rr = remote rm
 	rv = remote -v
+	remotes = !git rv
 	rn = remote rename
 	rp = remote prune
 	rs = remote show
@@ -161,7 +170,10 @@
 	sw = stash show
 	#############
 	t = tag
+	tags = tag -l
 	td = tag -d
+	# Find tags containing commit
+	ft = "!f() { git describe --always --contains $1; }; f"
 	#############
 	w = show
 	wp = show -p    # generate patch
@@ -183,10 +195,12 @@
 	check = fetch --dry-run -v
 	nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
 	toss = reset --hard @{u}    # throws away any new commits
+	undo = !git reset HEAD~1 --mixed
 	in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
 	out = log @{u}..    # shows commits that will go out to the remote
 	standup = shortlog --since=yesterday
 	today = shortlog --since=midnight
+	mdiff = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 &>/dev/null; git add -u &>/dev/null; git diff --staged; git reset --hard &>/dev/null; test $x -ne 0 && git stash pop &>/dev/null; }; f"
 [pull]
 	rebase = true
 [help]
