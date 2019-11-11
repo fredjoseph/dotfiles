@@ -12,7 +12,9 @@
 	#############
 	ap = apply  # apply patch
 	as = apply --stat   # output diffstat for the input. Turns off "apply"
+	patch-stat = !git as
 	ac = apply --check  # check patch is applicable and detects errors. Turns off "apply"
+	patch-check = !git ac
 	#############
 	br = branch
 	bra = branch -a  # list all branches
@@ -20,9 +22,11 @@
 	brd = branch -d  # branch delete <branchName>
 	brdd = branch -D # force branch delete <branchName>
 	brr = branch -r  # list remote branches
+	remote-branches = !git brr
 	bru = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"    # set <branchName>'s upstream branch
 	brc = rev-parse --abbrev-ref HEAD
 	brm = branch --merged # List merged branches into HEAD (or into <branchName>)
+	merged-branches = !git brm
 	# Find branches containing commit
 	fb = "!f() { git branch -a --contains $1; }; f"
 	# Remove branches that have already been merged with master (a.k.a 'delete merged')
@@ -33,6 +37,7 @@
 	cia = commit -a  # Automatically stage modified/deleted files
 	ciam = commit -am
 	cie = commit --allow-empty-message -m ''
+	ci-nomsg = !git cie
 	amend = commit --amend --no-edit
 	amendm = commit --amend -m
 	amenda = commit -a --amend --no-edit
@@ -58,7 +63,7 @@
 	fo = fetch origin
 	fu = fetch upstream
 	#############
-	fk = fsck   # Verifies the connectivity and validity of the objects in the database.
+	check = fsck   # Verifies the connectivity and validity of the objects in the database.
 	#############
 	g = grep -Ii # Print lines matching a pattern
 	gp = grep -I -P # Use Perl-compatible regular expressions for patterns.
@@ -74,6 +79,7 @@
 	ma = merge --abort
 	mc = merge --continue
 	ms = merge --skip
+	mt = mergetool
 	#############
 	co = checkout
 	cob = checkout -b
@@ -187,11 +193,11 @@
 	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
 	devel = !git checkout devel && git pull origin devel
 	master = !git checkout master && git pull origin master
-	update-br = !git fetch origin "$1":"$1"
+	up-branch = !git fetch origin "$1":"$1"
 	unstage = reset HEAD -- .
 	prune-local = !git branch --merged | grep -v master | grep -v dev | grep -v devel | xargs -n 1 git branch -d
 	root = rev-parse --show-toplevel
-	check = fetch --dry-run -v
+	fetch-check = fetch --dry-run -v
 	nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
 	toss = reset --hard @{u}    # throws away any new commits
 	undo = !git reset HEAD~1 --mixed
@@ -200,6 +206,10 @@
 	standup = shortlog --since=yesterday
 	today = shortlog --since=midnight
 	mdiff = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 &>/dev/null; git add -u &>/dev/null; git diff --staged; git reset --hard &>/dev/null; test $x -ne 0 && git stash pop &>/dev/null; }; f"
+	list-conflicts = diff --name-only --diff-filter=U
+	list-commit-files = show --name-only $1
+	list-staged-files = diff --name-only --cached
+	push-remote = push -u origin $1
 [pull]
 	rebase = true
 [help]
