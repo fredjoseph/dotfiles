@@ -89,7 +89,6 @@
 	psao = push --all origin
 	psfo = push -f origin
 	psuo = push -u origin
-	#############
 	psom = push origin master
 	psaom = push --all origin master
 	psfom = push -f origin master
