@@ -253,6 +253,7 @@ typeset -aU fpath
 
 # Global aliases
 alias tmux="tmux -2 -u" # force 256 colors AND UTF-8
+alias less="less -M" # verbose prompt
 
 # Custom aliases
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
