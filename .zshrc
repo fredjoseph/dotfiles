@@ -167,7 +167,7 @@ if [ -d ~/.zsh_completion.d ]; then
 	done
 fi
 
-typeset -aU fpath
+#typeset -aU fpath
 
 # Aliases
 #--------
