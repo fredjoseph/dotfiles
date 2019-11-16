@@ -124,7 +124,7 @@ if [ -d ~/.zsh_completion.d ]; then
 fi
 
 # Activate "autocutsel" only if X server detected
-if pgrep X; then
+if pgrep Xorg >&/dev/null; then
 	autocutsel -selection PRIMARY -fork
 	autocutsel -fork
 fi
