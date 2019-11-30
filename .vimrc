@@ -103,8 +103,8 @@
 "   cw : change to the end of the word
 "
 " Visual mode:
-"		v : start visual mode
-"		V : start linewise visual mode
+"	  v : start visual mode
+"	  V : start linewise visual mode
 "   y : copy selection to buffer
 "   = : fix indentation of the current selectioni
 "   aw : mark a word
@@ -195,6 +195,11 @@ set rtp+=/usr/share/vim/addons/
 " Basic mappings
 " -----------------------------------------------------------------------------
 
+" Copy to clipboard on mouse release
+noremap <LeftRelease> "+y<LeftRelease>
+# Highlight word and copy to clipboard on double click
+nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>:let @+=expand('<cword>')<cr>
+
 " Navigate around splits with a single key combo.
 nnoremap <S-l> <C-w><C-l>
 nnoremap <S-h> <C-w><C-h>
@@ -243,55 +248,3 @@ autocmd FileType make setlocal noexpandtab
 
 " redraw is necessary because of startup bug with 'set lazyredraw'
 autocmd VimEnter * redraw!
-
-" TO DELETE
-"" -----------------------------------------------------------------------------
-"" Plugins settings, mappings and autocommands
-"" -----------------------------------------------------------------------------
-"" .............................................................................
-"" junegunn/fzf.vim
-"" .............................................................................
-"
-"let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
-"
-"" Launch fzf with CTRL+P.
-"nnoremap <silent> <C-p> :FZF -m<CR>
-"
-"" Map a few common things to do with FZF.
-"nnoremap <silent> <Leader><Enter> :Buffers<CR>
-"nnoremap <silent> <Leader>l :Lines<CR>
-"
-"" Allow passing optional flags into the Rg command.
-""   Example: :Rg myterm -g '*.md'
-"command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case " . <q-args>, 1, <bang>0)
-"
-"" .............................................................................
-"" scrooloose/nerdtree
-"" .............................................................................
-"
-"let g:NERDTreeShowHidden=1
-"let g:NERDTreeAutoDeleteBuffer=1
-"
-"" Open nerd tree at the current file or close nerd tree if pressed again.
-"nnoremap <silent> <expr> <Leader>n g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
-"
-"" close vi if only NERDTree is still open
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"
-"" .............................................................................
-"" mhinz/vim-signify
-"" .............................................................................
-"
-"let g:signify_realtime=1
-"let g:signify_vcs_list=["git"]
-"let g:signify_cursorhold_normal=0
-"let g:signify_cursorhold_insert=0
-"
-"" .............................................................................
-"" kien/rainbow_parentheses.vim
-"" .............................................................................
-"
-"au VimEnter * RainbowParenthesesToggle
-"au Syntax * RainbowParenthesesLoadRound
-"au Syntax * RainbowParenthesesLoadSquare
-"au Syntax * RainbowParenthesesLoadBraces
