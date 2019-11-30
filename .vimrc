@@ -103,8 +103,8 @@
 "   cw : change to the end of the word
 "
 " Visual mode:
-"	  v : start visual mode
-"	  V : start linewise visual mode
+"   v : start visual mode
+"   V : start linewise visual mode
 "   y : copy selection to buffer
 "   = : fix indentation of the current selectioni
 "   aw : mark a word
