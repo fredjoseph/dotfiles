@@ -197,7 +197,7 @@ set rtp+=/usr/share/vim/addons/
 
 " Copy to clipboard on mouse release
 noremap <LeftRelease> "+y<LeftRelease>
-# Highlight word and copy to clipboard on double click
+" Highlight word and copy to clipboard on double click
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>:let @+=expand('<cword>')<cr>
 
 " Navigate around splits with a single key combo.
