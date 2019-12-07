@@ -148,7 +148,7 @@ set laststatus=2
 set lazyredraw      " fix slow scrolling on some files
 set matchpairs+=<:> " Use % to jump between pairs
 set modelines=2
-set mouse=a     " enable for all modes
+set mouse=iv     " enable for all modes
 set nocompatible
 set noerrorbells visualbell t_vb=
 set noshiftround
