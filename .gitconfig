@@ -4,50 +4,27 @@
 [user]
 	name = Frederic JOSEPH
 	email = fredjoseph@users.noreply.github.com
-[stash]
-	usebuiltin = true
 [alias]
-	a = add --all
-	ai = add -i
-	#############
-	ap = apply  # apply patch
-	as = apply --stat   # output diffstat for the input. Turns off "apply"
-	patch-stat = !git as
-	ac = apply --check  # check patch is applicable and detects errors. Turns off "apply"
-	patch-check = !git ac
+	patch-stat = apply --stat   # output diffstat for the input. Turns off "apply"
+	patch-check = apply --check  # check patch is applicable and detects errors. Turns off "apply"
 	#############
 	br = branch
-	bra = branch -a  # list all branches
-	branches = !git bra
-	brd = branch -d  # branch delete <branchName>
-	brdd = branch -D # force branch delete <branchName>
-	brr = branch -r  # list remote branches
-	remote-branches = !git brr
-	bru = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"    # set <branchName>'s upstream branch
-	brc = rev-parse --abbrev-ref HEAD
-	brm = branch --merged # List merged branches into HEAD (or into <branchName>)
-	merged-branches = !git brm
+	branches = branch -a  # list all branches
+	remote-branches = branch -r  # list remote branches
+	merged-branches =  branch --merged # List merged branches into HEAD (or into <branchName>)
 	# Find branches containing commit
 	fb = "!f() { git branch -a --contains $1; }; f"
 	# Remove branches that have already been merged with master (a.k.a 'delete merged')
 	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git remote -v update -p"
 	#############
 	ci = commit
-	cim = commit -m
-	cia = commit -a  # Automatically stage modified/deleted files
-	ciam = commit -am
-	cie = commit --allow-empty-message -m ''
-	ci-nomsg = !git cie
+	ci-nomsg = commit --allow-empty-message -m ''
+	ci-noedit = commit --no-edit
 	amend = commit --amend --no-edit
-	amendm = commit --amend -m
-	amenda = commit -a --amend --no-edit
-	amendam = commit -a --amend -m
 	#############
 	cl = clone
 	#############
 	cp = cherry-pick
-	cpa = cherry-pick --abort
-	cpc = cherry-pick --continue
 	#############
 	desc = describe --tags --always # describes the branch state
 	#############
@@ -57,7 +34,6 @@
 	# `git dn $number` shows the diff between the state `$number` revisions ago and the current state
 	dn = !"d() { git diff --patch-with-stat HEAD~${1-0}; }; d"
 	dt = difftool
-	dtc = difftool --cached
 	#############
 	f = fetch
 	fo = fetch origin
@@ -76,9 +52,6 @@
 	lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
 	#############
 	m = merge
-	ma = merge --abort
-	mc = merge --continue
-	ms = merge --skip
 	mt = mergetool
 	#############
 	co = checkout
@@ -86,114 +59,38 @@
 	#############
 	pr = prune -v
 	#############
-	ps = push
-	psf = push -f
-	psu = push -u
-	pst = push --tags
+	push-remote = push -u origin $1
 	#############
-	pso = push origin
-	psao = push --all origin
-	psfo = push -f origin
-	psuo = push -u origin
-	psom = push origin master
-	psaom = push --all origin master
-	psfom = push -f origin master
-	psuom = push -u origin master
-	psoc = !git push origin $(git brc)
-	psaoc = !git push --all origin $(git brc)
-	psfoc = !git push -f origin $(git brc)
-	psuoc = !git push -u origin $(git brc)
-	psdc = !git push origin :$(git brc)
-	#############
-	pl = pull
-	pb = pull --rebase
-	#############
-	plo = pull origin
-	pbo = pull --rebase origin
-	plom = pull origin master
-	ploc = !git pull origin $(git brc)
-	pbom = pull --rebase origin master
-	pboc = !git pull --rebase origin $(git brc)
-	#############
-	plu = pull upstream
-	plum = pull upstream master
-	pluc = !git pull upstream $(git brc)
-	pbum = pull --rebase upstream master
-	pbuc = !git pull --rebase upstream $(git brc)
-	#############
-	rb = rebase
-	rba = rebase --abort
-	rbc = rebase --continue
-	rbi = rebase --interactive
-	rbia = rebase --interactive --autosquash
-	rbs = rebase --skip
 	# Interactive rebase with the given number of latest commits
-	rbin = "!r() { git rebase -i HEAD~${1-1}; }; r"
-	reb = !git rbin
+	reb = "!r() { git rebase -i HEAD~${1-1}; }; r"
 	#############
 	re = reset
-	rh = reset HEAD
-	reh = reset --hard
-	rem = reset --mixed
-	res = reset --soft
-	rehh = reset --hard HEAD
-	remh = reset --mixed HEAD
-	resh = reset --soft HEAD
 	#############
 	r = remote
-	ra = remote add
-	rr = remote rm
-	rv = remote -v
-	remotes = !git rv
-	rn = remote rename
-	rp = remote prune
-	rs = remote show
-	rao = remote add origin
-	rau = remote add upstream
-	rro = remote remove origin
-	rru = remote remove upstream
-	rso = remote show origin
-	rsu = remote show upstream
-	rpo = remote prune origin
-	rpu = remote prune upstream
-	#############
-	rmf = rm -f
-	rmrf = rm -r -f
+	remotes = remote -v
 	#############
 	st = status
-	sts = status -s -b
+	sst = status -s -b
 	#############
 	sa = stash apply
 	sc = stash clear
 	sd = stash drop
 	sl = stash list
 	sp = stash pop
-	sps = stash push -u
-	spsm = stash push -u -m
-	spsk = stash push -u -k
-	spskm = stash push -u -k -m
 	sw = stash show
 	#############
 	t = tag
 	tags = tag -l
-	td = tag -d
 	# Find tags containing commit
 	ft = "!f() { git describe --always --contains $1; }; f"
 	#############
-	w = show
-	wp = show -p    # generate patch
-	wr = show -p --no-color
-	#############
-	bump = !sh -c 'git commit -am \"Version bump v$1\" && git psuoc && git release $1' -
-	release = !sh -c 'git tag v$1 && git pst' -
-	unrelease = !sh -c 'git tag -d v$1 && git pso :v$1' -
-	merged = !sh -c 'git co master && git plom && git brd $1 && git rpo' -
+	release = !sh -c 'git tag v$1 && git push --tags' -
+	unrelease = !sh -c 'git tag -d v$1 && git push origin :v$1' -
 	aliases = !git config -l | grep alias | cut -c 7- | sort
 	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
 	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
 	devel = !git checkout devel && git pull origin devel
-	master = !git checkout master && git pull origin master
-	up-branch = !git fetch origin "$1":"$1"
+	up-branch = fetch origin "$1":"$1"
 	unstage = reset HEAD -- .
 	prune-local = !git branch --merged | grep -v master | grep -v dev | grep -v devel | xargs -n 1 git branch -d
 	root = rev-parse --show-toplevel
@@ -209,7 +106,6 @@
 	list-conflicts = diff --name-only --diff-filter=U
 	list-commit-files = show --name-only $1
 	list-staged-files = diff --name-only --cached
-	push-remote = push -u origin $1
 [pull]
 	rebase = true
 [help]
