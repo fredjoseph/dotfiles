@@ -145,6 +145,9 @@ fi
 export PATH="$PATH:~/.yarn-global/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin"
 export SHELL=/bin/zsh
 
+# add a function path
+fpath=(~/.my_zsh/functions $fpath)
+
 # Scripts
 #--------
 
@@ -161,11 +164,9 @@ export SHELL=/bin/zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Load zsh completions
-if [ -d ~/.zsh_completion.d ]; then
-	for file in ~/.zsh_completion.d/*; do
-		. $file
-	done
-fi
+for file in ~/.my_zsh/completions/*; do
+	. $file
+done
 
 #typeset -aU fpath
 
@@ -256,4 +257,4 @@ alias tmux="tmux -2 -u" # force 256 colors AND UTF-8
 alias less="less -M" # verbose prompt
 
 # Custom aliases
-[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+[ -f ~/.my_zsh/aliases ] && source ~/.my_zsh/aliases
