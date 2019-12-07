@@ -200,6 +200,9 @@ noremap <LeftRelease> "+y<LeftRelease>
 " Highlight word and copy to clipboard on double click
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>:let @+=expand('<cword>')<cr>
 
+" Copy to clipboard shortcut in visual mode
+xmap <C-c> "+y
+
 " Navigate around splits with a single key combo.
 nnoremap <S-l> <C-w><C-l>
 nnoremap <S-h> <C-w><C-h>
