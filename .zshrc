@@ -112,20 +112,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [ -d ~/.zsh_completion.d ]; then
-	# Exclude those directories even if not listed in .gitignore, or if .gitignore is missing
-	FD_OPTIONS="--follow --exclude .git --exclude node_modules"
-	# Change FZF behavior
-	export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
-	# Change find backend (use 'git ls-files' when git repo, otherwise 'fd')
-	export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l "
-	export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
-	export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-fi
-
 # Activate "autocutsel" only if X server detected
 if pgrep Xorg >&/dev/null; then
-	autocutsel -selection PRIMARY -fork
 	autocutsel -fork
 fi
 
@@ -161,7 +149,17 @@ fpath=(~/.my_zsh/functions $fpath)
 [ -f $ZSH/custom/plugins/bd/bd.zsh ] && source $ZSH/custom/plugins/bd/bd.zsh
 
 # fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ -f ~/.fzf.zsh ]; then
+	# Exclude those directories even if not listed in .gitignore, or if .gitignore is missing
+	FD_OPTIONS="--follow --exclude .git --exclude node_modules"
+	# Change FZF behavior
+	export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
+	# Change find backend (use 'git ls-files' when git repo, otherwise 'fd')
+	export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l "
+	export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
+	export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
+	source ~/.fzf.zsh
+fi
 
 # Load zsh completions
 for file in ~/.my_zsh/completions/*; do
