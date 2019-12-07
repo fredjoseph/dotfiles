@@ -162,9 +162,11 @@ if [ -f ~/.fzf.zsh ]; then
 fi
 
 # Load zsh completions
-for file in ~/.my_zsh/completions/*; do
-	. $file
-done
+if [ -d ~/.my_zsh/completions ]; then
+	for file in ~/.my_zsh/completions/*; do
+		. $file
+	done
+fi
 
 #typeset -aU fpath
 
