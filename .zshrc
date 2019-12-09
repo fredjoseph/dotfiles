@@ -112,11 +112,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Activate "autocutsel" only if X server detected
-if pgrep Xorg >&/dev/null; then
-	autocutsel -fork
-fi
-
 # WSL fixes
 if grep -qE "(Microsoft|WSL)" /proc/version; then
 	# Fix wrong permissions with mkdir command
