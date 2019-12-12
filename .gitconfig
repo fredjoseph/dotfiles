@@ -90,7 +90,7 @@
 	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
 	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
 	devel = !git checkout devel && git pull origin devel
-	up-branch = fetch origin "$1":"$1"
+	up-branch = !git fetch origin $1:$1
 	unstage = reset HEAD -- .
 	prune-local = !git branch --merged | grep -v master | grep -v dev | grep -v devel | xargs -n 1 git branch -d
 	root = rev-parse --show-toplevel
@@ -104,7 +104,7 @@
 	today = shortlog --since=midnight
 	mdiff = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 &>/dev/null; git add -u &>/dev/null; git diff --staged; git reset --hard &>/dev/null; test $x -ne 0 && git stash pop &>/dev/null; }; f"
 	list-conflicts = diff --name-only --diff-filter=U
-	list-commit-files = show --name-only $1
+	list-commit-files = !git show --name-only $1
 	list-staged-files = diff --name-only --cached
 [pull]
 	rebase = true
