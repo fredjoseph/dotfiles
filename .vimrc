@@ -7,6 +7,14 @@
 "   Ctrl-w + s : split horizontally
 "   Ctrl-w + c : close the current pane
 "   Ctrl-w + T : move the current pane into its own tab
+"   :sp filename 	Open filename in horizontal split
+"   :vsp filename 	Open filename in vertical split
+"   Ctrl-w h Ctrl-w ← 	Shift focus to split on left of current
+"   Ctrl-w l Ctrl-w → 	Shift focus to split on right of current
+"   Ctrl-w j Ctrl-w ↓ 	Shift focus to split below the current
+"   Ctrl-w k Ctrl-w ↑ 	Shift focus to split above the current
+"   Ctrl-w n+ 	Increase size of current split by n lines
+"   Ctrl-w n- 	Decrease size of current split by n lines
 "   :e <file> : edit a file in a new buffer
 "   :bn : go to next buffer
 "   :bp : go to previous buffer
