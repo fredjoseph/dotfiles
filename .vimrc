@@ -98,6 +98,8 @@
 "   gJ : join line below to the current one with no separator
 "   cc (or S) : change/replace entire line
 "   . : repeat last command
+"   :set <param> : display the current value of parameter "param" (ex: :set iskeyword)
+"   :verbose set <param> : find the last location where the parameter is changed
 "
 " Insert mode:
 "   i : new text will appear before the cursor
@@ -200,6 +202,9 @@ set wrap
 
 " set powerline
 set rtp+=/usr/share/vim/addons/
+
+" Add '-' to defaults keywords
+set iskeyword=@,-,48-57,_,192-255
 
 " -----------------------------------------------------------------------------
 " Basic mappings
