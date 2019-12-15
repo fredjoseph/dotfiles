@@ -15,6 +15,8 @@
 "   Ctrl-w k Ctrl-w ↑ 	Shift focus to split above the current
 "   Ctrl-w n+ 	Increase size of current split by n lines
 "   Ctrl-w n- 	Decrease size of current split by n lines
+"   Ctrl-w =    All splits have same size
+"   Ctrl-w _    Maximize the current split
 "   :e <file> : edit a file in a new buffer
 "   :bn : go to next buffer
 "   :bp : go to previous buffer
