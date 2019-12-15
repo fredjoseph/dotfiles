@@ -195,10 +195,13 @@ set rtp+=/usr/share/vim/addons/
 " Basic mappings
 " -----------------------------------------------------------------------------
 
-" Copy to clipboard on mouse release
-noremap <LeftRelease> "+y<LeftRelease>
 " Highlight word and copy to clipboard on double click
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>:let @+=expand('<cword>')<cr>
+
+" Paste buffer on right click
+noremap <silent> <RightMouse> "*]p:set nopaste<CR>
+" Quit visual mode on right click
+xmap <RightMouse> <Esc>
 
 " Copy to clipboard shortcut in visual mode
 xmap <C-c> "+y
