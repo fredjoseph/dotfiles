@@ -100,6 +100,7 @@
 "   . : repeat last command
 "   :set <param> : display the current value of parameter "param" (ex: :set iskeyword)
 "   :verbose set <param> : find the last location where the parameter is changed
+"   :set all : display all parameters with their values
 "
 " Insert mode:
 "   i : new text will appear before the cursor
