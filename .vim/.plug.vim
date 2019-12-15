@@ -57,6 +57,13 @@ Plug 'ntpeters/vim-better-whitespace'
 
 " Navigate and manipulate files in a tree view.
 " Usage: :NERDTree
+" <leader> n : Open/close NERDTree
+" ? : display help
+" o: open in prev window
+" t: open in new tab
+" T: open in new tab silently
+" i: open split
+" s: open vsplit
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
