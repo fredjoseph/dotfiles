@@ -80,7 +80,7 @@ plugins=(git colored-man-pages common-aliases extract tmux)
 export NVM_LAZY_LOAD=true
 export NVM_DIR="$HOME/.nvm"
 
-plugins+=(debian docker docker-compose autojump zsh-syntax-highlighting k zsh-nvm zsh-better-npm-completion yarn)
+plugins+=(debian docker docker-compose autojump zsh-syntax-highlighting k zsh-nvm zsh-better-npm-completion yarn fd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -150,7 +150,7 @@ if [ -f ~/.fzf.zsh ]; then
 	# Change FZF behavior
 	export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
 	# Change find backend (use 'git ls-files' when git repo, otherwise 'fd')
-	export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l "
+	export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l --hidden --exclude .git"
 	export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
 	export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 	source ~/.fzf.zsh

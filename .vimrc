@@ -233,12 +233,6 @@ nnoremap <S-Tab> <C-w>w
 
 nnoremap <leader>t :tabnew<Enter>
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 " Fix indentation of the entire file then return where you were
 map <F7> gg=G<C-o><C-o>
 
