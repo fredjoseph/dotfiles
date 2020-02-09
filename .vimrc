@@ -169,6 +169,7 @@ set noshowcmd   " Show (partial) command in the last line of the screen
 set nospell
 set nostartofline
 "set number
+set pastetoggle=<F2>
 set regexpengine=1
 set ruler
 set scrolloff=3
@@ -216,6 +217,7 @@ nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\
 
 " Paste buffer on right click
 noremap <silent> <RightMouse> "*]p:set nopaste<CR>
+inoremap <silent> <RightMouse> <C-\><C-O>"*]p
 " Quit visual mode on right click
 xmap <RightMouse> <Esc>
 
