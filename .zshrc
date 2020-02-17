@@ -253,3 +253,6 @@ alias less="less -M" # verbose prompt
 
 # Custom aliases
 [ -f ~/.zsh-custom.d/aliases ] && source ~/.zsh-custom.d/aliases
+
+# Remove duplicate entries
+typeset -U PATH
