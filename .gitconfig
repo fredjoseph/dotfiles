@@ -47,6 +47,7 @@
 	l = log --oneline --graph
 	lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
 	lgg = !"f() { git lg --grep=\"$@\"; };f"
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	#############
 	ls = ls-files
 	lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
