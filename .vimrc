@@ -168,7 +168,7 @@ set noshiftround
 set noshowcmd   " Show (partial) command in the last line of the screen
 set nospell
 set nostartofline
-"set number
+set number
 set pastetoggle=<F2>
 set regexpengine=1
 set ruler
