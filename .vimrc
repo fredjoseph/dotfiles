@@ -7,6 +7,7 @@
 "   Ctrl-w + s : split horizontally
 "   Ctrl-w + c : close the current pane
 "   Ctrl-w + T : move the current pane into its own tab
+"   Ctrl-w + = : resize the panes to all be the same size, with available space evenly distributed
 "   :sp filename 	Open filename in horizontal split
 "   :vsp filename 	Open filename in vertical split
 "   Ctrl-w h Ctrl-w ← 	Shift focus to split on left of current
@@ -28,6 +29,7 @@
 "   gt (or :tabn) : go to next tab
 "   gT (or :tabp or :tabN) : go to previous tab
 "   #gt (or :tabn #) : go to #th tab
+"   :tabnew : create new tab
 "   :tabn : go to next tab
 "   :tabp : got to previous tab
 "   :tabc : close the current tab
@@ -58,6 +60,7 @@
 "   H : move to the top of the screen
 "   L : move to the bottom of the screen
 "   M : move to the middle of the screen
+"   S : Switch to `Insert Mode` at the right indentation
 "   [[ or gg : move to the beginning of a file
 "   ]] or G : move to the end of a file
 "   nG : move to line number n
@@ -68,12 +71,13 @@
 "   Esc + :q! : force quit vim discarding all changes
 "   Esc + :! : run a shell commands like :!dir, :!ls
 "   gg=G : fix indentation of the entire file
+"   =G : fix indentation from current line to the bottom of file
 "   w (or W) : jump forwards to the start of a word (W : words can contain
 "   punctuation)
 "   e (or E) : jump forwards to the end of a word (E: can contain punctuation)
 "   b (or B) : jump backwards to the start of a word (B: can contain
 "   punctuation)
-"   % : move to matching character (supported pairs: '()','{}','[]'
+"   % : move to matching character (supported pairs: '()','{}','[]')
 "   * : next search occurrence
 "   # : previous search occurrence
 "   ^ : jump to the first non blank character of the line
@@ -94,6 +98,7 @@
 "   Ctrl + f : move forward one full screen
 "   Ctrl + u : move back 1/2 screen
 "   Ctrl + d : move forward 1/2 screen
+"   Ctrl + o : go back to a previous cursor location (can open a previously closed file)
 "   r# : replace a single character by #
 "   gJ : join line below to the current one with no separator
 "   cc (or S) : change/replace entire line
@@ -127,6 +132,10 @@
 "   iB : inner block with {}
 "   d : delete marked text
 "   ~ : switch case
+"   >> : indent a line
+"   << : unindent a line
+"   > : indent multiple lines
+"   < : unindent multiple lines
 " -----------------------------------------------------------------------------
 
 " Load plugins
