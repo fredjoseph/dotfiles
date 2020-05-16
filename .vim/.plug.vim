@@ -140,6 +140,8 @@ Plug 'terryma/vim-multiple-cursors'
 "
 Plug 'mattn/emmet-vim'
 
+Plug 'majutsushi/tagbar'
+
 """ All of your Plugins must be added before the following line
 " Add plugins to &runtimepath
 call plug#end()   "required
