@@ -140,6 +140,9 @@ Plug 'terryma/vim-multiple-cursors'
 "
 Plug 'mattn/emmet-vim'
 
+" Tag plugin
+" Usage:
+" <F8> : toggle tagbar
 Plug 'majutsushi/tagbar'
 
 """ All of your Plugins must be added before the following line
