@@ -1,0 +1,25 @@
+# less-like page scrolling
+bind generic <Ctrl-f> scroll-page-down
+bind generic <Ctrl-b> scroll-page-up
+# Amend last commit
+bind generic + !git commit --amend
+# Copy commit title to clipboard
+bind generic 9 !@sh -c "if [ -x \"$(command -v xclip)\" ]; then CP='xclip -sel clipboard'; else CP='clip.exe'; fi && git show -s --format=%s %(commit) | $CP"
+# Interactive rebase
+bind main B !git rebase -i %(commit)
+# Revert selected commit
+bind main ! !git revert %(commit)
+# Tag the selected commit
+bind main T !@git tag %(prompt) %(commit)
+# Compare selected commit in log view (main view) with its parent
+bind main <F4> !git difftool -d %(commit)^!
+# Create a new branch
+bind refs n !@git branch "%(prompt Enter branch name: )"
+# Stash the unstaged changes
+bind status S !?git stash save --keep-index %(prompt)
+# Delete the selected file
+bind status D !@?rm %(file)
+# Push changes to origin
+bind status P !git push origin
+# Compare changed file in status view
+bind status <F4> !sh -c "git difftool -y \"$(git rev-parse --show-toplevel)/%(file)\""

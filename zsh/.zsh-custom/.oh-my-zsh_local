@@ -1,0 +1,5 @@
+# additional plugins
+export NVM_LAZY_LOAD=true
+export NVM_DIR="$HOME/.nvm"
+
+plugins+=(k zsh-syntax-highlighting zsh-better-npm-completion yarn zsh-nvm mvn aws)

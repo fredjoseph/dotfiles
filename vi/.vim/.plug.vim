@@ -68,7 +68,15 @@ Plug 'dhruvasagar/vim-zoom'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " Better display unwanted whitespace.
-Plug 'ntpeters/vim-better-whitespace'
+# Plug 'ntpeters/vim-better-whitespace'
+
+" Adds various text objects to give you more targets to operate on
+" Usage:
+" cin) : change text in next pair of parentheses
+" cil) : change text in last pair of parentheses
+" da, : delete the item, in a comma separated list, under the cursor
+" Select multiple blocks => 2i) or 2I} ...
+Plug 'wellle/targets.vim'
 
 " Navigate and manipulate files in a tree view.
 " Usage: :NERDTree
@@ -144,6 +152,8 @@ Plug 'mattn/emmet-vim'
 " Usage:
 " <F8> : toggle tagbar
 Plug 'majutsushi/tagbar'
+
+Plug 'alvan/vim-closetag'
 
 """ All of your Plugins must be added before the following line
 " Add plugins to &runtimepath

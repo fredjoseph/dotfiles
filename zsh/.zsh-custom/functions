@@ -1,0 +1,307 @@
+#------------------------------------------------------------------
+#   Common
+#------------------------------------------------------------------
+__x {
+  echo "+ $@"
+  $@
+}
+
+which {
+    if ! /usr/bin/which $@
+    then
+        type $1 | head -1
+    fi
+}
+#------------------------------------------------------------------
+
+cleanenv() {
+	if [ $# -ne 0]; then
+		env -i \
+			HOME=\"$HOME\" \
+			PATH=\"$PATH\" \
+			LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\" \
+			TERM=\"$TERM\" \
+			USER=\"$USER\" \
+			zsh -c $@
+	else
+		echo "Usage: cleanenv <program> [arglist]" 1>&2
+	fi
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+tre() {
+  if [ -x $(command -v tree) ]; then
+    tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
+  else
+    echo "This command requires 'tree' to be installed"
+  fi
+}
+
+# Install deb file
+deb() {
+  sudo -v
+  TEMP_DEB='/tmp/'$(basename $1)
+  wget -q --show-progress -O "$TEMP_DEB" $1
+  sudo dpkg -i "$TEMP_DEB"
+  rm -f "$TEMP_DEB"
+}
+
+apt-clean() {
+    sudo apt-get clean
+    sudo apt-get autoclean
+    sudo apt-get autoremove
+}
+
+# copy file content to clipboard
+copy() {
+  cat $1 | xclip -sel clipboard
+}
+
+# Print README file
+readme() {
+    for readme in {readme,README}.{md,MD,markdown,mkd,txt,TXT}; do
+        if [[ -x "$(command -v glow)" ]] && [[ -f "$readme" ]]; then
+            mdv "$readme"
+        elif [[ -f "$readme" ]]; then
+            cat "$readme"
+        fi
+    done
+}
+
+# whenis: Try to make sense of the date. It supports everything GNU date knows how to
+# parse, as well as UNIX timestamps. It formats the given date using the
+# default GNU date format, which you can override using "--format='%x %y %z'.
+#
+# usage:
+#
+#   $ whenis 1234567890            # UNIX timestamps
+#   Sat Feb 14 00:31:30 CET 2009
+#
+#   $ whenis +1 year -3 months     # relative dates
+#   Fri Jul 20 21:51:27 CEST 2012
+#
+#   $ whenis 2011-10-09 08:07:06   # MySQL DATETIME strings
+#   Sun Oct  9 08:07:06 CEST 2011
+#
+#   $ whenis 1979-10-14T12:00:00.001-04:00 # HTML5 global date and time
+#   Sun Oct 14 17:00:00 CET 1979
+#
+#   $ TZ=America/Vancouver whenis # Current time in Vancouver
+#   Thu Oct 20 13:04:20 PDT 2011
+#
+# For more info, check out http://kak.be/gnudateformats.
+whenis()
+{
+  # Default GNU date format as seen in date.c from GNU coreutils.
+  local format='%a %b %e %H:%M:%S %Z %Y'
+  if [[ "$1" =~ ^--format= ]]; then
+    format="${1#--format=}"
+    shift
+  fi
+
+  # Concatenate all arguments as one string specifying the date.
+  local date="$*"
+  if [[ "$date"  =~ ^[[:space:]]*$ ]]; then
+    date='now'
+  elif [[ "$date"  =~ ^[0-9]{13}$ ]]; then
+    # Cut the microseconds part.
+    date="${date:0:10}"
+  fi
+
+  # Use GNU date in all other situations.
+  [[ "$date" =~ ^[0-9]+$ ]] && date="@$date"
+  date -d "$date" +"$format"
+}
+
+# os-info: show some info about your system
+os-info()
+{
+  lsb_release -a
+  uname -a
+
+  if [ -z /etc/lsb-release ]; then
+    cat /etc/lsb-release;
+  fi;
+
+  if [ -z /etc/issue ]; then
+    cat /etc/issue;
+  fi;
+
+  if [ -z /proc/version ]; then
+    cat /proc/version;
+  fi;
+}
+
+#------------------------------------------------------------------
+#   Helpers with Fuzzy Search
+#------------------------------------------------------------------
+
+# mnemonic: [K]ill [P]rocess
+# show output of "ps -ef", use [tab] to select one or multiple entries
+# press [enter] to kill selected processes and go back to the process list or press [escape] to exit completely.
+function kp {
+  local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]; then
+    echo $pid | xargs kill -${1:-9}
+    kp
+  fi
+}
+
+# mnemonic: [F]ind [P]ath
+# list directories in $PATH, press [enter] on an entry to list the executables inside.
+# press [escape] to go back to directory listing, [escape] twice to exit completely
+function fp {
+  local loc=$(echo $PATH | sed -e $'s/:/\\\n/g' | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:path]'")
+
+  if [[ -d $loc ]]; then
+    echo "$(rg --files $loc | rev | cut -d"/" -f1 | rev)" | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:exe] => ${loc}' >/dev/null"
+    fp
+  fi
+}
+
+# Man fuzzy search
+function man {
+  if [ $# -eq 0 ]
+  then
+    /usr/bin/man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r /usr/bin/man
+  else
+    /usr/bin/man $@
+  fi
+}
+
+function j {
+    if [[ "$#" -ne 0 ]]; then
+        cd $(autojump $@)
+        return
+    fi
+    cd "$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { print $(i) } }' |  fzf --height 40% --reverse --inline-info)" 
+}
+
+########################################
+# from: https://junegunn.kr/2015/04/browsing-chrome-history-with-fzf
+# see also: https://gist.github.com/junegunn/15859538658e449b886f - chrome bookmarks
+########################################
+# ch - browse chromium history
+ch() {
+  local cols sep
+  cols=$(( COLUMNS / 3 ))
+  sep='{::}'
+
+  cp -u ~/.config/chromium/Default/History /tmp/h
+
+  sqlite3 -separator $sep /tmp/h \
+    "select substr(title, 1, $cols), url
+     from urls order by last_visit_time desc" |
+  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+  fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs xdg-open
+}
+
+#------------------------------------------------------------------
+#   Git Helpers
+#------------------------------------------------------------------
+
+fgco() {
+  local branches=$(git branch --all | grep -v HEAD) &&
+  local branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# git log browser with FZF
+fglog() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
+}
+
+# fstash - easier way to deal with stashes
+# type fstash to get a list of your stashes
+# enter shows you the contents of the stash
+# ctrl-d shows a diff of the stash against your current HEAD
+# ctrl-b checks the stash out as a branch, for easier merging
+fstash() {
+  local out q k sha
+  while out=$(
+    git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
+    fzf --ansi --no-sort --query="$q" --print-query \
+        --expect=ctrl-d,ctrl-b);
+  do
+    mapfile -t out <<< "$out"
+    q="${out[0]}"
+    k="${out[1]}"
+    sha="${out[-1]}"
+    sha="${sha%% *}"
+    [[ -z "$sha" ]] && continue
+    if [[ "$k" == 'ctrl-d' ]]; then
+      git diff $sha
+    elif [[ "$k" == 'ctrl-b' ]]; then
+      git stash branch "stash-$sha" $sha
+      break;
+    else
+      git stash show -p $sha
+    fi
+  done
+}
+
+#------------------------------------------------------------------
+#   Docker Helpers
+#------------------------------------------------------------------
+function docker_clean {
+  echo "+ clean containers"
+  docker ps -a | grep -v 'NAMES' | grep -v 'Up ' | awk '{ print $NF }' | xargs docker rm
+
+  echo "+ clean images"
+  docker images | grep '^<none>' | awk '{ print $3 }' | xargs docker rmi
+}
+
+function docker_killall {
+  echo "+ killing all containers"
+  docker ps | awk '{print $NF}' | grep -v 'NAMES' | xargs docker kill
+}
+
+function docker_stopall {
+  echo "+ stopping all containers"
+  docker ps | awk '{print $NF}' | grep -v 'NAMES' | xargs docker stop
+}
+
+# Select a docker container to start and exec to
+function da {
+  local cid
+  cid=$(docker ps | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
+
+  [ -n "$cid" ] && docker exec -it "$cid" /bin/bash
+}
+
+# Select a running docker container to stop
+function ds {
+  local cid
+  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
+
+  [ -n "$cid" ] && docker stop "$cid"
+}
+
+docker_exec="$(which docker)"
+
+function docker {
+  case "$@" in
+  clean)
+    docker_clean
+    return 0;;
+  stopall)
+    docker_stopall
+    return $?;;
+  killall)
+    docker_killall
+    return $?;;
+  esac
+  $docker_exec $@
+}
