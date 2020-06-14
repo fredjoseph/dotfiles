@@ -37,12 +37,14 @@ apt_packages+=(
   curl
   git
   autojump
-  vim
+  vim-gtk
   xclip
   tmux
   tig
   htop
   tree
+  yakuake
+  stow
 )
 
 # https://yarnpkg.com/en/docs/install

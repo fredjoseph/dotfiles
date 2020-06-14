@@ -74,43 +74,22 @@ function _include() {
 #------------------------------------------------------------------
 
 # Standard common plugins
-plugins=(git colored-man-pages common-aliases extract tmux zsh_reload tig)
-plugins+=(debian docker docker-compose autojump fd)
+plugins=(git colored-man-pages zsh-syntax-highlighting common-aliases extract tmux zsh_reload tig)
+plugins+=(docker docker-compose autojump fd)
 _include ${MY_ZSH_CUSTOM}/.oh-my-zsh_local
 
 source $ZSH/oh-my-zsh.sh
-
-#------------------------------------------------------------------
-#   ZSH User Configuration
-#------------------------------------------------------------------
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 
 #------------------------------------------------------------------
 #   Externals
 #------------------------------------------------------------------
 _include ${MY_ZSH_CUSTOM}/aliases
 _include ${MY_ZSH_CUSTOM}/functions
-_include ${MY_ZSH_CUSTOM}/completions/general.sh
 _include ${MY_ZSH_CUSTOM}/**/*.plugin.zsh
 
-# add a function path (https://github.com/jmervine/zshrc/blob/master/completion/general.sh - a déplacer dans general.sh voir si même dossier pour general.sh que pour les compdef)
-fpath=($MY_ZSH_CUSTOM/functions $fpath)
+fpath=($MY_ZSH_CUSTOM/completions $fpath)
 
-# Reload the completion
+# Reload the completions
 autoload -U compinit && compinit
 
 #------------------------------------------------------------------
@@ -142,10 +121,3 @@ fi
 #------------------------------------------------------------------
 # - to add local customizations, create '~/.zshrc_local' and add changes to it
 _include ~/.zshrc_local
-
-# Scripts
-#--------
-
-
-# zsh-bd
-[ -f $ZSH/custom/plugins/bd/bd.zsh ] && source $ZSH/custom/plugins/bd/bd.zsh

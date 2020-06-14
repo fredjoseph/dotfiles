@@ -1,3 +1,5 @@
+#!/bin/bash
+
 print_info() {
   # Print output in purple
   printf "\n\e[0;35m $1\e[0m\n\n"
@@ -58,7 +60,7 @@ EOF
 }
 
 install_dotfiles() {
-
+    stow -R bash git postgres ripgrep stow tmux vi zsh
 }
 
 install_all() {

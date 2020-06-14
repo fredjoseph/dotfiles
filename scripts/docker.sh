@@ -1,3 +1,4 @@
+#!/bin/bash
 # From https://github.com/rakshans1/dotfiles
 
 if ! [ -x "$(command -v docker)" ]; then
