@@ -78,7 +78,7 @@ install_dotfiles
 
 main() {
     case "$1" in
-        -h|--help)
+        ''|-h|--help)
             usage
             exit 0
             ;;
