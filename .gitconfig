@@ -14,8 +14,6 @@
 	merged-branches =  branch --merged # List merged branches into HEAD (or into <branchName>)
 	# Find branches containing commit
 	fb = "!f() { git branch -a --contains $1; }; f"
-	# Remove branches that have already been merged with master (a.k.a 'delete merged')
-	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git remote -v update -p"
 	#############
 	ci = commit
 	ci-nomsg = commit --allow-empty-message -m ''
@@ -48,6 +46,10 @@
 	lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
 	lgg = !"f() { git lg --grep=\"$@\"; };f"
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    lp = log -p # show patches
+    changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status
+    changelog = log --pretty=format:' * %s'
+    short = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
 	#############
 	ls = ls-files
 	lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
@@ -58,9 +60,7 @@
 	co = checkout
 	cob = checkout -b
 	#############
-	pr = prune -v
-	#############
-	push-remote = push -u origin $1
+	push-remote = !git push -u origin $1
 	#############
 	# Interactive rebase with the given number of latest commits
 	reb = "!r() { git rebase -i HEAD~${1-1}; }; r"
@@ -81,32 +81,38 @@
 	sw = stash show
 	#############
 	t = tag
-	tags = tag -l
+    tags = "!f() { git tag | sort --version-sort; }; f" # list tags version sorted
+	tagsg = tag -l   # list tags containing regular expression
 	# Find tags containing commit
 	ft = "!f() { git describe --always --contains $1; }; f"
 	#############
-	release = !sh -c 'git tag v$1 && git push --tags' -
-	unrelease = !sh -c 'git tag -d v$1 && git push origin :v$1' -
 	aliases = !git config -l | grep alias | cut -c 7- | sort
-	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
-	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
-	devel = !git checkout devel && git pull origin devel
-	up-branch = !git fetch origin $1:$1
-	unstage = reset HEAD -- .
-	prune-local = !git branch --merged | grep -v master | grep -v dev | grep -v devel | xargs -n 1 git branch -d
-	root = rev-parse --show-toplevel
-	fetch-check = fetch --dry-run -v
-	nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
-	toss = reset --hard @{u}    # throws away any new commits
-	undo = !git reset HEAD~1 --mixed
-	in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
-	out = log @{u}..    # shows commits that will go out to the remote
-	standup = shortlog --since=yesterday
-	today = shortlog --since=midnight
-	mdiff = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 &>/dev/null; git add -u &>/dev/null; git diff --staged; git reset --hard &>/dev/null; test $x -ne 0 && git stash pop &>/dev/null; }; f"
-	list-conflicts = diff --name-only --diff-filter=U
-	list-commit-files = !git show --name-only $1
+    bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' - ### Explication: créé une branche vierge  => à supprimer
+    fetch-check = fetch --dry-run -v
+    go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # Switch to a branch, creating it if necessary
+    in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
+    in-diff = !git remote update -p; git diff ..@{u}  # shows commits that will come in from the remote
+    list-commit-files = !git show --name-only $1
+    list-conflicts = diff --name-only --diff-filter=U
 	list-staged-files = diff --name-only --cached
+    nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
+    out = log @{u}..    # shows commits that will go out to the remote
+    out-diff = diff @{u}..    # shows commits that will go out to the remote
+    preview-merge = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 > /dev/null 2>&1; git add -u > /dev/null 2>&1; git diff --staged; git reset --hard > /dev/null 2>&1; test $x -ne 0 && git stash pop > /dev/null 2>&1; }; f"
+    preview-diff = !git diff ...$1
+    prune-all = !git prune-branch && git prune -v
+    prune-branch = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git fetch -v -p"
+    release = !sh -c 'git tag v$1 && git push --tags' -
+    root = rev-parse --show-toplevel
+    snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+    standup = shortlog --since=yesterday
+	today = shortlog --since=midnight
+    toss = reset --hard @{u}    # throws away any new commits
+    undo = !git reset HEAD~1 --mixed
+    up-branch = !git fetch origin $1:$1
+    unrelease = !sh -c 'git tag -d v$1 && git push origin :v$1' -
+    unstage = reset HEAD -- .       # Cool ne fait pas le unstage sur les dossiers parents
+    whois= !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -
 [pull]
 	rebase = true
 [help]
