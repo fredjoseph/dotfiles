@@ -93,8 +93,7 @@ readme() {
 #   Thu Oct 20 13:04:20 PDT 2011
 #
 # For more info, check out http://kak.be/gnudateformats.
-whenis()
-{
+whenis() {
   # Default GNU date format as seen in date.c from GNU coreutils.
   local format='%a %b %e %H:%M:%S %Z %Y'
   if [[ "$1" =~ ^--format= ]]; then
@@ -117,8 +116,7 @@ whenis()
 }
 
 # os-info: show some info about your system
-os-info()
-{
+os-info() {
   lsb_release -a
   uname -a
 
@@ -133,6 +131,13 @@ os-info()
   if [ -z /proc/version ]; then
     cat /proc/version;
   fi;
+}
+
+zsh-history-fix() {
+  mv ~/.zsh_history ~/.zsh_history_bad
+  strings ~/.zsh_history_bad > ~/.zsh_history
+  fc -R ~/.zsh_history
+  rm ~/.zsh_history_bad
 }
 
 #------------------------------------------------------------------
