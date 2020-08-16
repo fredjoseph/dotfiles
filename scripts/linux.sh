@@ -1,10 +1,7 @@
 #!/bin/bash
 # From https://github.com/rakshans1/dotfiles
 
-# Installs some of the common dependencies needed/desired for software development
-
-# Ask for the administrator password upfront
-sudo -v
+# Installs some of the common dependencies required for software development
 
 sudo apt-get -qq install jq > /dev/null 2>&1
 
