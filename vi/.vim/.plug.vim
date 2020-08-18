@@ -35,6 +35,8 @@ call plug#begin(g:plug_dir)
 
 " quoting/parenthesizing made simple
 Plug 'tpope/vim-surround'
+" working with variants of a word
+Plug 'tpope/vim-abolish'
 
 " Vim sugar for the UNIX shell commands that need it the most. Features include:
 " :Delete: Delete a buffer and the file on disk simultaneously.
