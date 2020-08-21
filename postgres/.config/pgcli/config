@@ -166,7 +166,7 @@ Token.Output.Header = "#00ff5f bold"
 Token.Output.OddRow = ""
 Token.Output.EvenRow = ""
 
-# Named queries are queries you can execute by name.
+# Named queries are queries you can execute by name (requires 'pgspecial' in version 1.10 or higher for ).
 [named queries]
 all = SELECT * FROM $1
 count = SELECT COUNT(*) FROM $1
