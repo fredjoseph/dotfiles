@@ -169,6 +169,7 @@ Token.Output.EvenRow = ""
 # Named queries are queries you can execute by name.
 [named queries]
 all = SELECT * FROM $1
+count = SELECT COUNT(*) FROM $1
 
 # DSN to call by -D option
 [alias_dsn]
