@@ -42,6 +42,7 @@ apt_packages+=(
   tree
   yakuake
   stow
+  autocutsel
 )
 
 # https://yarnpkg.com/en/docs/install

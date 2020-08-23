@@ -10,6 +10,7 @@ alias npmlist="npm list -g --depth 0"
 alias reload_zsh="source ~/.zshrc && echo 'Shell config reloaded from ~/.zshrc'"
 alias cat="bat"
 alias get="curl -sOL"
+alias top10="history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10"
 
 alias now="date '+%Y-%m-%d %H-:%M:%S'"
 alias timer='echo "Timer started. Stop with Ctrl-D." && date "+%a, %d %b %H:%M:%S" && time cat && date "+%a, %d %b %H:%M:%S"'
