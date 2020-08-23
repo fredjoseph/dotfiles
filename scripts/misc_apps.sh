@@ -38,6 +38,7 @@ install_zsh() {
   fi
 }
 install_zsh
+chsh -s /bin/zsh $whoami
 
 install_fzf() {
     if [ ! -d ~/.fzf ]; then

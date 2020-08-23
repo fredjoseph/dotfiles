@@ -70,7 +70,7 @@ Plug 'dhruvasagar/vim-zoom'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " Better display unwanted whitespace.
-# Plug 'ntpeters/vim-better-whitespace'
+" Plug 'ntpeters/vim-better-whitespace'
 
 " Adds various text objects to give you more targets to operate on
 " Usage:

@@ -4,16 +4,19 @@
 usage() {
     local program_name
     program_name=${0##*/}
-    cat <<EOF
+    echo "\
 Usage: $program_name [-option]
 Options:
     -h|--help       Print this message
     -d|--dotfiles   Install dotfiles
     -a|--all        Install all (softwares && dotfiles)
-EOF
+"
 }
 
 install_dotfiles() {
+    # Remove already present configuration files to avoid 'stow' conflict
+    rm ~/.bashrc
+    
     stow -R bash git postgres ripgrep stow tmux vi zsh
 }
 
@@ -23,7 +26,7 @@ sudo -v
 # Global Linux
 $HOME/dotfiles/scripts/linux.sh
 # Cool apps
-$HOME/dotfiles/scripts/misc-apps.sh
+$HOME/dotfiles/scripts/misc_apps.sh
 # Snap
 $HOME/dotfiles/scripts/snap.sh
 # Nvm

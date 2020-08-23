@@ -88,7 +88,7 @@ set wildmenu    " Display command line’s tab complete options as a menu
 set wildmode=list:longest,full    " have command-line completion <Tab>
 set wrap    " wrap long lines
 
-// Store all swap files in this directory
+" Store all swap files in this directory
 if !isdirectory($HOME . "/.vim/swp")
     call mkdir($HOME . "/.vim/swp", "p")
 endif

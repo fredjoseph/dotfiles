@@ -2,26 +2,19 @@
 # From https://github.com/rakshans1/dotfiles
 
 # Installs some of the common dependencies required for software development
-
-sudo apt-get -qq install jq > /dev/null 2>&1
+sudo apt-get -qq install jq curl 2>&1
 
 apt_keys=()
 apt_source_files=()
 apt_source_texts=()
+apt_preference_files=()
+apt_preference_texts=()
 apt_packages=()
 deb_installed=()
 deb_sources=()
+locales=()
 
 installers_path="cache"
-
-# Ubuntu distro release name, eg. "xenial"
-release_name=$(lsb_release -c | awk '{print $2}')
-
-function add_ppa() {
-  apt_source_texts+=($1)
-  IFS=':/' eval 'local parts=($1)'
-  apt_source_files+=("${parts[1]}-ubuntu-${parts[2]}-$release_name")
-}
 
 #############################
 # WHAT DO WE NEED TO INSTALL?
@@ -29,9 +22,11 @@ function add_ppa() {
 
 # Misc.
 
+locales+=("en_US.UTF-8 UTF-8")
+locales+=("fr_FR.UTF-8 UTF-8")
+
 apt_packages+=(
   apt-transport-https
-  curl
   git
   autojump
   vim-gtk
@@ -45,11 +40,16 @@ apt_packages+=(
   autocutsel
 )
 
-# https://yarnpkg.com/en/docs/install
-apt_keys+=(https://dl.yarnpkg.com/debian/pubkey.gpg)
-apt_source_files+=(yarn)
-apt_source_texts+=("deb https://dl.yarnpkg.com/debian/ stable main")
-apt_packages+=(yarn)
+# Add unstable/sid repository
+apt_source_files+=(unstable)
+apt_source_texts+=("\
+deb http://http.us.debian.org/debian unstable main non-free contrib
+deb-src http://http.us.debian.org/debian unstable main non-free contrib")
+apt_preference_files+=(unstable)
+apt_preference_texts+=("\
+Package: *
+Pin: release a=unstable
+Pin-Priority: 99")
 
 # https://github.com/sharkdp/bat
 deb_installed+=(bat)
@@ -150,6 +150,20 @@ function contains() {
 #                                                                             #
 ###############################################################################
 
+# Add locales
+function __temp() { if grep "^[[:blank:]]*[^[:blank:]#]*$1" /etc/locale.gen; then return 1; fi }
+locale_i=($(array_filter_i locales __temp))
+
+if (( ${#locale_i[@]} > 0 )); then
+  e_header "Adding Locales (${#locale_i[@]})"
+  for i in "${locale_i[@]}"; do
+    locale=${locales[i]}
+    e_arrow "$locale"
+    sudo sh -c "echo '$locale' > /etc/locale.gen"
+  done
+fi
+sudo locale-gen
+
 # Add APT sources.
 function __temp() { [[ ! -e /etc/apt/sources.list.d/$1.list ]]; }
 source_i=($(array_filter_i apt_source_files __temp))
@@ -163,9 +177,23 @@ if (( ${#source_i[@]} > 0 )); then
       e_arrow "$source_text"
       sudo add-apt-repository -y $source_text > /dev/null 2>&1
     else
-      echo "$source_file"
+      e_arrow "$source_file"
       sudo sh -c "echo '$source_text' > /etc/apt/sources.list.d/$source_file.list"
     fi
+  done
+fi
+
+# Add APT preferences.
+function __temp() { [[ ! -e /etc/apt/preferences.d/$1 ]]; }
+preference_i=($(array_filter_i apt_preference_files __temp))
+
+if (( ${#preference_i[@]} > 0 )); then
+  e_header "Adding APT preferences (${#preference_i[@]})"
+  for i in "${preference_i[@]}"; do
+    preference_file=${apt_preference_files[i]}
+    preference_text=${apt_preference_texts[i]}
+    e_arrow "$preference_file"
+    sudo sh -c "echo '$preference_text' > /etc/apt/preferences.d/$preference_file"
   done
 fi
 
@@ -175,7 +203,7 @@ sudo apt-get -qq update
 
 # Upgrade APT.
 e_header "Upgrading APT"
-sudo apt-get -qq -y upgrade > /dev/null 2>&1
+sudo apt-get -qq -y upgrade
 
 # Install APT packages.
 installed_apt_packages="$(dpkg --get-selections | grep -v deinstall | awk 'BEGIN{FS="[\t:]"}{print $1}' | uniq)"

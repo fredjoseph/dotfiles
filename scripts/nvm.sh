@@ -21,6 +21,7 @@ packages=(
     fkill-cli
     fx
     caniuse-cmd
+    yarn
 )
 
 npm install -g "${packages[@]}"

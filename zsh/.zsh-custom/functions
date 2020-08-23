@@ -144,6 +144,15 @@ zsh-history-fix() {
 #   Helpers with Fuzzy Search
 #------------------------------------------------------------------
 
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+fe() {
+   local files
+   IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+
 # mnemonic: [K]ill [P]rocess
 # show output of "ps -ef", use [tab] to select one or multiple entries
 # press [enter] to kill selected processes and go back to the process list or press [escape] to exit completely.
