@@ -38,6 +38,7 @@ apt_packages+=(
   yakuake
   stow
   autocutsel
+  snapd
 )
 
 # Add unstable/sid repository
@@ -159,7 +160,7 @@ if (( ${#locale_i[@]} > 0 )); then
   for i in "${locale_i[@]}"; do
     locale=${locales[i]}
     e_arrow "$locale"
-    sudo sh -c "echo '$locale' > /etc/locale.gen"
+    sudo sh -c "echo '$locale' >> /etc/locale.gen"
   done
 fi
 sudo locale-gen

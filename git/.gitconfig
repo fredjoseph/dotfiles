@@ -51,7 +51,7 @@
 	lgg = "!f() { git lg --grep=\"$@\"; };f"
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     lp = log -p # show patches
-    changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status
+    changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status   # similar to 'git whatchanged' but prettier
     changelog = log --pretty=format:' * %s'
     short = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
 	#############
@@ -117,6 +117,7 @@
     snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
     standup = shortlog --since=yesterday
 	today = shortlog --since=midnight
+    
     toss = reset --hard @{u}    # throws away any new commits
     undo = !git reset HEAD~1 --mixed
     up-branch = "!git fetch origin $1:$1 #"
