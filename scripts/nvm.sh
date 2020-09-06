@@ -13,14 +13,14 @@ if ! [  -f "~/.nvm/nvm.sh" ]; then
 fi
 
 packages=(
-    http-server
-    tldr
-    undollar
-    how-2
-    npkill
+    caniuse-cmd
     fkill-cli
     fx
-    caniuse-cmd
+    how-2
+    http-server
+    npkill
+    tldr
+    undollar
     yarn
 )
 

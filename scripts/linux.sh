@@ -27,19 +27,20 @@ locales+=("fr_FR.UTF-8 UTF-8")
 
 apt_packages+=(
   apt-transport-https
-  git
+  autocutsel
   autojump
+  git
+  highlight
+  htop
+  powerline
+  snapd
+  stow
+  tig
+  tmux
+  tree
   vim-gtk
   xclip
-  tmux
-  tig
-  htop
-  tree
   yakuake
-  stow
-  autocutsel
-  snapd
-  highlight
 )
 
 # Add unstable/sid repository

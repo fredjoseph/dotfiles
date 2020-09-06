@@ -48,3 +48,10 @@ install_fzf() {
     fi
 }
 install_fzf
+
+install_utility_apps() {
+    # install has
+    curl -sL https://git.io/_has > ~/bin/has
+    chmod +x ~/bin/has
+}
+install_utility_apps
