@@ -76,7 +76,10 @@ function _include() {
 # Standard common plugins
 plugins=(git colored-man-pages zsh-syntax-highlighting common-aliases extract tmux zsh_reload tig)
 plugins+=(docker docker-compose autojump fd)
+# Include configuration specific to the local environment (corresponding to the current git branch)
 _include ${MY_ZSH_CUSTOM}/.oh-my-zsh_local
+# Include private configuration (add everything that should not be stored in git)
+_include ${MY_ZSH_CUSTOM}/.oh-my-zsh_private
 
 source $ZSH/oh-my-zsh.sh
 
@@ -110,8 +113,8 @@ if [ $(command -v "fzf") ]; then
 fi
 
 # Load zsh completions
-if [ -d ~/.zsh-custom.d/completions ]; then
-	for file in ~/.zsh-custom.d/completions/*(.N); do
+if [ -d ~/.zsh-custom/completions ]; then
+	for file in ~/.zsh-custom/completions/*(.N); do
 		. $file
 	done
 fi
@@ -119,5 +122,7 @@ fi
 #------------------------------------------------------------------
 #   Local Configuration -- should be last!
 #------------------------------------------------------------------
-# - to add local customizations, create '~/.zshrc_local' and add changes to it
+# - configuration specific to the local environment (corresponding to the current git branch)
 _include ~/.zshrc_local
+# - to add private customizations, create '~/.zshrc_private' and add changes to it
+_include ~/.zshrc_private

@@ -16,6 +16,7 @@ Options:
 install_dotfiles() {
     # Remove already present configuration files to avoid 'stow' conflict
     rm ~/.bashrc
+    rm ~/.zshrc
     
     stow -R bash git postgres ripgrep stow tmux vi zsh
 }

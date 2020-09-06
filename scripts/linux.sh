@@ -39,6 +39,7 @@ apt_packages+=(
   stow
   autocutsel
   snapd
+  highlight
 )
 
 # Add unstable/sid repository
