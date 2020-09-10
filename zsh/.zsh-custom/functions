@@ -1,12 +1,12 @@
 #------------------------------------------------------------------
 #   Common
 #------------------------------------------------------------------
-function __x {
+__x() {
   echo "+ $@"
   $@
 }
 
-function which {
+which() {
     if ! /usr/bin/which $@
     then
         type $1 | head -1
@@ -156,7 +156,7 @@ fe() {
 # mnemonic: [K]ill [P]rocess
 # show output of "ps -ef", use [tab] to select one or multiple entries
 # press [enter] to kill selected processes and go back to the process list or press [escape] to exit completely.
-function kp {
+kp() {
   local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
 
   if [ "x$pid" != "x" ]; then
@@ -168,7 +168,7 @@ function kp {
 # mnemonic: [F]ind [P]ath
 # list directories in $PATH, press [enter] on an entry to list the executables inside.
 # press [escape] to go back to directory listing, [escape] twice to exit completely
-function fp {
+fp() {
   local loc=$(echo $PATH | sed -e $'s/:/\\\n/g' | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:path]'")
 
   if [[ -d $loc ]]; then
@@ -178,7 +178,7 @@ function fp {
 }
 
 # Man fuzzy search
-function man {
+man() {
   if [ $# -eq 0 ]
   then
     /usr/bin/man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r /usr/bin/man
@@ -187,7 +187,7 @@ function man {
   fi
 }
 
-function j {
+j() {
     if [[ "$#" -ne 0 ]]; then
         cd $(autojump $@)
         return
@@ -269,7 +269,7 @@ fstash() {
 #------------------------------------------------------------------
 #   Docker Helpers
 #------------------------------------------------------------------
-function docker_clean {
+docker_clean() {
   echo "+ clean containers"
   docker ps -a | grep -v 'NAMES' | grep -v 'Up ' | awk '{ print $NF }' | xargs docker rm
 
@@ -277,18 +277,18 @@ function docker_clean {
   docker images | grep '^<none>' | awk '{ print $3 }' | xargs docker rmi
 }
 
-function docker_killall {
+docker_killall() {
   echo "+ killing all containers"
   docker ps | awk '{print $NF}' | grep -v 'NAMES' | xargs docker kill
 }
 
-function docker_stopall {
+docker_stopall() {
   echo "+ stopping all containers"
   docker ps | awk '{print $NF}' | grep -v 'NAMES' | xargs docker stop
 }
 
 # Select a docker container to start and exec to
-function da {
+da() {
   local cid
   cid=$(docker ps | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
 
@@ -296,7 +296,7 @@ function da {
 }
 
 # Select a running docker container to stop
-function ds {
+ds() {
   local cid
   cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
 
@@ -305,7 +305,7 @@ function ds {
 
 docker_exec="$(which docker)"
 
-function docker {
+docker() {
   case "$@" in
   clean)
     docker_clean
