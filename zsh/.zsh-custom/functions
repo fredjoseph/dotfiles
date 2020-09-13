@@ -64,12 +64,19 @@ copy() {
 readme() {
     for readme in {readme,README}.{md,MD,markdown,mkd,txt,TXT}; do
         if [[ -x "$(command -v glow)" ]] && [[ -f "$readme" ]]; then
-            mdv "$readme"
+            glow "$readme"
+        elif [[ -x "$(command -v bat)" ]] && [[ -f "$readme" ]]; then
+            bat "$readme"
         elif [[ -f "$readme" ]]; then
             cat "$readme"
         fi
     done
 }
+
+bro() {curl bropages.org/$1.json | jq -r ".[].msg" | highlight --out-format=truecolor --syntax=bash | less -R}
+
+toEN() {curl "https://de.pons.com/_translate/translate" --data "source_language=fr&target_language=en&service=deepl&text=""$*""&lookup=true&requested_by=Web&source_language_confirmed=true" | jq .translation}
+toFR() {curl "https://de.pons.com/_translate/translate" --data "source_language=en&target_language=fr&service=deepl&text=""$*""&lookup=true&requested_by=Web&source_language_confirmed=true" | jq .translation}
 
 # whenis: Try to make sense of the date. It supports everything GNU date knows how to
 # parse, as well as UNIX timestamps. It formats the given date using the

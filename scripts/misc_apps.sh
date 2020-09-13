@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Import helper functions
+. $(dirname "$0")/_helper.sh
+
+test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
+
 print_info() {
   # Print output in purple
   printf "\n\e[0;35m $1\e[0m\n\n"
@@ -53,5 +58,21 @@ install_utility_apps() {
     # install has
     curl -sL https://git.io/_has > ~/bin/has
     chmod +x ~/bin/has
+    #curl https://cheat.sh/:zsh > ${MY_ZSH_CUSTOM}/completions_private/_cht
+    # install tldr
+    __install_binary $(__get_github_release_url "dbrgn/tealdeer" "x86_64-musl") tldr
+    __install_zsh_completion 'https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer' _tldr
+    # install tokei
+    __install_tar_gz $(__get_github_release_url "XAMPPRocky/tokei" "x86_64.*linux-gnu.tar.gz") tokei
+    # install bandwhich
+    __install_tar_gz $(__get_github_release_url "imsnif/bandwhich" "linux-musl.tar.gz") bandwhich
+    # install so
+    __install_tar_gz $(__get_github_release_url "samtay/so" "linux-gnu.tar.gz") so
+    # install zoxide
+    __install_binary $(__get_github_release_url "ajeetdsouza/zoxide" "x86_64.*linux-gnu") zoxide
+    # install broot
+    __install_binary 'https://dystroy.org/broot/download/x86_64-linux/broot' broot
+    __install_zsh_completion 'https://dystroy.org/broot/download/completion/_br' _br
+    __install_zsh_completion 'https://dystroy.org/broot/download/completion/_broot' _broot
 }
 install_utility_apps

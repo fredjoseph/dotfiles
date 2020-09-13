@@ -14,12 +14,13 @@ fi
 
 packages=(
     caniuse-cmd
+    dockly
     fkill-cli
     fx
     how-2
     http-server
+    kmdr
     npkill
-    tldr
     undollar
     yarn
 )

@@ -88,9 +88,10 @@ source $ZSH/oh-my-zsh.sh
 #------------------------------------------------------------------
 _include ${MY_ZSH_CUSTOM}/aliases
 _include ${MY_ZSH_CUSTOM}/functions
+# TODO Test if required
 _include ${MY_ZSH_CUSTOM}/**/*.plugin.zsh
 
-fpath=($MY_ZSH_CUSTOM/completions $fpath)
+fpath=($MY_ZSH_CUSTOM/completions $MY_ZSH_CUSTOM/completions_private $fpath)
 
 # Reload the completions
 autoload -U compinit && compinit
@@ -112,17 +113,18 @@ if [ $(command -v "fzf") ]; then
     source ~/.fzf.zsh
 fi
 
+# TODO Test if required
 # Load zsh completions
-if [ -d ~/.zsh-custom/completions ]; then
-	for file in ~/.zsh-custom/completions/*(.N); do
-		. $file
-	done
-fi
+#if [ -d ~/.zsh-custom/completions ]; then
+#	for file in ~/.zsh-custom/completions/*(.N); do
+#		. $file
+#	done
+#fi
 
 #------------------------------------------------------------------
 #   Local Configuration -- should be last!
 #------------------------------------------------------------------
 # - configuration specific to the local environment (corresponding to the current git branch)
-_include ~/.zshrc_local
+_include ${MY_ZSH_CUSTOM}/.zshrc_local
 # - to add private customizations, create '~/.zshrc_private' and add changes to it
-_include ~/.zshrc_private
+_include ${MY_ZSH_CUSTOM}/.zshrc_private

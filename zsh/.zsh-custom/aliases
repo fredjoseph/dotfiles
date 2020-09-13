@@ -16,12 +16,9 @@ alias now="date '+%Y-%m-%d %H-:%M:%S'"
 alias timer='echo "Timer started. Stop with Ctrl-D." && date "+%a, %d %b %H:%M:%S" && time cat && date "+%a, %d %b %H:%M:%S"'
 
 alias cani="caniuse --oneline-browser | fzf --ansi"
-alias bro="curl bropages.org/$1.json | jq -r ".[].msg" | highlight --out-format=truecolor --syntax=bash | less -R"
-alias toEN="curl "https://de.pons.com/_translate/translate" --data "source_language=fr&target_language=en&service=deepl&text=""$*""&lookup=true&requested_by=Web&source_language_confirmed=true" | jq .translation"
-alias toFR="curl "https://de.pons.com/_translate/translate" --data "source_language=en&target_language=fr&service=deepl&text=""$*""&lookup=true&requested_by=Web&source_language_confirmed=true" | jq .translation"
 
 alias localip="hostname -I | awk '{print $1}'"
-alias publicip="curl https://watismijnip.nl 2>/dev/null | grep -io "ipadress:\ [^\ ^<]*" | awk -F' ' '{print $2}'"
+alias publicip="curl https://watismijnip.nl 2>/dev/null | grep -io \"ipadress:\ [^\ ^<]*\" | awk -F' ' '{print $2}'"
 
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description

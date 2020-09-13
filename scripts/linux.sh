@@ -1,8 +1,11 @@
 #!/bin/bash
 # From https://github.com/rakshans1/dotfiles
 
+# Import helper functions
+. $(dirname "$0")/_helper.sh
+
 # Installs some of the common dependencies required for software development
-sudo apt-get -qq install jq curl 2>&1
+sudo apt-get -qq install curl 2>&1
 
 apt_keys=()
 apt_source_files=()
@@ -20,8 +23,6 @@ installers_path="cache"
 # WHAT DO WE NEED TO INSTALL?
 #############################
 
-# Misc.
-
 locales+=("en_US.UTF-8 UTF-8")
 locales+=("fr_FR.UTF-8 UTF-8")
 
@@ -29,9 +30,13 @@ apt_packages+=(
   apt-transport-https
   autocutsel
   autojump
+  direnv
   git
+  gron
   highlight
   htop
+  jq
+  ncdu
   powerline
   snapd
   stow
@@ -56,19 +61,19 @@ Pin-Priority: 99")
 
 # https://github.com/sharkdp/bat
 deb_installed+=(bat)
-batversion="$(curl -s "https://api.github.com/repos/sharkdp/bat/releases/latest" | jq -r .tag_name | sed 's/v//')" 
-deb_sources+=('https://github.com/sharkdp/bat/releases/latest/download/bat_'$batversion'_amd64.deb')
+deb_sources+=(__get_github_download_url "sharkdp/bat" "_amd64.deb")
 
 # https://github.com/sharkdp/fd
 deb_installed+=(fd)
-fdversion="$(curl -s "https://api.github.com/repos/sharkdp/fd/releases/latest" | jq -r .tag_name | sed 's/v//')" 
-deb_sources+=('https://github.com/sharkdp/fd/releases/latest/download/fd_'$fdversion'_amd64.deb')
+deb_sources+=(__get_github_download_url "sharkdp/fd" "_amd64.deb")
 
 # https://github.com/BurntSushi/ripgrep
 deb_installed+=(ripgrep)
-rgversion="$(curl -s "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | jq -r .tag_name)"
-deb_sources+=('https://github.com/BurntSushi/ripgrep/releases/download/'$rgversion'/ripgrep_'$rgversion'_amd64.deb')
+deb_sources+=(__get_github_download_url "BurntSushi/ripgrep" "_amd64.deb")
 
+# https://github.com/charmbracelet/glow
+deb_installed+=(glow)
+deb_sources+=(__get_github_download_url "charmbracelet/glow" "_amd64.deb")
 
 ####################
 # ACTUALLY DO THINGS
