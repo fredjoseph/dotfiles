@@ -1,5 +1,9 @@
 # Aliases
 #--------
+alias ls='exa --group-directories-first -F'
+alias ll='ls --long --header --git'
+alias la='ll -a'
+
 alias tmux="tmux -2 -u" # force 256 colors AND UTF-8
 alias less="less -M" # verbose prompt
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line

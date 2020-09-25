@@ -1,0 +1,5 @@
+# Ignore everything in 'private' directory
+private/**
+# Except the sub-directories (keep the directory structure) and '.gitkeep' file
+!private/**/
+!**/.gitkeep

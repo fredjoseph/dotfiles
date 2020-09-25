@@ -40,6 +40,14 @@ tre() {
   fi
 }
 
+# Go up x directories
+up() {
+  for i in $(seq 1 $1); do 
+    builtin cd ..; 
+  done; 
+  pwd;
+}
+
 # Install deb file
 deb() {
   sudo -v
@@ -225,7 +233,15 @@ ch() {
 #   Git Helpers
 #------------------------------------------------------------------
 
+is_git_repo() {
+    git rev-parse --git-dir > /dev/null 2>&1;
+}
+
 fgco() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
   local branches=$(git branch --all | grep -v HEAD) &&
   local branch=$(echo "$branches" |
            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
@@ -234,9 +250,13 @@ fgco() {
 
 # git log browser with FZF
 fglog() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
   git log --graph --color=always \
       --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+  fzf +m --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
       --bind "ctrl-m:execute:
                 (grep -o '[a-f0-9]\{7\}' | head -1 |
                 xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
@@ -250,15 +270,22 @@ FZF-EOF"
 # ctrl-d shows a diff of the stash against your current HEAD
 # ctrl-b checks the stash out as a branch, for easier merging
 fstash() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
   local out q k sha
   while out=$(
     git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
-    fzf --ansi --no-sort --query="$q" --print-query \
+    fzf --ansi +1 --no-sort --query="$q" --print-query \
         --expect=ctrl-d,ctrl-b);
   do
-    mapfile -t out <<< "$out"
-    q="${out[0]}"
-    k="${out[1]}"
+    out=("${(f)$(echo $out)}");
+    q="${out[-3]}"
+    k="${out[-2]}"
+    if ! [[ $k = ctrl-* ]]; then 
+      q="$k"; 
+    fi
     sha="${out[-1]}"
     sha="${sha%% *}"
     [[ -z "$sha" ]] && continue
@@ -271,6 +298,19 @@ fstash() {
       git stash show -p $sha
     fi
   done
+}
+
+gj() {
+    if ! is_git_repo; then
+        echo "No git repository found"
+        return;
+    fi
+    git for-each-ref --format='%(refname:short)' refs/heads | grep -E "${1:-$}" -q
+    if [ $? -eq 1 ]; then
+        echo "No Found"
+        git fetch --quiet
+    fi
+    git for-each-ref --format='%(refname:short)' refs/heads | grep -E "${1:-$}" | fzf +m -0 | xargs git checkout
 }
 
 #------------------------------------------------------------------

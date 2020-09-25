@@ -77,9 +77,9 @@ function _include() {
 plugins=(git colored-man-pages zsh-syntax-highlighting common-aliases extract tmux zsh_reload tig)
 plugins+=(docker docker-compose autojump fd)
 # Include configuration specific to the local environment (corresponding to the current git branch)
-_include ${MY_ZSH_CUSTOM}/.oh-my-zsh_local
+_include ${MY_ZSH_CUSTOM}/.oh-my-zsh
 # Include private configuration (add everything that should not be stored in git)
-_include ${MY_ZSH_CUSTOM}/.oh-my-zsh_private
+_include ${MY_ZSH_CUSTOM}/private/.oh-my-zsh
 
 source $ZSH/oh-my-zsh.sh
 
@@ -91,7 +91,7 @@ _include ${MY_ZSH_CUSTOM}/functions
 # TODO Test if required
 _include ${MY_ZSH_CUSTOM}/**/*.plugin.zsh
 
-fpath=($MY_ZSH_CUSTOM/completions $MY_ZSH_CUSTOM/completions_private $fpath)
+fpath=($MY_ZSH_CUSTOM/completions $MY_ZSH_CUSTOM/private/completions $fpath)
 
 # Reload the completions
 autoload -U compinit && compinit
@@ -125,6 +125,6 @@ fi
 #   Local Configuration -- should be last!
 #------------------------------------------------------------------
 # - configuration specific to the local environment (corresponding to the current git branch)
-_include ${MY_ZSH_CUSTOM}/.zshrc_local
-# - to add private customizations, create '~/.zshrc_private' and add changes to it
-_include ${MY_ZSH_CUSTOM}/.zshrc_private
+_include ${MY_ZSH_CUSTOM}/.zshrc
+# - to add private customizations, create '${MY_ZSH_CUSTOM}/private/.zshrc' and add changes to it
+_include ${MY_ZSH_CUSTOM}/private/.zshrc
