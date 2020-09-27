@@ -1,5 +1,16 @@
 test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
 
+function _include() {
+  for FILE in $(find "$1" -type f -print); do
+    source $FILE
+  done
+}
+
+print_info() {
+  # Print output in purple
+  printf "\n\e[0;35m $1\e[0m\n\n"
+}
+
 # __get_github_release_url: Get the download URL of the latest release of an application hosted on Github.
 # This function requires 2 parameters
 # 1. The Github repository <user/repo>

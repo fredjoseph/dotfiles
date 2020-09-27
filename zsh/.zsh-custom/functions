@@ -7,10 +7,10 @@ __x() {
 }
 
 which() {
-    if ! /usr/bin/which $@
-    then
-        type $1 | head -1
-    fi
+  if ! /usr/bin/which $@
+  then
+    type $1 | head -1
+  fi
 }
 #------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ tre() {
   fi
 }
 
-# Go up x directories
+# Go up $1 directories
 up() {
   for i in $(seq 1 $1); do 
     builtin cd ..; 
@@ -70,15 +70,15 @@ copy() {
 
 # Print README file
 readme() {
-    for readme in {readme,README}.{md,MD,markdown,mkd,txt,TXT}; do
-        if [[ -x "$(command -v glow)" ]] && [[ -f "$readme" ]]; then
-            glow "$readme"
-        elif [[ -x "$(command -v bat)" ]] && [[ -f "$readme" ]]; then
-            bat "$readme"
-        elif [[ -f "$readme" ]]; then
-            cat "$readme"
-        fi
-    done
+  for readme in {readme,README}.{md,MD,markdown,mkd,txt,TXT}; do
+    if [[ -x "$(command -v glow)" ]] && [[ -f "$readme" ]]; then
+      glow "$readme"
+    elif [[ -x "$(command -v bat)" ]] && [[ -f "$readme" ]]; then
+      bat "$readme"
+    elif [[ -f "$readme" ]]; then
+      cat "$readme"
+    fi
+  done
 }
 
 bro() {curl bropages.org/$1.json | jq -r ".[].msg" | highlight --out-format=truecolor --syntax=bash | less -R}
@@ -163,9 +163,9 @@ zsh-history-fix() {
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 fe() {
-   local files
-   IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
-   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  local files
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
 # mnemonic: [K]ill [P]rocess
@@ -203,11 +203,11 @@ man() {
 }
 
 j() {
-    if [[ "$#" -ne 0 ]]; then
-        cd $(autojump $@)
-        return
-    fi
-    cd "$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { print $(i) } }' |  fzf --height 40% --reverse --inline-info)" 
+  if [[ "$#" -ne 0 ]]; then
+    cd $(autojump $@)
+    return
+  fi
+  cd "$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { print $(i) } }' |  fzf --height 40% --reverse --inline-info)" 
 }
 
 ########################################
@@ -301,16 +301,16 @@ fstash() {
 }
 
 gj() {
-    if ! is_git_repo; then
-        echo "No git repository found"
-        return;
-    fi
-    git for-each-ref --format='%(refname:short)' refs/heads | grep -E "${1:-$}" -q
-    if [ $? -eq 1 ]; then
-        echo "No Found"
-        git fetch --quiet
-    fi
-    git for-each-ref --format='%(refname:short)' refs/heads | grep -E "${1:-$}" | fzf +m -0 | xargs git checkout
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
+  git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" -q
+  if [ $? -eq 1 ]; then
+    echo "No Found"
+    git fetch --quiet
+  fi
+  git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" | fzf +m -0 | xargs git checkout
 }
 
 #------------------------------------------------------------------

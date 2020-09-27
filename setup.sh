@@ -27,6 +27,7 @@ sudo -v
 # Global Linux
 $HOME/dotfiles/scripts/linux.sh
 # Cool apps
+$HOME/dotfiles/scripts/common_apps.sh
 $HOME/dotfiles/scripts/misc_apps.sh
 # Snap
 $HOME/dotfiles/scripts/snap.sh

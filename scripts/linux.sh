@@ -23,24 +23,20 @@ installers_path="cache"
 # WHAT DO WE NEED TO INSTALL?
 #############################
 
+# COMMON (packages installed on all environments)
 locales+=("en_US.UTF-8 UTF-8")
-locales+=("fr_FR.UTF-8 UTF-8")
 
 apt_packages+=(
   apt-transport-https
   autocutsel
   autojump
-  direnv
   git
-  gron
   highlight
   htop
   jq
-  ncdu
   powerline
   snapd
   stow
-  tig
   tmux
   tree
   vim-gtk
@@ -71,9 +67,8 @@ deb_sources+=(__get_github_download_url "sharkdp/fd" "_amd64.deb")
 deb_installed+=(ripgrep)
 deb_sources+=(__get_github_download_url "BurntSushi/ripgrep" "_amd64.deb")
 
-# https://github.com/charmbracelet/glow
-deb_installed+=(glow)
-deb_sources+=(__get_github_download_url "charmbracelet/glow" "_amd64.deb")
+# CUSTOM (specific to the local environment corresponding to the current git branch)
+_include $(dirname "$0")/linux.custom
 
 ####################
 # ACTUALLY DO THINGS

@@ -1,6 +1,9 @@
 #!/bin/bash
 # From https://github.com/rakshans1/dotfiles
 
+# Import helper functions
+. $(dirname "$0")/_helper.sh
+
 if ! [  -f "~/.nvm/nvm.sh" ]; then
   nvmVersion="$(curl -s "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r .tag_name)" 
   curl -o- 'https://raw.githubusercontent.com/nvm-sh/nvm/'$nvmVersion'/install.sh' | bash
@@ -11,17 +14,24 @@ if ! [  -f "~/.nvm/nvm.sh" ]; then
   nvm alias default node
 fi
 
+#############################
+# WHAT DO WE NEED TO INSTALL?
+#############################
+
+# COMMON (packages installed on all environments)
 packages=(
-    caniuse-cmd
-    dockly
     fkill-cli
-    fx
     how-2
     http-server
     kmdr
     npkill
     undollar
-    yarn
 )
 
+# CUSTOM (specific to the local environment corresponding to the current git branch)
+_include $(dirname "$0")/nvm.custom
+
+####################
+# ACTUALLY DO THINGS
+####################
 npm install -g "${packages[@]}"

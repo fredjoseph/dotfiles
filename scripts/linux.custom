@@ -1,0 +1,23 @@
+# List here all customizations required by your environment and not installed by default.
+# This file should be empty on the 'master' branch (used as template) and be filled in the git branches corresponding to specific environments.
+
+locales+=("fr_FR.UTF-8 UTF-8")
+
+apt_packages+=(
+  direnv
+  gron
+  ncdu
+  tig
+)
+
+# https://github.com/charmbracelet/glow
+deb_installed+=(glow)
+deb_sources+=(__get_github_download_url "charmbracelet/glow" "_amd64.deb")
+
+# https://github.com/sharkdp/hyperfine
+deb_installed+=(hyperfine)
+deb_sources+=(__get_github_download_url "sharkdp/hyperfine" "_amd64.deb")
+
+# https://github.com/knqyf263/pet
+deb_installed+=(pet)
+deb_sources+=(__get_github_download_url "knqyf263/pet" "_amd64.deb")

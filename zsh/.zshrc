@@ -66,7 +66,9 @@ ZSH_THEME="avit"
 test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
 
 function _include() {
-  [[ -e $1 ]] && . $1
+  for FILE in $(find "$1" -type f -print); do
+    source $FILE
+  done
 }
 
 #------------------------------------------------------------------
@@ -88,7 +90,6 @@ source $ZSH/oh-my-zsh.sh
 #------------------------------------------------------------------
 _include ${MY_ZSH_CUSTOM}/aliases
 _include ${MY_ZSH_CUSTOM}/functions
-# TODO Test if required
 _include ${MY_ZSH_CUSTOM}/**/*.plugin.zsh
 
 fpath=($MY_ZSH_CUSTOM/completions $MY_ZSH_CUSTOM/private/completions $fpath)
@@ -120,6 +121,12 @@ fi
 #		. $file
 #	done
 #fi
+
+# Activate "autocutsel" only if X server detected
+if pgrep Xorg >&/dev/null; then
+	autocutsel -selection PRIMARY -fork
+	autocutsel -fork
+fi
 
 #------------------------------------------------------------------
 #   Local Configuration -- should be last!
