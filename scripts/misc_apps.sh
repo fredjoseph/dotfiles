@@ -8,8 +8,7 @@
 
 install_utility_apps() {
     # install has
-    curl -sL https://git.io/_has > ~/bin/has
-    chmod +x ~/bin/has
+    curl -sL https://git.io/_has > ~/bin/has && chmod +x ~/bin/has
     # install tldr
     __install_binary $(__get_github_release_url "dbrgn/tealdeer" "x86_64-musl") tldr
     __install_global_zsh_completion 'https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer' _tldr
@@ -29,6 +28,9 @@ install_utility_apps() {
     __install_zip $(__get_github_release_url "ogham/exa" "linux-x86_64.*.zip") exa-linux-x86_64 exa
     # install sd
     __install_binary $(__get_github_release_url "chmln/sd" "x86_64.*linux-gnu") sd
+    # install tmpmail
+    curl -sL "https://git.io/tmpmail" > ~/bin/tmpmail && chmod +x ~/bin/tmpmail
+
 }
 install_utility_apps
 
