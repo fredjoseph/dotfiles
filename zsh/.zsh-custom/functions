@@ -155,6 +155,19 @@ zsh-history-fix() {
   rm ~/.zsh_history_bad
 }
 
+d() {
+  if [[ -n $1 ]]; then
+    dirs "$@"
+  else
+    dirs -v | head -10
+  fi
+}
+
+find_port_in_use() {
+  # https://stackoverflow.com/a/4421674/826820
+  lsof -nP "-i4TCP:$1" | grep LISTEN
+}
+
 #------------------------------------------------------------------
 #   Helpers with Fuzzy Search
 #------------------------------------------------------------------
@@ -249,19 +262,52 @@ fgco() {
 }
 
 # git log browser with FZF
-fglog() {
+fglog () {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
   fi
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf +m --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+  
+  # param validation
+  if [[ ! `git log -n 1 $@ | head -n 1` ]] ;then
+    return
+  fi
+
+  # filter by file string
+  local filter
+  # param existed, git log for file if existed
+  if [ -n $@ ] && [ -f $@ ]; then
+    filter="-- $@"
+  fi
+
+  # git command
+  local gitlog=(
+    git log
+    --graph --color=always
+    --abbrev=7
+    --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr'
+    $@
+  )
+  
+  local display="grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % $filter | less -R'"
+
+  # fzf command
+  local fzf=(
+    fzf
+    --ansi --no-sort --reverse --tiebreak=index +m
+    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}"
+    --bind "j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort,ctrl-m:execute:
+                ($display) << 'FZF-EOF'
                 {}
-FZF-EOF"
+                FZF-EOF"
+   --bind "f3:execute:
+                ($display) << 'FZF-EOF'
+                {}
+                FZF-EOF"
+   --preview-window=right:60%
+  )
+
+  $gitlog | $fzf
 }
 
 # fstash - easier way to deal with stashes
@@ -269,15 +315,15 @@ FZF-EOF"
 # enter shows you the contents of the stash
 # ctrl-d shows a diff of the stash against your current HEAD
 # ctrl-b checks the stash out as a branch, for easier merging
-fstash() {
+fgstash() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
   fi
   local out q k sha
   while out=$(
-    git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
-    fzf --ansi +1 --no-sort --query="$q" --print-query \
+    git stash list --color=always --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
+    fzf --ansi +1 +m --no-sort --query="$q" --print-query \
         --expect=ctrl-d,ctrl-b);
   do
     out=("${(f)$(echo $out)}");
@@ -337,7 +383,7 @@ docker_stopall() {
 # Select a docker container to start and exec to
 da() {
   local cid
-  cid=$(docker ps | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
+  cid=$(docker ps | sed 1d | fzf -1 +m -q "$1" | awk '{print $1}')
 
   [ -n "$cid" ] && docker exec -it "$cid" /bin/bash
 }
@@ -345,7 +391,7 @@ da() {
 # Select a running docker container to stop
 ds() {
   local cid
-  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
+  cid=$(docker ps | sed 1d | fzf +m -q "$1" | awk '{print $1}')
 
   [ -n "$cid" ] && docker stop "$cid"
 }

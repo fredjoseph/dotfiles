@@ -30,6 +30,7 @@ alias cani="caniuse --oneline-browser | fzf --ansi"
 
 alias localip="hostname -I | awk '{print $1}'"
 alias publicip="curl https://watismijnip.nl 2>/dev/null | grep -io \"ipadress:\ [^\ ^<]*\" | awk -F' ' '{print $2}'"
+alias internet\?="ping 8.8.8.8"
 
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
