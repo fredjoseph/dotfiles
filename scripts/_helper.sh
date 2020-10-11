@@ -8,7 +8,11 @@ function _include() {
 
 print_info() {
   # Print output in purple
-  printf "\n\e[0;35m $1\e[0m\n\n"
+  echo "\n\e[0;35m $@\e[0m\n\n"
+}
+
+print_arrow() {
+  echo -e "\033[1;34m➜\033[0m  $@";
 }
 
 # __get_github_release_url: Get the download URL of the latest release of an application hosted on Github.

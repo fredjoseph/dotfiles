@@ -76,8 +76,8 @@ function _include() {
 #------------------------------------------------------------------
 
 # Standard common plugins
-plugins=(git colored-man-pages zsh-syntax-highlighting common-aliases extract tmux zsh_reload tig)
-plugins+=(docker docker-compose autojump fd)
+plugins=(git zsh-syntax-highlighting common-aliases extract tmux zsh_reload tig)
+plugins+=(docker docker-compose fd)
 # Include configuration specific to the local environment (corresponding to the current git branch)
 _include ${MY_ZSH_CUSTOM}/.oh-my-zsh
 # Include private configuration (add everything that should not be stored in git)
@@ -106,7 +106,7 @@ if [ $(command -v "fzf") ]; then
     # Exclude those directories even if not listed in .gitignore, or if .gitignore is missing
 	FD_OPTIONS="--follow --exclude .git --exclude node_modules"
 	# Change FZF behavior
-	export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || less -f {}) 2>/dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,alt-j:preview-down,alt-k:preview-up,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | xclip)'"
+	export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || less -f {}) 2>/dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | xclip)'"
 	# Change find backend (use 'git ls-files' when git repo, otherwise 'fd')
 	export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l --hidden $FD_OPTIONS"
 	export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"

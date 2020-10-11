@@ -4,7 +4,9 @@
 locales+=("fr_FR.UTF-8 UTF-8")
 
 apt_packages+=(
+#  autojump # Replaced by zoxide
   direnv
+  entr
   gron
   ncdu
   tig

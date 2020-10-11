@@ -1,9 +1,7 @@
+# Global common configuration
 [credential]
 	helper = store --file ~/.git-credentials
 	helper = cache --timeout 36000
-[user]
-	name = Frederic JOSEPH
-	email = fredjoseph@users.noreply.github.com
 [alias]
 	patch-stat = apply --stat   # output diffstat for the input. Turns off "apply"
 	patch-check = apply --check  # check patch is applicable and detects errors. Turns off "apply"
@@ -134,5 +132,9 @@
 [apply]
     # Detect whitespace errors when applying a patch
     whitespace = fix
+[diff]
+    colorMoved = dimmed-zebra
 [include]
     path = ~/.gitconfig_local
+[include]
+    path = ~/.gitconfig_private

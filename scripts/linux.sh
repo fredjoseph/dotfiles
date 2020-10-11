@@ -29,7 +29,6 @@ locales+=("en_US.UTF-8 UTF-8")
 apt_packages+=(
   apt-transport-https
   autocutsel
-  autojump
   git
   highlight
   htop

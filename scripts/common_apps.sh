@@ -5,6 +5,8 @@
 # Import helper functions
 . $(dirname "$0")/_helper.sh
 
+print_info "Installing Common Apps"
+
 install_zsh() {
   # Test to see if zshell is installed.  If it is:
   if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
@@ -37,13 +39,14 @@ install_zsh() {
     fi
   fi
 }
+print_arrow "ZSH"
 install_zsh
 chsh -s /bin/zsh $whoami
 
 # FIXME: On ne peut pas lance l'install, car il va modifier le .zshrc (sauf à changer la variable d'environnement avant)
 install_fzf() {
     if [ ! -d ~/.fzf ]; then
-      print_info "Installing fzf"
+      print_arrow "fzf"
       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       ~/.fzf/install
     fi
