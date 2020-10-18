@@ -166,10 +166,13 @@ Token.Output.Header = "#00ff5f bold"
 Token.Output.OddRow = ""
 Token.Output.EvenRow = ""
 
-# Named queries are queries you can execute by name (requires 'pgspecial' in version 1.10 or higher for ).
+# Named queries are queries you can execute by name (requires 'pgspecial' in version 1.10 or higher).
 [named queries]
 all = SELECT * FROM $1
 count = SELECT COUNT(*) FROM $1
+excerpt_table = select * from json_each((select json_strip_nulls(row_to_json($1)) from $1 $2));
+excerpt_json = select jsonb_pretty(json_strip_nulls(row_to_json($1))::jsonb) as json from $1 $2;
+excerpt_nested_json = '''select jsonb_pretty(json_strip_nulls(regexp_replace(regexp_replace(regexp_replace(row_to_json($1)::text, '"{', '{', 'g'), '}"', '}', 'g'), '\\"', '"', 'g')::json)::jsonb) as json from $1 $2'''
 
 # DSN to call by -D option
 [alias_dsn]

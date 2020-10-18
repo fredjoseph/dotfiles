@@ -201,6 +201,15 @@ display_colors() {
   done
 }
 
+explain() {
+  if [ ! $(command -v w3m) ]; then
+    echo "Error! This command requires 'w3m' to be installed"
+    return
+  fi
+  local command=$@
+  curl -G -L https://www.explainshell.com/explain --data-urlencode "cmd=$command" | w3m -T text/html -o display_borders=true -o confirm_qq=false
+}
+
 #------------------------------------------------------------------
 #   Helpers with Fuzzy Search
 #------------------------------------------------------------------

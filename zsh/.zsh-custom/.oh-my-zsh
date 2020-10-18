@@ -2,4 +2,4 @@
 export NVM_LAZY_LOAD=true
 export NVM_DIR="$HOME/.nvm"
 
-plugins+=(debian yarn zsh-nvm mvn)
+plugins+=(debian yarn zsh-nvm mvn tig)

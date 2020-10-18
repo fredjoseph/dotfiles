@@ -76,7 +76,7 @@ function _include() {
 #------------------------------------------------------------------
 
 # Standard common plugins
-plugins=(git zsh-syntax-highlighting common-aliases extract tmux zsh_reload tig)
+plugins=(git zsh-syntax-highlighting common-aliases extract tmux zsh_reload)
 plugins+=(docker docker-compose fd)
 # Include configuration specific to the local environment (corresponding to the current git branch)
 _include ${MY_ZSH_CUSTOM}/.oh-my-zsh
