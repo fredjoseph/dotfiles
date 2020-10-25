@@ -18,7 +18,7 @@ install_dotfiles() {
     rm ~/.bashrc
     rm ~/.zshrc
     
-    stow -R bash git postgres ripgrep stow tmux vi zsh
+    stow -R bash git postgres ripgrep stow tmux vi zsh misc
 }
 
 install_all() {

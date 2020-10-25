@@ -331,15 +331,60 @@ is_git_repo() {
     git rev-parse --git-dir > /dev/null 2>&1;
 }
 
+fgadd() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
+  git ls-files -m -o --exclude-standard | fzf --print0 -m | xargs -0 -t -o --no-run-if-empty git add $@
+}
+
+fgrecent() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
+  
+  local format="\
+%(HEAD) \
+%(color:yellow)%(refname:short)%(color:reset)|\
+%(color:bold red)%(objectname:short)%(color:reset) \
+%(color:bold green)(%(committerdate:relative))%(color:reset) \
+%(color:bold blue)%(authorname)%(color:reset) \
+%(color:yellow)%(upstream:track)%(color:reset) \
+%(color:black)%(color:reset)|\
+%(contents:subject)\
+%(color:black)%(color:reset)|"
+  
+  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
+}
+
 fgco() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
   fi
-  local branches=$(git branch --all | grep -v HEAD) &&
-  local branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+  
+  local format="\
+%(HEAD) \
+%(color:yellow)%(refname:short)%(color:reset)|\
+%(color:bold red)%(objectname:short)%(color:reset) \
+%(color:bold green)(%(committerdate:relative))%(color:reset) \
+%(color:bold blue)%(authorname)%(color:reset) \
+%(color:yellow)%(upstream:track)%(color:reset) \
+%(color:black)%(color:reset)|\
+%(contents:subject)\
+%(color:black)%(color:reset)|"
+  
+  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
+}
+
+fgrebase() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
+  git rebase -i $(git log --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' | fzf --ansi +m | cut -d' ' -f1)
 }
 
 # git log browser with FZF
@@ -381,11 +426,11 @@ fglog () {
                 ($displayFn) << 'FZF-EOF'
                 {}
                 FZF-EOF"
-   --bind "f3:execute:
+    --bind "f3:execute:
                 ($displayFn) << 'FZF-EOF'
                 {}
                 FZF-EOF"
-   --preview-window=right:60%
+    --preview-window=right:60%
   )
 
   $gitlog | $fzf
@@ -436,7 +481,7 @@ gj() {
     echo "No Found"
     git fetch --quiet
   fi
-  git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" | fzf +m -0 | xargs git checkout
+  git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" | fzf +m -0 | xargs --no-run-if-empty git checkout
 }
 
 #------------------------------------------------------------------
