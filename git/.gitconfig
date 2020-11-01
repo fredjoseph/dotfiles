@@ -19,7 +19,7 @@
 	ci-nomsg = commit --allow-empty-message -m ''
 	ci-noedit = commit --no-edit
 	amend = commit --amend --no-edit
-    ac = !git add . && git commit -am   # add all and commit
+    ci-all = !git add . && git commit -m
 	#############
 	cl = clone
 	#############
@@ -50,8 +50,7 @@
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     lp = log -p # show patches
     changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status   # similar to 'git whatchanged' but prettier
-    changelog = log --pretty=format:' * %s'
-    short = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
+    changelog = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
 	#############
 	ls = ls-files
 	lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
@@ -68,21 +67,21 @@
 	# Interactive rebase with the given number of latest commits
 	reb = "!r() { git rebase -i HEAD~${1-1}; }; r"
 	#############
-	re = reset
+	res = reset
 	#############
 	r = remote
 	remotes = remote -v
-    rao = remote add origin
+    r-add = remote add
 	#############
 	st = status
-	sst = status -s -b
+	sts = status -s -b
 	#############
 	sa = stash apply
 	sc = stash clear
 	sd = stash drop
 	sl = stash list
 	sp = stash pop
-	sw = stash show
+	ss = stash show
 	#############
     sup = submodule update --init --recursive --remote
     #############
@@ -94,15 +93,13 @@
     #############
 	aliases = !git config -l | grep alias | cut -c 7- | sort
     fetch-check = fetch --dry-run -v
-    follow= "!git log --author=$1 #"
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # Switch to a branch, creating it if necessary
-    in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
-    in-diff = !git remote update -p; git diff ..@{u}  # shows commits that will come in from the remote
     list-commit-files = "!git show --name-only $1 #"
     list-conflicts = diff --name-only --diff-filter=U
 	list-staged-files = diff --name-only --cached
     preview-diff = "!git diff ...$1 #"
-    nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
+    in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
+    in-diff = !git remote update -p; git diff ..@{u}  # shows commits that will come in from the remote
     out = log @{u}..    # shows commits that will go out to the remote
     out-diff = diff @{u}..    # shows commits that will go out to the remote
     preview-merge = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 > /dev/null 2>&1; git add -u > /dev/null 2>&1; git diff --staged; git reset --hard > /dev/null 2>&1; test $x -ne 0 && git stash pop > /dev/null 2>&1; }; f"
@@ -111,17 +108,18 @@
     prune-all = !git prune-merged && git prune -v # Remove all merged branches, delete the refs to the branches that don't exist on the remote and purge unreachable objects (commits that aren't reachable in any branch or tag).
     prune-merged = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git fetch -v -p"   # Remove all merged branches and delete the refs to the branches that don't exist on the remote.
     release = "!git tag $1 && git push --tags #"
+    unrelease = "!git tag -d $1 && git push origin :v$1 #"
     root = rev-parse --show-toplevel
     snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
     standup = shortlog --since=yesterday
 	today = shortlog --since=midnight
-    
+    nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
     toss = reset --hard @{u}    # throws away any new commits
-    undo = !git reset HEAD~1 --mixed
-    up-branch = "!git fetch origin $1:$1 #"
-    unrelease = "!git tag -d $1 && git push origin :v$1 #"
-    unstage = reset HEAD -- .       # Cool ne fait pas le unstage sur les dossiers parents
+    undo = reset HEAD~1 --mixed
+    update = "!git fetch origin $1:$1 #"
+    unstage = reset HEAD -- .       # reset current folder
     whois= "!git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\" #"
+    follow= "!git log --author=$1 #"
 [pull]
 	rebase = true
 [push]
