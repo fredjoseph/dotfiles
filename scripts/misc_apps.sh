@@ -40,8 +40,6 @@ print_info "Installing zsh plugins"
 
 # FIXME: Source twice between oh-my-zsh plugins and directly by .zshrc
 install zsh_plugins() {
-    print_arrow "frogit"
-    __install_private_zsh_plugin 'https://github.com/wfxr/forgit/blob/master/forgit.plugin.zsh'
     print_arrow "zsh-nvm"
     __install_private_zsh_plugin 'https://github.com/lukechilds/zsh-nvm/blob/master/zsh-nvm.plugin.zsh'
     print_arrow "fzf-marks"

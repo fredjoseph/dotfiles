@@ -1,0 +1,35 @@
+#!/bin/bash
+
+git-stash() {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
+  
+  # git command
+  local gitstash=(
+    git stash list --color=always --format="%C(yellow)%C(bold)%gd%C(reset) %s %C(black)%C(bold)%cr"
+  )
+  
+  local displayFn="grep -o 'stash@{[0-9]\+}' | head -1 | xargs -I % sh -c 'git stash show -p --color=always % | less -R'"
+  local reloadFn="git stash list --color=always --format=\"%C(yellow)%C(bold)%gd%C(reset) %s %C(black)%C(bold)%cr\""
+  
+  # fzf command
+  local fzf=(
+    fzf 
+    --ansi +m --no-sort --reverse --tiebreak=index +1
+    --header="ctrl-d: drop, ctrl-a: apply, ctrl-p: pop"
+    --preview 'f() { set -- $(echo -- "$@" | grep -o "stash@{[0-9]\+}"); [ $# -eq 0 ] || git stash show -p --color=always $1 ; }; f {}'
+    --bind "f3:execute:
+                ($displayFn) << 'FZF-EOF'
+                {}
+                FZF-EOF"
+    --bind "ctrl-d:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash drop -q | tmux display-message 'drop done') && $reloadFn)"
+    --bind "ctrl-p:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash pop -q | tmux display-message 'pop done') && $reloadFn)"                                                      
+    --bind "ctrl-a:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash apply -q | tmux display-message 'apply done') && $reloadFn)"
+    --preview-window=right:60%
+  )
+  
+  $gitstash | $fzf
+}
+git-stash $@

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Add with FZF
+git-add() {
+  local pager=$(git config core.pager || echo 'less -R');
+  if [[ $pager =~ "delta" ]]; then
+    local pager_preview_options="--hunk-header-style=omit";
+  fi
+  local fzf=(
+    fzf
+    --print0 -m +1
+    --header="ctrl-r: restore, ctrl-a: select-all+accept, enter: add selected files"
+    --preview "[[ \$(git ls-files --error-unmatch {} 2>/dev/null) ]] &&  git diff --color=always {} | $pager $pager_preview_options || git diff --color=always -- /dev/null {} | $pager"
+    --bind "f3:execute([[ \$(git ls-files --error-unmatch {} 2>/dev/null) ]] && git diff --color=always {} | $pager >/dev/tty || git diff -- /dev/null {} | $pager >/dev/tty)"
+    --bind "ctrl-r:reload(([[ \$(git ls-files --error-unmatch {} 2>/dev/null) ]] && git restore {} || tmux display-message 'Nothing to restore') && git ls-files -m -o --exclude-standard)"
+  )
+  git ls-files -m -o --exclude-standard | $fzf | xargs -0 -t -o --no-run-if-empty git add $@
+}
+git_add $@

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+git-cherry () {
+  if ! is_git_repo; then
+    echo "No git repository found"
+    return;
+  fi
+  
+  local pager=$(git config core.pager || echo 'less -R');
+  if [[ $pager =~ "delta" ]]; then
+    local pager_preview_options="--commit-style=omit";
+  fi
+  
+  # git command
+  local gitlog=(
+    git log
+    --remotes --branches
+    --color=always
+    --abbrev=7
+    --format='%C(auto)%h %an %C(blue)%s %C(cyan)(%S) %C(yellow)%cr'
+    ^HEAD
+  )
+  
+  local displayFn="grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % | $pager' >/dev/tty"
+  
+  # fzf command
+  local fzf=(
+    fzf
+    --ansi --no-sort --reverse --tiebreak=index -m
+    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 | $pager $pager_preview_options; }; f {}"
+    --bind "f3:execute:
+                ($displayFn) << 'FZF-EOF'
+                {}
+                FZF-EOF"
+    --preview-window=right:60%
+  )
+
+  $gitlog | $fzf | tr '\n' '\0' | xargs -0 -t -o --no-run-if-empty -I % sh -c "echo \"%\" | grep -o \"[a-f0-9]\{7\}\" | git cherry-pick --stdin $@" $@
+}
+git-cherry $@

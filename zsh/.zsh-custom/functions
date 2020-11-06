@@ -331,7 +331,7 @@ is_git_repo() {
     git rev-parse --git-dir > /dev/null 2>&1;
 }
 
-fgadd() {
+git-add() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -352,7 +352,7 @@ fgadd() {
   git ls-files -m -o --exclude-standard | $fzf | xargs -0 -t -o --no-run-if-empty git add $@
 }
 
-fgunstage() {                 
+git-unstage() {                 
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -373,7 +373,7 @@ fgunstage() {
   git diff --cached --name-only --relative | $fzf | xargs -0 -t -o --no-run-if-empty git restore --staged -q $@
 }
 
-fgrecent() {
+git-recent() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -390,10 +390,10 @@ fgrecent() {
 %(contents:subject)\
 %(color:black)%(color:reset)|"
   
-  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
+  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout $@
 }
 
-fgco() {
+git-checkout() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -410,10 +410,10 @@ fgco() {
 %(contents:subject)\
 %(color:black)%(color:reset)|"
   
-  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
+  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout $@
 }
 
-fgrebase() {
+git-rebase() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -421,8 +421,7 @@ fgrebase() {
   git rebase -i $(git log --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' | fzf --ansi +m | cut -d' ' -f1)
 }
 
-# git log browser with FZF
-fglog () {
+git-log () {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -461,7 +460,7 @@ fglog () {
     fzf
     --ansi --no-sort --reverse --tiebreak=index +m
     --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter | $pager $pager_preview_options; }; f {}"
-    --bind "ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort,ctrl-m:execute:
+    --bind "enter:execute:
                 ($displayFn) << 'FZF-EOF'
                 {}
                 FZF-EOF"
@@ -475,7 +474,7 @@ fglog () {
   $gitlog | $fzf
 }
 
-fgcherry () {
+git-cherry () {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -485,28 +484,24 @@ fgcherry () {
   if [[ $pager =~ "delta" ]]; then
     local pager_preview_options="--commit-style=omit";
   fi
-
+  
   # git command
   local gitlog=(
     git log
-    --all
-    --graph --color=always
+    --remotes --branches
+    --color=always
     --abbrev=7
-    --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr'
-    $@
+    --format='%C(auto)%h %an %C(blue)%s %C(cyan)(%S) %C(yellow)%cr'
+    ^HEAD
   )
   
-  local displayFn="grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % $filter | $pager'"
-
+  local displayFn="grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % | $pager' >/dev/tty"
+  
   # fzf command
   local fzf=(
     fzf
-    --ansi --no-sort --reverse --tiebreak=index +m
-    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter | $pager $pager_preview_options; }; f {}"
-    --bind "ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort,ctrl-m:execute:
-                ($displayFn) << 'FZF-EOF'
-                {}
-                FZF-EOF"
+    --ansi --no-sort --reverse --tiebreak=index -m
+    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 | $pager $pager_preview_options; }; f {}"
     --bind "f3:execute:
                 ($displayFn) << 'FZF-EOF'
                 {}
@@ -514,13 +509,10 @@ fgcherry () {
     --preview-window=right:60%
   )
 
-  $gitlog | $fzf | xargs -0 -t -o --no-run-if-empty git cherry-pick $@
+  $gitlog | $fzf | tr '\n' '\0' | xargs -0 -t -o --no-run-if-empty -I % sh -c "echo \"%\" | grep -o \"[a-f0-9]\{7\}\" | git cherry-pick --stdin $@" $@
 }
 
-# fstash - easier way to deal with stashes
-# type fstash to get a list of your stashes
-# enter shows you the contents of the stash
-fgstash() {
+git-stash() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
@@ -540,10 +532,6 @@ fgstash() {
     --ansi +m --no-sort --reverse --tiebreak=index +1
     --header="ctrl-d: drop, ctrl-a: apply, ctrl-p: pop"
     --preview 'f() { set -- $(echo -- "$@" | grep -o "stash@{[0-9]\+}"); [ $# -eq 0 ] || git stash show -p --color=always $1 ; }; f {}'
-    --bind "j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort,ctrl-m:execute:
-                ($displayFn) << 'FZF-EOF'
-                {}
-                FZF-EOF"
     --bind "f3:execute:
                 ($displayFn) << 'FZF-EOF'
                 {}
@@ -557,20 +545,19 @@ fgstash() {
   $gitstash | $fzf
 }
 
-gj() {
+git-jump() {
   if ! is_git_repo; then
     echo "No git repository found"
     return;
   fi
   git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" -q
   if [ $? -eq 1 ]; then
-    echo "No Found"
     git fetch --quiet
   fi
   git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" | fzf +m -0 | xargs --no-run-if-empty git checkout
 }
 
-gi() {
+git-ignore() {
   local apiUrl="https://www.toptal.com/developers/gitignore/api";
   curl -sL https://www.toptal.com/developers/gitignore/api/list | tr "," "\n" | fzf +m --preview "curl -sL $apiUrl/{}" --bind "f3:execute(curl -sL $apiUrl/{} | less >/dev/tty)" | xargs --no-run-if-empty -I % curl -sL $apiUrl/% > .gitignore;
 }
