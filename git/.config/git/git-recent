@@ -12,6 +12,6 @@ git-recent() {
 %(contents:subject)\
 %(color:black)%(color:reset)|"
   
-  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout $@
+  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
 }
 git-recent $@
