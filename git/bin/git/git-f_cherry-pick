@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 git-cherry () { 
   local pager=$(git config core.pager || echo 'less -R');

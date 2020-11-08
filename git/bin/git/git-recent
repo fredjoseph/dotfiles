@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-git-checkout() {
+git-recent() { 
   local format="\
 %(HEAD) \
 %(color:yellow)%(refname:short)%(color:reset)|\
@@ -12,6 +12,6 @@ git-checkout() {
 %(contents:subject)\
 %(color:black)%(color:reset)|"
   
-  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout $@
+  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
 }
-git-checkout $@
+git-recent $@

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 git-ignore() {
   local apiUrl="https://www.toptal.com/developers/gitignore/api";

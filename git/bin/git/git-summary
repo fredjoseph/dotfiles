@@ -1,5 +1,4 @@
-#!/usr/bin/bash
-
+#!/usr/bin/env bash
 # From git-extras
 
 cd "$(git root)" || { echo "Can't cd to top level directory";exit 1; }

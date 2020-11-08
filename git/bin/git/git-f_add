@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Add with FZF
 git-add() {
   local pager=$(git config core.pager || echo 'less -R');
   if [[ $pager =~ "delta" ]]; then

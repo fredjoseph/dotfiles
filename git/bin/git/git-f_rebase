@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 git-rebase() {
   git rebase -i $(git log --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' | fzf --ansi +m | cut -d' ' -f1)

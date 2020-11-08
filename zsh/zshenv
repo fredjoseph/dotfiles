@@ -17,6 +17,10 @@ if [ -d "$HOME/bin" ]; then
   PATH="$PATH:$HOME/bin"
 fi
 
+if [ -d "$HOME/bin/git" ]; then
+  PATH="$PATH:$HOME/bin/git"
+fi
+
 if [ -d "$HOME/.npm-global/bin" ]; then
   PATH="$PATH:$HOME/.npm-global/bin"
 fi
