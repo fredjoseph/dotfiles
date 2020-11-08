@@ -46,6 +46,6 @@ install_zsh_plugins() {
     print_arrow "fzf-marks"
     __install_private_zsh_plugin 'https://github.com/urbainvaes/fzf-marks/blob/master/fzf-marks.plugin.zsh'
     print_arrow "zsh-syntax-highlighting"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/private/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $MY_ZSH_CUSTOM/private/plugins/zsh-syntax-highlighting
 }
 install_zsh_plugins
