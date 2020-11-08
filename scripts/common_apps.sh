@@ -39,7 +39,7 @@ install_zsh() {
     fi
   fi
 }
-print_arrow "ZSH"
+print_arrow "zsh"
 install_zsh
 chsh -s /bin/zsh $whoami
 

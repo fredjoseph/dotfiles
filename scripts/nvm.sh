@@ -34,7 +34,12 @@ _include $(dirname "$0")/nvm.custom
 ####################
 # ACTUALLY DO THINGS
 ####################
-npm install -g "${packages[@]}"
+print_info "Installing NPM Packages"
+for i in "${packages[@]}"; do
+    package=${packages[i]}
+    print_arrow "$package"
+    npm install -g --quiet "$package"
+  done
 
 # Save the list of packages as default packages (will be installed every time a new version of Node is installed)
 printf '%s\n' "${packages[@]}" > ~/.nvm/default-packages

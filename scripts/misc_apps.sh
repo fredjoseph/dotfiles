@@ -9,6 +9,7 @@
 print_info "Installing specific environment Apps"
 
 install_utility_apps() {
+    mkdir -p ~/bin
     print_arrow "has"
     curl -sL https://git.io/_has > ~/bin/has && chmod +x ~/bin/has
     print_arrow "tldr"
@@ -39,7 +40,7 @@ install_utility_apps
 print_info "Installing zsh plugins"
 
 # FIXME: Source twice between oh-my-zsh plugins and directly by .zshrc
-install zsh_plugins() {
+install_zsh_plugins() {
     print_arrow "zsh-nvm"
     __install_private_zsh_plugin 'https://github.com/lukechilds/zsh-nvm/blob/master/zsh-nvm.plugin.zsh'
     print_arrow "fzf-marks"
@@ -47,4 +48,4 @@ install zsh_plugins() {
     print_arrow "zsh-syntax-highlighting"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/private/plugins/zsh-syntax-highlighting
 }
-install zsh_plugins
+install_zsh_plugins
