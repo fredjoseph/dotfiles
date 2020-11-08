@@ -1,11 +1,6 @@
 #!/bin/bash
 
 git-checkout() {
-  if ! is_git_repo; then
-    echo "No git repository found"
-    return;
-  fi
-  
   local format="\
 %(HEAD) \
 %(color:yellow)%(refname:short)%(color:reset)|\

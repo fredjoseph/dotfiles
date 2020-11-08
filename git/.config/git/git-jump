@@ -1,10 +1,6 @@
 #!/bin/bash
 
 git-jump() {
-  if ! is_git_repo; then
-    echo "No git repository found"
-    return;
-  fi
   git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads | grep -E "${1:-$}" -q
   if [ $? -eq 1 ]; then
     git fetch --quiet

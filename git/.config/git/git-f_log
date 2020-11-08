@@ -1,11 +1,6 @@
 #!/bin/bash
 
 git-log () {
-  if ! is_git_repo; then
-    echo "No git repository found"
-    return;
-  fi
-  
   # param validation
   if [[ ! `git log -n 1 $@ | head -n 1` ]] ;then
     return

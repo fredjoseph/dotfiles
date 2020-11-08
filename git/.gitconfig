@@ -32,7 +32,7 @@
 	dh = diff --patch-with-stat HEAD  # diff between the Working Directory and the HEAD (for tracking files)
     dw = diff --color-words
 	# `git dn $number` shows the diff between the state `$number` revisions ago and the current state
-	dn = "!d() { git diff --patch-with-stat HEAD~${1-0}; }; d"
+	dn = "!d() { git diff --patch-with-stat HEAD~${1:-0}; }; d"
 	dt = difftool
 	#############
 	f = fetch
@@ -47,7 +47,7 @@
 	l = log --oneline --graph
 	lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
 	lgg = "!f() { git lg --grep=\"$@\"; };f"
-	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	lola = log --all --graph --decorate --oneline
     lp = log -p # show patches
     changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status   # similar to 'git whatchanged' but prettier
     changelog = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
@@ -65,7 +65,7 @@
     pushitgood = push -u origin --all
 	#############
 	# Interactive rebase with the given number of latest commits
-	reb = "!r() { git rebase -i HEAD~${1-1}; }; r"
+	reb = "!r() { git rebase -i HEAD~${1:-1}; }; r"
 	#############
 	res = reset
 	#############
@@ -109,17 +109,18 @@
     prune-merged = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git fetch -v -p"   # Remove all merged branches and delete the refs to the branches that don't exist on the remote.
     release = "!git tag $1 && git push --tags #"
     unrelease = "!git tag -d $1 && git push origin :v$1 #"
+    unstage = reset HEAD -- .
     root = rev-parse --show-toplevel
     snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
     standup = shortlog --since=yesterday
 	today = shortlog --since=midnight
     nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
     toss = reset --hard @{u}    # throws away any new commits
-    undo = reset HEAD~1 --mixed
+    undo = reset HEAD~${1:-1} --${2:-mixed}
     update = "!git fetch origin $1:$1 #"
-    unstage = reset HEAD -- .       # reset current folder
     whois= "!git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\" #"
     follow= "!git log --author=$1 #"
+    show-tree = lola --simplify-by-decoration
 [pull]
 	rebase = true
 [push]

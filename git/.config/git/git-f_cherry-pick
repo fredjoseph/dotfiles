@@ -1,11 +1,6 @@
 #!/bin/bash
 
-git-cherry () {
-  if ! is_git_repo; then
-    echo "No git repository found"
-    return;
-  fi
-  
+git-cherry () { 
   local pager=$(git config core.pager || echo 'less -R');
   if [[ $pager =~ "delta" ]]; then
     local pager_preview_options="--commit-style=omit";

@@ -1,11 +1,6 @@
 #!/bin/bash
 
-git-stash() {
-  if ! is_git_repo; then
-    echo "No git repository found"
-    return;
-  fi
-  
+git-stash() { 
   # git command
   local gitstash=(
     git stash list --color=always --format="%C(yellow)%C(bold)%gd%C(reset) %s %C(black)%C(bold)%cr"
