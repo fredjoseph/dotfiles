@@ -27,4 +27,4 @@ git-stash() {
   
   $gitstash | $fzf
 }
-git-stash $@
+git-stash "$@"

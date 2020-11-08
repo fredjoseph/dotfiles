@@ -12,6 +12,6 @@ git-checkout() {
 %(contents:subject)\
 %(color:black)%(color:reset)|"
   
-  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout $@
+  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout "$@"
 }
-git-checkout $@
+git-checkout "$@"

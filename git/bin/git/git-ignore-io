@@ -4,4 +4,4 @@ git-ignore() {
   local apiUrl="https://www.toptal.com/developers/gitignore/api";
   curl -sL https://www.toptal.com/developers/gitignore/api/list | tr "," "\n" | fzf +m --preview "curl -sL $apiUrl/{}" --bind "f3:execute(curl -sL $apiUrl/{} | less >/dev/tty)" | xargs --no-run-if-empty -I % curl -sL $apiUrl/% > .gitignore;
 }
-git-ignore $@
+git-ignore "$@"

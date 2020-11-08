@@ -30,6 +30,6 @@ git-cherry () {
     --preview-window=right:60%
   )
 
-  $gitlog | $fzf | tr '\n' '\0' | xargs -0 -t -o --no-run-if-empty -I % sh -c "echo \"%\" | grep -o \"[a-f0-9]\{7\}\" | git cherry-pick --stdin $@" $@
+  $gitlog | $fzf | tr '\n' '\0' | xargs -0 -t -o --no-run-if-empty -I % sh -c "echo \"%\" | grep -o \"[a-f0-9]\{7\}\" | git cherry-pick --stdin \"$@\"" "$@"
 }
-git-cherry $@
+git-cherry "$@"

@@ -90,6 +90,7 @@ source $ZSH/oh-my-zsh.sh
 #------------------------------------------------------------------
 _include ${MY_ZSH_CUSTOM}/aliases
 _include ${MY_ZSH_CUSTOM}/functions
+# TODO Required or not (to be replaced by autoload -Uz for each plugins)
 _include ${MY_ZSH_CUSTOM}/**/*.plugin.zsh
 
 fpath=($MY_ZSH_CUSTOM/completions $MY_ZSH_CUSTOM/private/completions $fpath)
@@ -114,7 +115,7 @@ if [ $(command -v "fzf") ]; then
     source ~/.fzf.zsh
 fi
 
-# TODO Test if required
+# TODO Test if required (charger chemin ne commencant pas par _, par convention les fichiers commençant par _ auront un compdef et seront gérés par zsh directement grâce au fpath)
 # Load zsh completions
 #if [ -d ~/.zsh-custom/completions ]; then
 #	for file in ~/.zsh-custom/completions/*(.N); do
