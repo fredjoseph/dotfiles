@@ -8,7 +8,7 @@ function _include() {
 
 print_info() {
   # Print output in purple
-  echo "\n\e[0;35m $@\e[0m\n\n"
+  echo -e "\n\e[0;35m $@\e[0m\n\n"
 }
 
 print_arrow() {
