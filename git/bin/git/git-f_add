@@ -15,4 +15,4 @@ git-add() {
   )
   git ls-files -m -o --exclude-standard | $fzf | xargs -0 -t -o --no-run-if-empty git add "$@"
 }
-git_add "$@"
+git-add "$@"

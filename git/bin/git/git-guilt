@@ -34,7 +34,7 @@ do
     esac
 done
 
-cd "$(git-root)" # cd for git blame
+cd "$(git root)" # cd for git blame
 MERGED_LOG=$(git_extra_mktemp)
 if [[ $EMAIL == '-e' ]]
 then

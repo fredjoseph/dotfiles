@@ -51,4 +51,5 @@ install_fzf() {
       ~/.fzf/install
     fi
 }
+print_arrow "fzf"
 install_fzf

@@ -110,7 +110,6 @@ _git-recent() {
 _git-summary() {
     _arguments '--line[summarize with lines rather than commits]'
     _arguments '--dedup-by-email[remove duplicate users by the email address]'
-    __gitex_commits
 }
 
 _git-squash() {

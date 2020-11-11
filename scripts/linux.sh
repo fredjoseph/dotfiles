@@ -56,15 +56,15 @@ Pin-Priority: 99")
 
 # https://github.com/sharkdp/bat
 deb_installed+=(bat)
-deb_sources+=(__get_github_download_url "sharkdp/bat" "_amd64.deb")
+deb_sources+=($(__get_github_release_url "sharkdp/bat" "musl_.*_amd64.deb"))
 
 # https://github.com/sharkdp/fd
 deb_installed+=(fd)
-deb_sources+=(__get_github_download_url "sharkdp/fd" "_amd64.deb")
+deb_sources+=($(__get_github_release_url "sharkdp/fd" "musl_.*_amd64.deb"))
 
 # https://github.com/BurntSushi/ripgrep
 deb_installed+=(ripgrep)
-deb_sources+=(__get_github_download_url "BurntSushi/ripgrep" "_amd64.deb")
+deb_sources+=($(__get_github_release_url "BurntSushi/ripgrep" "_amd64.deb"))
 
 # CUSTOM (specific to the local environment corresponding to the current git branch)
 _include $(dirname "$0")/linux.custom

@@ -103,6 +103,9 @@ autoload -U compinit && compinit
 #------------------------------------------------------------------
 
 # FZF
+if [ ! $(command -v "fzf") ] && [ -f ~/.fzf.zsh ]; then
+    source ~/.fzf.zsh
+fi
 if [ $(command -v "fzf") ]; then
     # Exclude those directories even if not listed in .gitignore, or if .gitignore is missing
 	FD_OPTIONS="--follow --exclude .git --exclude node_modules"
@@ -112,7 +115,6 @@ if [ $(command -v "fzf") ]; then
 	export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l --hidden $FD_OPTIONS"
 	export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
 	export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-    source ~/.fzf.zsh
 fi
 
 # TODO Test if required (charger chemin ne commencant pas par _, par convention les fichiers commençant par _ auront un compdef et seront gérés par zsh directement grâce au fpath)

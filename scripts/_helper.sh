@@ -27,8 +27,8 @@ print_arrow() {
 #
 __get_github_release_url() {
     # For API requests, the rate limit allows for up to 60 requests per hour => workaround: use the standard github url
-    # echo "$(curl -s "https://api.github.com/repos/$1/releases/latest" | grep -Po 'download_url": "\K.*'$2'(?=")')"
-    echo "https://github.com$(curl -sL https://github.com/$1/releases/latest | grep -Po 'href="\K.*'$2'(?=")')"
+    # echo "$(curl -s "https://api.github.com/repos/$1/releases/latest" | grep -Po 'download_url": "\K.*'$2'(?=")') | head -1"
+    echo "https://github.com$(curl -sL https://github.com/$1/releases/latest | grep -Po 'href="\K.*'$2'(?=")' | head -1)"
 }
 
 # __install_tar_gz: Download the archive, extract it and move the binary to /usr/local/bin.
