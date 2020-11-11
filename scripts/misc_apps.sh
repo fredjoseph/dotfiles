@@ -6,7 +6,7 @@
 # Import helper functions
 . $(dirname "$0")/_helper.sh
 
-print_info "Installing specific environment Apps"
+print_header "Installing specific environment Apps"
 
 install_utility_apps() {
     mkdir -p ~/bin
@@ -37,7 +37,7 @@ install_utility_apps() {
 }
 install_utility_apps
 
-print_info "Installing zsh plugins"
+print_header "Installing zsh plugins"
 
 # FIXME: Source twice between oh-my-zsh plugins and directly by .zshrc
 install_zsh_plugins() {

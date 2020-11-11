@@ -5,6 +5,7 @@
 . $(dirname "$0")/_helper.sh
 
 if ! [  -f "~/.nvm/nvm.sh" ]; then
+  print_header "Installing nvm (Node Version Manager)"
   nvmVersion="$(curl -s "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r .tag_name)" 
   curl -o- 'https://raw.githubusercontent.com/nvm-sh/nvm/'$nvmVersion'/install.sh' | bash
   cd ~/.nvm
@@ -34,7 +35,7 @@ _include $(dirname "$0")/nvm.custom
 ####################
 # ACTUALLY DO THINGS
 ####################
-print_info "Installing NPM Packages"
+print_header "Installing NPM Packages"
 for package in "${packages[@]}"; do
     print_arrow "$package"
     npm install -g --quiet "$package"

@@ -23,10 +23,16 @@ _include $(dirname "$0")/snap.custom
 ####################
 # ACTUALLY DO THINGS
 ####################
-sudo snap install "${packages[@]}"
+print_header "Installing SNAP packages (${#packages[@]})"
+for package in "${packages[@]}"
+do
+  print_arrow "$package"
+  sudo snap install "${package}"
+done
 
+print_header "Installing SNAP packages in classic mode (${#cpackages[@]})"
 for package in "${cpackages[@]}"
 do
-  :
+  print_arrow "$package"
   sudo snap install "${package}" --classic
 done

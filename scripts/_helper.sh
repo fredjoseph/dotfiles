@@ -11,8 +11,12 @@ print_info() {
   echo -e "\n\e[0;35m $@\e[0m\n"
 }
 
+print_header() {
+  echo -e "\n\e[1m$@\e[0m\n";
+}
+
 print_arrow() {
-  echo -e "\033[1;34m➜\033[0m  $@";
+  echo -e "\e[1;34m➜\e[0m  $@";
 }
 
 # __get_github_release_url: Get the download URL of the latest release of an application hosted on Github.

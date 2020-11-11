@@ -69,17 +69,6 @@ deb_sources+=($(__get_github_release_url "BurntSushi/ripgrep" "_amd64.deb"))
 # CUSTOM (specific to the local environment corresponding to the current git branch)
 _include $(dirname "$0")/linux.custom
 
-####################
-# ACTUALLY DO THINGS
-####################
-
-# Add APT keys.
-if (( ${#apt_keys[@]} > 0 )); then
-	for key in "${apt_keys[@]}"; do
-		wget -qO - $key | sudo apt-key add - > /dev/null 2>&1
-	done
-fi
-
 ###############################################################################
 # Functions                                                                   #
 ###############################################################################
@@ -151,6 +140,19 @@ function contains() {
 ###############################################################################
 #                                                                             #
 ###############################################################################
+
+####################
+# ACTUALLY DO THINGS
+####################
+
+# Add APT keys.
+if (( ${#apt_keys[@]} > 0 )); then
+    e_header "Adding APT keys (${#apt_keys[@]})"
+	for key in "${apt_keys[@]}"; do
+        e_arrow "$key"
+		wget -qO - $key | sudo apt-key add - > /dev/null 2>&1
+	done
+fi
 
 # Add locales
 function __temp() { if grep "^[[:blank:]]*[^[:blank:]#]*$1" /etc/locale.gen; then return 1; fi }

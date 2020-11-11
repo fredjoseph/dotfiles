@@ -5,7 +5,7 @@
 # Import helper functions
 . $(dirname "$0")/_helper.sh
 
-print_info "Installing Common Apps"
+print_header "Installing Common Apps"
 
 install_zsh() {
   # Test to see if zshell is installed.  If it is:
@@ -51,5 +51,4 @@ install_fzf() {
       ~/.fzf/install
     fi
 }
-print_arrow "fzf"
 install_fzf

@@ -103,7 +103,7 @@ autoload -U compinit && compinit
 #------------------------------------------------------------------
 
 # FZF
-if [ ! $(command -v "fzf") ] && [ -f ~/.fzf.zsh ]; then
+if ! [ $(command -v "fzf") ] && [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
 fi
 if [ $(command -v "fzf") ]; then
