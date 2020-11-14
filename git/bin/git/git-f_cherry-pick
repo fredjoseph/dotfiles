@@ -9,7 +9,7 @@ git-cherry () {
   # git command
   local gitlog=(
     git log
-    --remotes --branches
+    --remotes --branches --no-merges
     --color=always
     --abbrev=7
     --format='%C(auto)%h %an %C(blue)%s %C(cyan)(%S) %C(yellow)%cr'
@@ -30,6 +30,6 @@ git-cherry () {
     --preview-window=right:60%
   )
 
-  $gitlog | $fzf | tr '\n' '\0' | xargs -0 -t -o --no-run-if-empty -I % sh -c "echo \"%\" | grep -o \"[a-f0-9]\{7\}\" | git cherry-pick --stdin \"$@\"" "$@"
+  "${gitlog[@]}" | "${fzf[@]}" | tr '\n' '\0' | xargs -0 -t -o --no-run-if-empty -I % sh -c "echo \"%\" | grep -o \"[a-f0-9]\{7\}\" | git cherry-pick --stdin $@" -- "$@"
 }
 git-cherry "$@"

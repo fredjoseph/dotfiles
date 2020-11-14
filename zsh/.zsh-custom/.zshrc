@@ -1,7 +1,7 @@
 export FZF_MARKS_COMMAND="fzf --height 40% --reverse -n 1 -d ' : '"
 export BAT_PAGER="less -iRX"
 
-#FIXME : verif usage
+# List all snippets with 'ctrl-s'
 function pet-select() {
   BUFFER=$(pet search --query "$LBUFFER")
   CURSOR=$#BUFFER

@@ -2,7 +2,6 @@
 \.gitlab-ci.yml
 \.travis
 \.gitattributes
-\.gitconfig
 \.git
 \.dockerignore
 Dockerfile.*

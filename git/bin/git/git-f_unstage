@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git-unstage() {                 
+git-unstage() {
   local pager=$(git config core.pager || echo 'less -R');
   if [[ $pager =~ "delta" ]]; then
     local pager_preview_options="--hunk-header-style=omit";
@@ -13,6 +13,6 @@ git-unstage() {
     --bind "f3:execute(git diff --staged --color=always {} | $pager >/dev/tty)"
     
   )
-  git diff --cached --name-only --relative | $fzf | xargs -0 -t -o --no-run-if-empty git restore --staged -q "$@"
+  git diff --cached --name-only --relative | "${fzf[@]}" | xargs -0 -t -o --no-run-if-empty git restore --staged -q "$@"
 }
 git-unstage "$@"

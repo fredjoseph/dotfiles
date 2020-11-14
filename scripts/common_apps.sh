@@ -16,9 +16,11 @@ install_zsh() {
     fi
     # Set the default shell to zsh if it isn't currently set to zsh
     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
+      print_info "Change default shell to zsh"
       chsh -s $(which zsh)
     fi
   else
+    print_arrow "zsh"
     # If zsh isn't installed, get the platform of the current machine
     platform=$(uname);
     # If the platform is Linux, try an apt-get to install zsh and then recurse
@@ -39,11 +41,8 @@ install_zsh() {
     fi
   fi
 }
-print_arrow "zsh"
 install_zsh
-chsh -s /bin/zsh $whoami
 
-# FIXME: On ne peut pas lance l'install, car il va modifier le .zshrc (sauf à changer la variable d'environnement avant)
 install_fzf() {
     if [ ! -d ~/.fzf ]; then
       print_arrow "fzf"
@@ -52,3 +51,11 @@ install_fzf() {
     fi
 }
 install_fzf
+
+install_tmux_plugin_manager() {
+    if [ ! -d ~/.tmux/plugins/tpm ]; then
+        print_arrow "TPM (tmux plugin manager)"
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
+}
+install_tmux_plugin_manager

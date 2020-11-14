@@ -21,7 +21,7 @@ git-log () {
   # git command
   local gitlog=(
     git log
-    --graph --color=always
+    --color=always
     --abbrev=7
     --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr'
     "$@"
@@ -45,6 +45,6 @@ git-log () {
     --preview-window=right:60%
   )
 
-  $gitlog | $fzf
+  "${gitlog[@]}" | "${fzf[@]}"
 }
 git-log "$@"

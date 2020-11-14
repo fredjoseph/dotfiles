@@ -19,12 +19,12 @@ git-stash() {
                 ($displayFn) << 'FZF-EOF'
                 {}
                 FZF-EOF"
-    --bind "ctrl-d:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash drop -q | tmux display-message 'drop done') && $reloadFn)"
-    --bind "ctrl-p:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash pop -q | tmux display-message 'pop done') && $reloadFn)"                                                      
-    --bind "ctrl-a:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash apply -q | tmux display-message 'apply done') && $reloadFn)"
+    --bind "ctrl-d:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash drop -q | tmux display-message 'drop done' || :) && $reloadFn)"
+    --bind "ctrl-p:reload((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash pop -q | tmux display-message 'pop done' || :) && $reloadFn)"
+    --bind "ctrl-a:execute((echo {+} | grep -o 'stash@{[0-9]\+}' | head -1 | git stash apply -q | tmux display-message 'apply done' || :) && $reloadFn)"
     --preview-window=right:60%
   )
   
-  $gitstash | $fzf
+  "${gitstash[@]}" | "${fzf[@]}"
 }
 git-stash "$@"

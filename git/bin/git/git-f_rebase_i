@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+git-interactive-rebase() {
+  git log --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' | fzf --ansi +m | cut -d' ' -f1 | xargs -t -o --no-run-if-empty git rebase -i
+}
+git-interactive-rebase "$@"

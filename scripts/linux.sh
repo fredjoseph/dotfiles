@@ -13,6 +13,7 @@ apt_source_texts=()
 apt_preference_files=()
 apt_preference_texts=()
 apt_packages=()
+apt_unstable_packages=()
 deb_installed=()
 deb_sources=()
 locales=()
@@ -29,7 +30,6 @@ locales+=("en_US.UTF-8 UTF-8")
 apt_packages+=(
   apt-transport-https
   autocutsel
-  git
   highlight
   htop
   jq
@@ -41,6 +41,10 @@ apt_packages+=(
   vim-gtk
   xclip
   yakuake
+)
+
+apt_unstable_packages+=(
+  git
 )
 
 # Add unstable/sid repository
@@ -55,11 +59,11 @@ Pin: release a=unstable
 Pin-Priority: 99")
 
 # https://github.com/sharkdp/bat
-deb_installed+=(bat)
+deb_installed+=(bat-musl)
 deb_sources+=($(__get_github_release_url "sharkdp/bat" "musl_.*_amd64.deb"))
 
 # https://github.com/sharkdp/fd
-deb_installed+=(fd)
+deb_installed+=(fd-musl)
 deb_sources+=($(__get_github_release_url "sharkdp/fd" "musl_.*_amd64.deb"))
 
 # https://github.com/BurntSushi/ripgrep
@@ -220,6 +224,16 @@ if (( ${#apt_packages[@]} > 0 )); then
     e_arrow "$package"
     [[ "$(type -t preinstall_$package)" == function ]] && preinstall_$package
     sudo apt-get -qq install "$package" > /dev/null 2>&1 && \
+    [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
+  done
+fi
+
+if (( ${#apt_unstable_packages[@]} > 0 )); then
+  e_header "Installing unstable APT packages (${#apt_unstable_packages[@]})"
+  for package in "${apt_unstable_packages[@]}"; do
+    e_arrow "$package"
+    [[ "$(type -t preinstall_$package)" == function ]] && preinstall_$package
+    sudo apt-get -qq -t unstable install "$package" > /dev/null 2>&1 && \
     [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
   done
 fi

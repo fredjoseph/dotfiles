@@ -17,7 +17,7 @@ deb_installed+=(glow)
 deb_sources+=($(__get_github_release_url "charmbracelet/glow" "_amd64.deb"))
 
 # https://github.com/sharkdp/hyperfine
-deb_installed+=(hyperfine)
+deb_installed+=(hyperfine-musl)
 deb_sources+=($(__get_github_release_url "sharkdp/hyperfine" "musl_.*_amd64.deb"))
 
 # https://github.com/knqyf263/pet
@@ -33,5 +33,5 @@ deb_installed+=(duf)
 deb_sources+=($(__get_github_release_url "muesli/duf" "_amd64.deb"))
 
 # https://github.com/dandavison/delta
-deb_installed+=(delta)
+deb_installed+=(git-delta-musl)
 deb_sources+=($(__get_github_release_url "dandavison/delta" "musl_.*_amd64.deb"))

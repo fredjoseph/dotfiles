@@ -66,13 +66,13 @@ ZSH_THEME="avit"
 test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
 
 function _include() {
-  for FILE in $(find "$1" -type f -print); do
+  for FILE in $(find "$1" -xtype f -print 2>/dev/null); do
     source $FILE
   done
 }
 
 #------------------------------------------------------------------
-#   OH-MY-ZSH Plugins
+#   OH-MY-ZSH Configuration
 #------------------------------------------------------------------
 
 # Standard common plugins
@@ -80,29 +80,15 @@ plugins=(git zsh-syntax-highlighting common-aliases extract tmux zsh_reload)
 plugins+=(docker docker-compose fd)
 # Include configuration specific to the local environment (corresponding to the current git branch)
 _include ${MY_ZSH_CUSTOM}/.oh-my-zsh
-# Include private configuration (add everything that should not be stored in git)
-_include ${MY_ZSH_CUSTOM}/private/.oh-my-zsh
 
 source $ZSH/oh-my-zsh.sh
-
-#------------------------------------------------------------------
-#   Externals
-#------------------------------------------------------------------
-_include ${MY_ZSH_CUSTOM}/aliases
-_include ${MY_ZSH_CUSTOM}/functions
-# TODO Required or not (to be replaced by autoload -Uz for each plugins)
-_include ${MY_ZSH_CUSTOM}/**/*.plugin.zsh
-
-fpath=($MY_ZSH_CUSTOM/completions $MY_ZSH_CUSTOM/private/completions $fpath)
-
-# Reload the completions
-autoload -U compinit && compinit
 
 #------------------------------------------------------------------
 #   Common Configuration
 #------------------------------------------------------------------
 
 # FZF
+#----
 if ! [ $(command -v "fzf") ] && [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
 fi
@@ -117,19 +103,41 @@ if [ $(command -v "fzf") ]; then
 	export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 fi
 
-# TODO Test if required (charger chemin ne commencant pas par _, par convention les fichiers commençant par _ auront un compdef et seront gérés par zsh directement grâce au fpath)
-# Load zsh completions
-#if [ -d ~/.zsh-custom/completions ]; then
-#	for file in ~/.zsh-custom/completions/*(.N); do
-#		. $file
-#	done
-#fi
+# ZSH Completions
+#----------------
+# By convention, file starting with "_" should contain "compdef" at first line and will be managed directly by zsh through fpath
+if [ -d ~/.zsh-custom/completions ]; then
+	for file in ~/.zsh-custom/completions/[^_]*(N); do
+		. $file
+	done
+    unset file
+fi
 
+fpath=($MY_ZSH_CUSTOM/completions $fpath)
+
+# ZSH Plugins
+#------------
+for config_file ($ZSH_CUSTOM/**/*.plugin.zsh(N)); do
+  source $config_file
+done
+unset config_file
+
+# Reload the completions
+autoload -U compinit && compinit
+
+# Others
+#-------
 # Activate "autocutsel" only if X server detected
 if pgrep Xorg >&/dev/null; then
 	autocutsel -selection PRIMARY -fork
 	autocutsel -fork
 fi
+
+#------------------------------------------------------------------
+#   Aliases and Functions
+#------------------------------------------------------------------
+_include ${MY_ZSH_CUSTOM}/aliases
+_include ${MY_ZSH_CUSTOM}/functions
 
 #------------------------------------------------------------------
 #   Local Configuration -- should be last!

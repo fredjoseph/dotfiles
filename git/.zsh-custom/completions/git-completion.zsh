@@ -80,11 +80,6 @@ _git-guilt() {
         '-h[output usage information]'
 }
 
-_git-ignore-io() {
-   _arguments \
-        ':name[sample gitignore name]'
-}
-
 _git-info() {
     _arguments -C \
         '(--color -c)'{--color,-c}'[use color for information titles]' \
@@ -93,18 +88,13 @@ _git-info() {
 
 _git-jump() {
    _arguments \
-        ':branch[partial name of the branch to be accessed]'
+        ':branch:__gitex_branch_names'
 }
 
 _git-missing() {
     _arguments \
         ':first-branch-name:__gitex_branch_names' \
         ':second-branch-name:__gitex_branch_names'
-}
-
-_git-recent() {
-    _arguments \
-        ':nb-branches[number of branches - default 10]'
 }
 
 _git-summary() {
@@ -120,8 +110,7 @@ _git-squash() {
 
 _git-undo(){
     _arguments \
-        ':nb-commits[number of commits to revert - default 1]' \
-        ':type[one of: "soft", "hard", "mixed" - default "mixed"]'
+        '2:mode (mixed, soft, hard):(mixed soft hard)'
 }
 
 zstyle -g existing_user_commands ':completion:*:*:git:*' user-commands
