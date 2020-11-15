@@ -29,9 +29,6 @@ if [ -d "$HOME/.yarn" ]; then
   PATH="$PATH:~/.yarn-global/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin"
 fi
 
-# Remove duplicate entries
-typeset -gU path fpath
-
 # WSL fixes
 if grep -qE "(Microsoft|WSL)" /proc/version; then
 	# Fix wrong permissions with mkdir command

@@ -147,3 +147,9 @@ _include ${MY_ZSH_CUSTOM}/functions
 _include ${MY_ZSH_CUSTOM}/.zshrc
 # - to add private customizations, create '${MY_ZSH_CUSTOM}/private/.zshrc' and add changes to it
 _include ${MY_ZSH_CUSTOM}/private/.zshrc
+
+#------------------------------------------------------------------
+#   Cleanup
+#------------------------------------------------------------------
+# Remove duplicate entries
+typeset -gU path fpath
