@@ -122,6 +122,7 @@ zstyle ':completion:*:*:git:*' user-commands $existing_user_commands \
     f_log:'git log - powered by fzf' \
     f_stash:'git stash - powered by fzf' \
     f_rebase:'git rebase - powered by fzf' \
+    f_revert:'git revert - powered by fzf' \
     f_unstage:'unstage changes - powered by fzf' \
     archive-file:'export the current head of the git repository to an archive' \
     create-branch:'create branches' \

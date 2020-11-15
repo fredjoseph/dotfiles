@@ -143,6 +143,7 @@ _include ${MY_ZSH_CUSTOM}/functions
 #   Local Configuration -- should be last!
 #------------------------------------------------------------------
 # - configuration specific to the local environment (corresponding to the current git branch)
+# TODO: To Remove
 _include ${MY_ZSH_CUSTOM}/.zshrc
 # - to add private customizations, create '${MY_ZSH_CUSTOM}/private/.zshrc' and add changes to it
 _include ${MY_ZSH_CUSTOM}/private/.zshrc

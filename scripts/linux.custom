@@ -9,7 +9,6 @@ apt_packages+=(
   entr
   gron
   ncdu
-  tig
 )
 
 # https://github.com/charmbracelet/glow

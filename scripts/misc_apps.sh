@@ -33,7 +33,8 @@ install_utility_apps() {
     __install_binary $(__get_github_release_url "chmln/sd" "x86_64.*linux-gnu") sd
     print_arrow "tmpmail"
     curl -sL "https://git.io/tmpmail" > ~/bin/tmpmail && chmod +x ~/bin/tmpmail
-
+    print_arrow "gitui"
+    __install_tar_gz $(__get_github_release_url "extrawurst/gitui" "linux-musl.tar.gz") gitui
 }
 install_utility_apps
 
