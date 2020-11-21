@@ -1,0 +1,44 @@
+test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
+
+# ZSH Completions
+#----------------
+# By convention, file starting with "_" should contain "compdef" at first line and will be managed directly by zsh through fpath
+if [ -d ~/.zsh-custom/completions ]; then
+	for file in ~/.zsh-custom/completions/[^_]*(N); do
+		. $file
+	done
+    unset file
+fi
+
+fpath=($MY_ZSH_CUSTOM/completions $fpath)
+
+
+# ZSH Plugins
+#------------
+plugin_path="$MY_ZSH_CUSTOM/private/plugins/"
+
+export NVM_LAZY_LOAD=true
+export NVM_AUTO_USE=true
+export NVM_DIR="$HOME/.nvm"
+
+fpath+=($plugin_path/zsh-defer)
+autoload -Uz zsh-defer
+
+excluded_plugins=(zsh-defer.plugin.zsh)
+defer_plugins=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
+
+for config_file ($ZSH_CUSTOM/**/*.plugin.zsh(N)); do
+  case "${excluded_plugins[@]}" in *$(basename "$f")*) continue;; esac
+  case "${defer_plugins[@]}" in 
+    *$(basename "$f")*) 
+      zsh-defer source $config_file;;
+    *)
+      source $config_file;;
+  esac
+done
+unset config_file
+
+# Customizations
+#---------------
+# https://github.com/zsh-users/zsh-autosuggestions/issues/351
+#ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)

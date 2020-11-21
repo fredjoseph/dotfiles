@@ -13,6 +13,10 @@ if ! [  -f "~/.nvm/nvm.sh" ]; then
   nvm install --lts
   nvm use node
   nvm alias default node
+else
+  cd ~/.nvm
+  git fetch --tags origin
+  git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
 fi
 
 #############################

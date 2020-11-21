@@ -40,13 +40,14 @@ install_utility_apps
 
 print_header "Installing zsh plugins"
 
-# FIXME: Source twice between oh-my-zsh plugins and directly by .zshrc
 install_zsh_plugins() {
-    print_arrow "zsh-nvm"
-    __install_private_zsh_plugin 'https://raw.githubusercontent.com/lukechilds/zsh-nvm/master/zsh-nvm.plugin.zsh'
     print_arrow "fzf-marks"
-    __install_private_zsh_plugin 'https://raw.githubusercontent.com/urbainvaes/fzf-marks/master/fzf-marks.plugin.zsh'
-    print_arrow "zsh-syntax-highlighting"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $MY_ZSH_CUSTOM/private/plugins/zsh-syntax-highlighting 2>/dev/null
+    __get_private_zsh_plugin 'https://raw.githubusercontent.com/urbainvaes/fzf-marks/master/fzf-marks.plugin.zsh'
+    print_arrow "zsh-nvm"
+    __get_private_zsh_plugin 'https://raw.githubusercontent.com/lukechilds/zsh-nvm/master/zsh-nvm.plugin.zsh'
+    print_arrow "zsh-defer"
+    __clone_private_zsh_plugin 'https://github.com/romkatv/zsh-defer.git'
+    print_arrow "fast-syntax-highlighting"
+    __clone_private_zsh_plugin 'https://github.com/zdharma/fast-syntax-highlighting.git'
 }
 install_zsh_plugins

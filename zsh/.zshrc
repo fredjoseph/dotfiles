@@ -66,22 +66,54 @@ ZSH_THEME="avit"
 test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
 
 function _include() {
-  for FILE in $(find "$1" -xtype f -print 2>/dev/null); do
-    source $FILE
+  for file in $(find "$1" -xtype f -print 2>/dev/null); do
+    source $file
   done
+  unset file
 }
 
 #------------------------------------------------------------------
 #   OH-MY-ZSH Configuration
 #------------------------------------------------------------------
 
-# Standard common plugins
-plugins=(git zsh-syntax-highlighting common-aliases extract tmux zsh_reload)
-plugins+=(docker docker-compose fd)
-# Include configuration specific to the local environment (corresponding to the current git branch)
-_include ${MY_ZSH_CUSTOM}/.oh-my-zsh
+# Plugins
+#--------
+plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux zsh_reload)
+
+# Environment specific
+plugins+=(debian yarn mvn)
+
+# Customization
+#--------------
+# This speeds up pasting
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
 
 source $ZSH/oh-my-zsh.sh
+
+#------------------------------------------------------------------
+#   ZSH Plugins & Completions
+#------------------------------------------------------------------
+source ${MY_ZSH_CUSTOM}/plugins
+
+# Reload the completions
+autoload -U compinit && compinit
+
+#------------------------------------------------------------------
+#   Aliases and Functions
+#------------------------------------------------------------------
+source ${MY_ZSH_CUSTOM}/aliases
+source ${MY_ZSH_CUSTOM}/functions
 
 #------------------------------------------------------------------
 #   Common Configuration
@@ -103,49 +135,39 @@ if [ $(command -v "fzf") ]; then
 	export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 fi
 
-# ZSH Completions
-#----------------
-# By convention, file starting with "_" should contain "compdef" at first line and will be managed directly by zsh through fpath
-if [ -d ~/.zsh-custom/completions ]; then
-	for file in ~/.zsh-custom/completions/[^_]*(N); do
-		. $file
-	done
-    unset file
-fi
+#------------------------------------------------------------------
+#   Local Configuration
+#------------------------------------------------------------------
 
-fpath=($MY_ZSH_CUSTOM/completions $fpath)
+# Colored man pages
+export LESS_TERMCAP_mb=$'\e[1;33m'       # begin blinking
+export LESS_TERMCAP_md=$'\e[1;33m'       # begin bold
+export LESS_TERMCAP_us=$'\e[4;36m'       # begin underline
+export LESS_TERMCAP_so=$'\e[30;47m'      # begin standout-mode - info box
+export LESS_TERMCAP_me=$'\e[m'           # end mode
+export LESS_TERMCAP_ue=$'\e[m'           # end underline
+export LESS_TERMCAP_se=$'\e[m'           # end standout-mode
 
-# ZSH Plugins
-#------------
-for config_file ($ZSH_CUSTOM/**/*.plugin.zsh(N)); do
-  source $config_file
-done
-unset config_file
-
-# Reload the completions
-autoload -U compinit && compinit
-
-# Others
-#-------
 # Activate "autocutsel" only if X server detected
 if pgrep Xorg >&/dev/null; then
 	autocutsel -selection PRIMARY -fork
 	autocutsel -fork
 fi
 
-#------------------------------------------------------------------
-#   Aliases and Functions
-#------------------------------------------------------------------
-_include ${MY_ZSH_CUSTOM}/aliases
-_include ${MY_ZSH_CUSTOM}/functions
+export FZF_MARKS_COMMAND="fzf --height 40% --reverse -n 1 -d ' : '"
+export BAT_PAGER="less -iRX"
 
-#------------------------------------------------------------------
-#   Local Configuration -- should be last!
-#------------------------------------------------------------------
-# - configuration specific to the local environment (corresponding to the current git branch)
-# TODO: To Remove
-_include ${MY_ZSH_CUSTOM}/.zshrc
-# - to add private customizations, create '${MY_ZSH_CUSTOM}/private/.zshrc' and add changes to it
+# List all snippets with 'ctrl-s'
+function pet-select() {
+  BUFFER=$(pet search --query "$LBUFFER")
+  CURSOR=$#BUFFER
+  zle redisplay
+}
+zle -N pet-select
+stty -ixon
+bindkey '^s' pet-select
+
+# Private customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/private/.zshrc
 
 #------------------------------------------------------------------
