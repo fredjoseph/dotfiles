@@ -107,7 +107,13 @@ source $ZSH/oh-my-zsh.sh
 source ${MY_ZSH_CUSTOM}/plugins
 
 # Reload the completions
-autoload -U compinit && compinit
+autoload -U compinit
+if [[ -n "${ZSH_COMPDUMP}"(#qN.mh+24) ]]; then
+      compinit
+      compdump
+else
+      compinit -C
+fi
 
 #------------------------------------------------------------------
 #   Aliases and Functions
