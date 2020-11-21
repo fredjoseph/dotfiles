@@ -32,7 +32,6 @@ apt_packages+=(
   autocutsel
   highlight
   htop
-  jq
   powerline
   snapd
   stow
@@ -45,6 +44,7 @@ apt_packages+=(
 
 apt_unstable_packages+=(
   git
+  jq
 )
 
 # Add unstable/sid repository
