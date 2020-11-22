@@ -10,8 +10,8 @@ alias cat="bat"
 
 alias tmux="tmux -2 -u" # force 256 colors AND UTF-8
 alias less="less -M" # verbose prompt
-alias please="sudo $(fc -ln -1)"
-alias fuck='sudo $(fc -ln -1)'
+alias please='eval "sudo $(fc -ln -1)"'
+alias fuck='eval "sudo $(fc -ln -1)"'
 alias hosts="sudo vi /etc/hosts"
 alias npmlist="npm list -g --depth 0"
 alias reload_zsh="source ~/.zshrc && echo 'Shell config reloaded from ~/.zshrc'"

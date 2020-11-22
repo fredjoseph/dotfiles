@@ -11,6 +11,11 @@ print_info() {
   echo -e "\n\e[0;35m $@\e[0m\n"
 }
 
+print_warning() {
+  # Print warning message (yellow background)
+  echo -e "\n\e[1;43;37m $@ \e[0m\n"; read -s -k '?Press any key to continue.'$'\n'
+}
+
 print_header() {
   echo -e "\n\e[1m$@\e[0m\n";
 }
@@ -108,7 +113,7 @@ __install_global_zsh_completion() {
 #
 __get_private_zsh_plugin() {
     mkdir -p "$MY_ZSH_CUSTOM/private/plugins/"
-    sudo curl -sOL "$1" -o "$MY_ZSH_CUSTOM/private/plugins/"
+    sudo curl -sL "$1" -o "$MY_ZSH_CUSTOM/private/plugins/$(basename "$1")"
 }
 
 # __clone_private_zsh_plugin: Clone the plugin repository into $MY_ZSH_CUSTOM/private/plugins
@@ -119,7 +124,7 @@ __get_private_zsh_plugin() {
 #   __clone_private_zsh_plugin https://github.com/romkatv/zsh-defer.git zsh-defer
 #
 __clone_private_zsh_plugin() {
-    local repo_name = $(basename "$1" | cut -d. -f1)
+    local repo_name=$(basename "$1" | cut -d. -f1)
     [ -d "$MY_ZSH_CUSTOM/private/plugins/$repo_name" ] || git clone "$1" "$MY_ZSH_CUSTOM/private/plugins/$repo_name"
     git -C "$MY_ZSH_CUSTOM/private/plugins/$repo_name" pull
 }

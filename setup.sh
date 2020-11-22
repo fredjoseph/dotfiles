@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Import helper functions
+. $(dirname "$0")/script/_helper.sh
+
 # Print usage message.
 usage() {
     local program_name
@@ -26,17 +29,18 @@ install_all() {
 # Ask for the administrator password upfront
 sudo -v
 # Global Linux
-$HOME/dotfiles/scripts/linux.sh
+$(dirname "$0")/scripts/linux.sh
 # Cool apps
-$HOME/dotfiles/scripts/common_apps.sh
-$HOME/dotfiles/scripts/misc_apps.sh
+$(dirname "$0")/scripts/common_apps.sh
+$(dirname "$0")/scripts/misc_apps.sh
 # Snap
-$HOME/dotfiles/scripts/snap.sh
-# Nvm
-$HOME/dotfiles/scripts/nvm.sh
+$(dirname "$0")/scripts/snap.sh
+# NVM
+$(dirname "$0")/scripts/nvm.sh
 # Docker
-$HOME/dotfiles/scripts/docker.sh
+$(dirname "$0")/scripts/docker.sh
 # Symlinks
+print_header "Symlink configuration files"
 install_dotfiles
 }
 

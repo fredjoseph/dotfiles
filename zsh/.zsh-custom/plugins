@@ -15,22 +15,51 @@ fpath=($MY_ZSH_CUSTOM/completions $fpath)
 
 # ZSH Plugins
 #------------
-plugin_path="$MY_ZSH_CUSTOM/private/plugins/"
 
-export NVM_LAZY_LOAD=true
+fpath+=($private_plugins/zsh-defer)
+autoload -Uz zsh-defer
+
+# My Plugins
+#-----------
+public_path="$MY_ZSH_CUSTOM/plugins/"
+
+public_plugins=()
+public_plugins_defer=()
+
+for config_file ($public_path/**/*.plugin.zsh(N)); do
+  case "${public_plugins_defer[@]}" in
+    *$(basename "$config_file")*)
+      zsh-defer source $config_file
+      continue
+      ;;
+  esac
+  case "${public_plugins[@]}" in
+    *$(basename "$config_file")*)
+      source $config_file
+      continue
+      ;;
+  esac
+done
+unset config_file
+
+# Clone/Downloaded plugins (load all plugins)
+#--------------------------------------------
+private_path="$MY_ZSH_CUSTOM/plugins/private"
+
 export NVM_AUTO_USE=true
 export NVM_DIR="$HOME/.nvm"
 
-fpath+=($plugin_path/zsh-defer)
-autoload -Uz zsh-defer
-
 excluded_plugins=(zsh-defer.plugin.zsh)
-defer_plugins=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
+private_plugins_defer=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
 
-for config_file ($ZSH_CUSTOM/**/*.plugin.zsh(N)); do
-  case "${excluded_plugins[@]}" in *$(basename "$f")*) continue;; esac
-  case "${defer_plugins[@]}" in 
-    *$(basename "$f")*) 
+for config_file ($private_path/**/*.plugin.zsh(N)); do
+  case "${excluded_plugins[@]}" in 
+    *$(basename "$config_file")*) 
+      continue
+      ;; 
+  esac
+  case "${private_plugins_defer[@]}" in
+    *$(basename "$config_file")*)
       zsh-defer source $config_file;;
     *)
       source $config_file;;
