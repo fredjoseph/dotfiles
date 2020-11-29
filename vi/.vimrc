@@ -149,7 +149,7 @@ nnoremap <leader>tn :tabnext<CR>
 nnoremap <leader>tp :tabprev<CR>
 nnoremap <leader>to :tabo<CR>
 nnoremap <leader>/ :noh<CR>
-nnoremap <leader>s :set spell! (toggle spell)
+nnoremap <leader>s :set spell! "toggle spell
 
 " Fix indentation of the entire file then return where you were
 map <F7> gg=G<C-o><C-o>

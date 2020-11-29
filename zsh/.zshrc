@@ -78,7 +78,7 @@ function _include() {
 
 # Plugins
 #--------
-plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux zsh_reload)
+plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux)
 
 # Environment specific
 plugins+=(debian yarn mvn)

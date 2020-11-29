@@ -69,5 +69,7 @@ unset config_file
 
 # Customizations
 #---------------
+zsh-defer -c "fast-theme XDG:overlay >/dev/null"
+
 # https://github.com/zsh-users/zsh-autosuggestions/issues/351
 #ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)

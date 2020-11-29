@@ -5,7 +5,7 @@ endif
 let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 " Launch fzf with CTRL+P.
-nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-p> :GFiles<CR>
 
 " Map a few common things to do with FZF.
 nnoremap <silent> <Leader><C-b> :Buffers<CR>

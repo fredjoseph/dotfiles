@@ -157,6 +157,8 @@ Plug 'majutsushi/tagbar'
 
 Plug 'alvan/vim-closetag'
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 """ All of your Plugins must be added before the following line
 " Add plugins to &runtimepath
 call plug#end()   "required

@@ -63,6 +63,10 @@ apt-clean() {
     sudo apt-get autoremove
 }
 
+apt-list() {
+    apt list --installed | egrep "$1"
+}
+
 # copy file content to clipboard
 copy() {
   cat $1 | xclip -sel clipboard
@@ -167,6 +171,10 @@ zsh-history-fix() {
   strings ~/.zsh_history_bad > ~/.zsh_history
   fc -R ~/.zsh_history
   rm ~/.zsh_history_bad
+}
+
+zsh-history-clean() {
+  truncate --size 0 ~/.zsh_history
 }
 
 d() {

@@ -3,3 +3,5 @@ private/**
 # Except the sub-directories (keep the directory structure) and '.gitkeep' file
 !private/**/
 !**/.gitkeep
+
+*.zwc
