@@ -139,6 +139,7 @@ function contains() {
             return 0;
         fi
     done
+    unset v
    return 1;
 }
 ###############################################################################
@@ -156,6 +157,7 @@ if (( ${#apt_keys[@]} > 0 )); then
         e_arrow "$key"
 		wget -qO - $key | sudo apt-key add - > /dev/null 2>&1
 	done
+    unset key
 fi
 
 # Add locales
@@ -169,6 +171,7 @@ if (( ${#locale_i[@]} > 0 )); then
     e_arrow "$locale"
     sudo sh -c "echo '$locale' >> /etc/locale.gen"
   done
+  unset i
 fi
 sudo locale-gen
 
@@ -189,6 +192,7 @@ if (( ${#source_i[@]} > 0 )); then
       sudo sh -c "echo '$source_text' > /etc/apt/sources.list.d/$source_file.list"
     fi
   done
+  unset i
 fi
 
 # Add APT preferences.
@@ -203,6 +207,7 @@ if (( ${#preference_i[@]} > 0 )); then
     e_arrow "$preference_file"
     sudo sh -c "echo '$preference_text' > /etc/apt/preferences.d/$preference_file"
   done
+  unset i
 fi
 
 # Update APT.
@@ -226,6 +231,7 @@ if (( ${#apt_packages[@]} > 0 )); then
     sudo apt-get -qq install "$package" > /dev/null 2>&1 && \
     [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
   done
+  unset package
 fi
 
 if (( ${#apt_unstable_packages[@]} > 0 )); then
@@ -236,6 +242,7 @@ if (( ${#apt_unstable_packages[@]} > 0 )); then
     sudo apt-get -qq -t unstable install "$package" > /dev/null 2>&1 && \
     [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
   done
+  unset package
 fi
 
 # Install debs via dpkg
@@ -257,6 +264,7 @@ if (( ${#deb_installed_i[@]} > 0 )); then
     wget -q  -O "$installer_file" "$deb"
     sudo dpkg -i "$installer_file" > /dev/null 2>&1
   done
+  unset i
 fi
 
 rm -rf "$installers_path"

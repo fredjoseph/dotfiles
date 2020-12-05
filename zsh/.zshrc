@@ -73,47 +73,33 @@ function _include() {
 }
 
 #------------------------------------------------------------------
-#   OH-MY-ZSH Configuration
+#   ZSH Plugins & Completions Configuration
 #------------------------------------------------------------------
 
-# Plugins
-#--------
+# OH-MY-ZSH Plugins
+#------------------
 plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux)
 
-# Environment specific
-plugins+=(debian yarn mvn)
+# Custom Completions/Plugins
+#---------------------------
+source ${MY_ZSH_CUSTOM}/plugins
+typeset -gU fpath # Remove duplicate entries
 
-# Customization
-#--------------
-# This speeds up pasting
-# https://github.com/zsh-users/zsh-autosuggestions/issues/238
-pasteinit() {
-  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
-}
-
-pastefinish() {
-  zle -N self-insert $OLD_SELF_INSERT
-}
-zstyle :bracketed-paste-magic paste-init pasteinit
-zstyle :bracketed-paste-magic paste-finish pastefinish
-
-
+# Load OH-MY-ZSH (the script will load the completion system "compinit")
 source $ZSH/oh-my-zsh.sh
 
-#------------------------------------------------------------------
-#   ZSH Plugins & Completions
-#------------------------------------------------------------------
-source ${MY_ZSH_CUSTOM}/plugins
+# Load the completion system "compinit" (only if not already loaded by a ZSH framework)
+# Checking the cached .zcompdump file adds a noticable delay to zsh startup => restrict it to once a day
 
-# Reload the completions
-autoload -U compinit
-if [[ -n "${ZSH_COMPDUMP}"(#qN.mh+24) ]]; then
-      compinit
-      compdump
-else
-      compinit -C
-fi
+#autoload -U compinit
+#setopt EXTENDEDGLOB
+#if [[ -n ${ZDOTDIR:-${HOME}}/.zcompdump(#qN.mh+24) ]]; then
+#      compinit
+#      touch ${ZDOTDIR:-${HOME}}/.zcompdump
+#else
+#      compinit -C
+#fi
+#unsetopt EXTENDEDGLOB
 
 #------------------------------------------------------------------
 #   Aliases and Functions
@@ -180,4 +166,4 @@ _include ${MY_ZSH_CUSTOM}/private/.zshrc
 #   Cleanup
 #------------------------------------------------------------------
 # Remove duplicate entries
-typeset -gU path fpath
+typeset -gU path
