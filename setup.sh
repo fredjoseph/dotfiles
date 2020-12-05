@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Import helper functions
-. $(dirname "$0")/script/_helper.sh
+. $(dirname "$0")/scripts/_helper.sh
 
 # Print usage message.
 usage() {
