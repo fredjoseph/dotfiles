@@ -25,6 +25,10 @@ install_dotfiles() {
     stow -R bash git postgres ripgrep stow tmux vi zsh misc
 }
 
+cleanup() {
+    rm -f ~/.zcompdump*
+}
+
 install_all() {
 # Ask for the administrator password upfront
 sudo -v
@@ -43,6 +47,7 @@ $(dirname "$0")/scripts/docker.sh
 print_header "Symlink configuration files"
 install_dotfiles
 print_header "Cleanup"
+cleanup
 }
 
 main() {

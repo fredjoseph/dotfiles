@@ -51,15 +51,6 @@ ZSH_THEME="avit"
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
 #------------------------------------------------------------------
 #   Common
 #------------------------------------------------------------------
@@ -75,31 +66,7 @@ function _include() {
 #------------------------------------------------------------------
 #   ZSH Plugins & Completions Configuration
 #------------------------------------------------------------------
-
-# OH-MY-ZSH Plugins
-#------------------
-plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux)
-
-# Custom Completions/Plugins
-#---------------------------
 source ${MY_ZSH_CUSTOM}/.plugins
-typeset -gU fpath # Remove duplicate entries
-
-# Load OH-MY-ZSH (the script will load the completion system "compinit")
-source $ZSH/oh-my-zsh.sh
-
-# Load the completion system "compinit" (only if not already loaded by a ZSH framework)
-# Checking the cached .zcompdump file adds a noticable delay to zsh startup => restrict it to once a day
-
-#autoload -U compinit
-#setopt EXTENDEDGLOB
-#if [[ -n ${ZDOTDIR:-${HOME}}/.zcompdump(#qN.mh+24) ]]; then
-#      compinit
-#      touch ${ZDOTDIR:-${HOME}}/.zcompdump
-#else
-#      compinit -C
-#fi
-#unsetopt EXTENDEDGLOB
 
 #------------------------------------------------------------------
 #   Aliases and Functions

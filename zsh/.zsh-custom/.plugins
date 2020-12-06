@@ -1,26 +1,3 @@
-test "$MY_ZSH_CUSTOM" || MY_ZSH_CUSTOM=~/.zsh-custom
-
-# OH-MY-ZSH Customization
-#------------------------
-plugins+=(debian yarn mvn)
-
-# This speeds up pasting
-# https://github.com/zsh-users/zsh-autosuggestions/issues/238
-pasteinit() {
-  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
-}
-
-pastefinish() {
-  zle -N self-insert $OLD_SELF_INSERT
-}
-zstyle :bracketed-paste-magic paste-init pasteinit
-zstyle :bracketed-paste-magic paste-finish pastefinish
-
-# https://github.com/zsh-users/zsh-autosuggestions/issues/351
-#ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
-
-
 # ZSH Completions
 #----------------
 # By convention, file starting with "_" should contain "compdef" at first line and will be managed directly by zsh through fpath
@@ -38,6 +15,11 @@ fpath=($MY_ZSH_CUSTOM/completions $fpath)
 #   ZSH Plugins
 #--------------------------------------
 
+# OH-MY-ZSH Plugins
+#------------------
+plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux) # common plugins
+plugins+=(debian yarn mvn)
+
 # My Plugins
 #-----------
 plugins_path="$MY_ZSH_CUSTOM/plugins/"
@@ -45,29 +27,28 @@ plugins_path="$MY_ZSH_CUSTOM/plugins/"
 my_plugins_source=()
 my_plugins_defer=()
 
-declare -A all_plugins
-for config_file ($plugins_path/**/*.plugin.zsh(N)); do
-  _key=$(basename "$config_file")
-  all_plugins[$_key]=$config_file
-  case "${my_plugins_source[@]}" in 
-    *$_key*) 
-      source $config_file
-      continue
-      ;; 
-  esac
-done
-unset _key
-unset config_file
+() {
+  local config_file key plugin
+  local declare -A all_plugins
+  for config_file ($plugins_path/**/*.plugin.zsh(N)); do
+    key=$(basename "$config_file")
+    all_plugins[$key]=$config_file
+    case "${my_plugins_source[@]}" in
+      *$key*)
+        source $config_file
+        continue
+        ;;
+    esac
+  done
+  
+  # Load the defer plugins in the order in which they are requested
+  for plugin in "${my_plugins_defer[@]}"; do
+    if [ ${all_plugins[$plugin]+_} ]; then
+      zsh-defer source ${all_plugins[$plugin]}
+    fi
+  done
+}
 unset plugins_path
-
-# Load the defer plugins in the order in which they are requested
-for plugin in "${my_plugins_defer[@]}"; do
-  if [ ${all_plugins[$plugin]+_} ]; then
-    zsh-defer source ${all_plugins[$plugin]}
-  fi
-done
-unset plugin
-unset all_plugins
 
 # External Plugins (load all plugins)
 #-----------------------------------
@@ -82,38 +63,82 @@ export NVM_DIR="$HOME/.nvm"
 ext_excluded_plugins=(zsh-defer.plugin.zsh)
 ext_plugins_defer=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
 
-declare -A all_plugins
-for config_file ($plugins_path/**/*.plugin.zsh(N)); do
-  _key=$(basename "$config_file")
-  case "${ext_excluded_plugins[@]}" in
-    *$_key*)
-      continue
-      ;;
-  esac
-  all_plugins[$_key]=$config_file
-  case "${ext_plugins_defer[@]}" in
-    *$_key*)
-      continue
-      ;;
-    *)
-      source $config_file
-      ;;
-  esac
-done
-unset _key
-unset config_file
+() {
+  local config_file key plugin
+  local declare -A all_plugins
+  for config_file ($plugins_path/**/*.plugin.zsh(N)); do
+    key=$(basename "$config_file")
+    case "${ext_excluded_plugins[@]}" in
+      *$key*)
+        continue
+        ;;
+    esac
+    all_plugins[$key]=$config_file
+    case "${ext_plugins_defer[@]}" in
+      *$key*)
+        continue
+        ;;
+      *)
+        source $config_file
+        ;;
+    esac
+  done
+
+  # Load the defer plugins in the order in which they are requested
+  for plugin in "${ext_plugins_defer[@]}"; do
+    if [ ${all_plugins[$plugin]+_} ]; then 
+      zsh-defer source ${all_plugins[$plugin]}
+    fi
+  done
+}
 unset plugins_path
 
-# Load the defer plugins in the order in which they are requested
-for plugin in "${ext_plugins_defer[@]}"; do
-  if [ ${all_plugins[$plugin]+_} ]; then 
-    zsh-defer source ${all_plugins[$plugin]}
-  fi
-done
-unset plugin
-unset all_plugins
 
+#--------------------------------------
+#   Customizations
+#--------------------------------------
+# Oh-My-Zsh
+#----------
+# This speeds up pasting
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
 
-# Customizations
-#---------------
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
+# https://github.com/zsh-users/zsh-autosuggestions/issues/351
+#ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
+
+# Misc
+#-----
 zsh-defer -c "fast-theme XDG:overlay >/dev/null"
+
+
+# Cleanup and launch initialization
+#----------------------------------
+typeset -gU fpath # Remove duplicate entries
+
+# Load OH-MY-ZSH (the script will load the completion system "compinit")
+source $ZSH/oh-my-zsh.sh
+# Skip the verification of insecure directories for the next launches of Oh-My-Zsh
+export ZSH_DISABLE_COMPFIX=true
+
+
+# Load the completion system "compinit" manually only if not already loaded by a ZSH framework
+# Checking the cached .zcompdump file adds a noticable delay to zsh startup => restrict it to once a day
+
+#autoload -U compinit
+#setopt EXTENDEDGLOB
+#if [[ -n ${ZDOTDIR:-${HOME}}/.zcompdump(#qN.mh+24) ]]; then
+#      compinit
+#      touch ${ZDOTDIR:-${HOME}}/.zcompdump
+#else
+#      compinit -C
+#fi
+#unsetopt EXTENDEDGLOB
