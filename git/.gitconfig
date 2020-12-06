@@ -1,140 +1,140 @@
 [credential]
-	helper = store --file ~/.git-credentials
-	helper = cache --timeout 36000
+  helper = store --file ~/.git-credentials
+  helper = cache --timeout 36000
 [alias]
-	patch-stat = apply --stat   # output diffstat for the input. Turns off "apply"
-	patch-check = apply --check  # check patch is applicable and detects errors. Turns off "apply"
-    #############
-	br = branch
-	branches = branch -a  # list all branches
-	remote-branches = branch -r  # list remote branches
-	merged-branches =  branch --merged # List merged branches into HEAD (or into <branchName>)
-	# Find branches containing commit
-	fb = "!f() { git branch -a --contains $1; }; f"
-    # list branches sorted by last modified
-    last-branches = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
-	#############
-	ci = commit
-	ci-nomsg = commit --allow-empty-message -m ''
-	ci-noedit = commit --no-edit
-	amend = commit --amend --no-edit
-    ci-all = !git add . && git commit -m
-	#############
-	cl = clone
-	#############
-	cp = cherry-pick
-	#############
-	desc = describe --tags --always # describes the branch state
-	#############
-	d = diff --patch-with-stat # diff between the Working Directory and the Staging Area (for tracking files)
-	dc = diff --patch-with-stat --cached  # diff between the Staging Area and the HEAD
-	dh = diff --patch-with-stat HEAD  # diff between the Working Directory and the HEAD (for tracking files)
-    dw = diff --color-words
-	# `git dn $number` shows the diff between the state `$number` revisions ago and the current state
-	dn = "!d() { git diff --patch-with-stat HEAD~${1:-0}; }; d"
-	dt = difftool
-	#############
-	f = fetch
-	fo = fetch origin
-	fu = fetch upstream
-	#############
-	check = fsck   # Verifies the connectivity and validity of the objects in the database.
-	#############
-	g = grep -Ii # Print lines matching a pattern
-	gp = grep -I -P # Use Perl-compatible regular expressions for patterns.
-	#############
-	l = log --oneline --graph
-	lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
-	lgg = "!f() { git lg --grep=\"$@\"; };f"
-	lola = log --all --graph --decorate --oneline
-    lp = log -p # show patches
-    changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status   # similar to 'git whatchanged' but prettier
-    changelog = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
-	#############
-	ls = ls-files
-	lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
-	#############
-	m = merge
-	mt = mergetool
-	#############
-	co = checkout
-	cob = checkout -b
-	#############
-	push-remote = "!git push -u origin $1 #"
-    pushitgood = push -u origin --all
-	#############
-	# Interactive rebase with the given number of latest commits
-	reb = "!r() { git rebase -i HEAD~${1:-1}; }; r"
-	#############
-	res = reset
-	#############
-	r = remote
-	remotes = remote -v
-    r-add = remote add
-	#############
-	st = status
-	sts = status -s -b
-	#############
-	sa = stash apply
-	sc = stash clear
-	sd = stash drop
-	sl = stash list
-	sp = stash pop
-	ss = stash show
-	#############
-    sup = submodule update --init --recursive --remote
-    #############
-	t = tag
-    tags = "!f() { git tag | sort --version-sort; }; f" # list tags version sorted
-	tagsg = tag -l   # list tags containing regular expression
-	# Find tags containing commit
-	ft = "!f() { git describe --always --contains $1; }; f"
-    #############
-	aliases = !git config -l | grep alias | cut -c 7- | sort
-    fetch-check = fetch --dry-run -v
-    go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # Switch to a branch, creating it if necessary
-    list-commit-files = "!git show --name-only $1 #"
-    list-conflicts = diff --name-only --diff-filter=U
-	list-staged-files = diff --name-only --cached
-    preview-diff = "!git diff ...$1 #"
-    in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
-    in-diff = !git remote update -p; git diff ..@{u}  # shows commits that will come in from the remote
-    out = log @{u}..    # shows commits that will go out to the remote
-    out-diff = diff @{u}..    # shows commits that will go out to the remote
-    preview-merge = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 > /dev/null 2>&1; git add -u > /dev/null 2>&1; git diff --staged; git reset --hard > /dev/null 2>&1; test $x -ne 0 && git stash pop > /dev/null 2>&1; }; f"
-    find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
-    show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
-    prune-all = !git prune-merged && git prune -v # Remove all merged branches, delete the refs to the branches that don't exist on the remote and purge unreachable objects (commits that aren't reachable in any branch or tag).
-    prune-merged = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git fetch -v -p"   # Remove all merged branches and delete the refs to the branches that don't exist on the remote.
-    release = "!git tag $1 && git push --tags #"
-    unrelease = "!git tag -d $1 && git push origin :v$1 #"
-    unstage = reset HEAD -- .
-    root = rev-parse --show-toplevel
-    snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
-    standup = shortlog --since=yesterday
-	today = shortlog --since=midnight
-    nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
-    toss = reset --hard @{u}    # throws away any new commits
-    undo = "!undo() { git reset HEAD~${1:-1} --${2:-mixed}; }; undo"
-    update = "!git fetch origin $1:$1 #"
-    whois= "!git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\" #"
-    follow= "!git log --author=$1 #"
-    show-tree = lola --simplify-by-decoration
+  patch-stat = apply --stat   # output diffstat for the input. Turns off "apply"
+  patch-check = apply --check  # check patch is applicable and detects errors. Turns off "apply"
+  #############
+  br = branch
+  branches = branch -a  # list all branches
+  remote-branches = branch -r  # list remote branches
+  merged-branches =  branch --merged # List merged branches into HEAD (or into <branchName>)
+  # Find branches containing commit
+  fb = "!f() { git branch -a --contains $1; }; f"
+  # list branches sorted by last modified
+  last-branches = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+  #############
+  ci = commit
+  ci-nomsg = commit --allow-empty-message -m ''
+  ci-noedit = commit --no-edit
+  amend = commit --amend --no-edit
+  ci-all = !git add . && git commit -m
+  #############
+  cl = clone
+  #############
+  cp = cherry-pick
+  #############
+  desc = describe --tags --always # describes the branch state
+  #############
+  d = diff --patch-with-stat # diff between the Working Directory and the Staging Area (for tracking files)
+  dc = diff --patch-with-stat --cached  # diff between the Staging Area and the HEAD
+  dh = diff --patch-with-stat HEAD  # diff between the Working Directory and the HEAD (for tracking files)
+  dw = diff --color-words
+  # `git dn $number` shows the diff between the state `$number` revisions ago and the current state
+  dn = "!d() { git diff --patch-with-stat HEAD~${1:-0}; }; d"
+  dt = difftool
+  #############
+  f = fetch
+  fo = fetch origin
+  fu = fetch upstream
+  #############
+  check = fsck   # Verifies the connectivity and validity of the objects in the database.
+  #############
+  g = grep -Ii # Print lines matching a pattern
+  gp = grep -I -P # Use Perl-compatible regular expressions for patterns.
+  #############
+  l = log --oneline --graph
+  lg = log --pretty=format:'%C(yellow)%h%C(auto)%d %Creset%s %Cgreen(%cr) %C(bold blue)<%an>' --all --decorate --graph
+  lgg = "!f() { git lg --grep=\"$@\"; };f"
+  lola = log --all --graph --decorate --oneline
+  lp = log -p # show patches
+  changes = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset' --name-status   # similar to 'git whatchanged' but prettier
+  changelog = log --pretty=format:'%h %cr %cn %Cgreen%s%Creset'
+  #############
+  ls = ls-files
+  lsg = !git ls-files | grep -i   # find git files matching the given <pattern>
+  #############
+  m = merge
+  mt = mergetool
+  #############
+  co = checkout
+  cob = checkout -b
+  #############
+  push-remote = "!git push -u origin $1 #"
+  pushitgood = push -u origin --all
+  #############
+  # Interactive rebase with the given number of latest commits
+  reb = "!r() { git rebase -i HEAD~${1:-1}; }; r"
+  #############
+  res = reset
+  #############
+  r = remote
+  remotes = remote -v
+  r-add = remote add
+  #############
+  st = status
+  sts = status -s -b
+  #############
+  sa = stash apply
+  sc = stash clear
+  sd = stash drop
+  sl = stash list
+  sp = stash pop
+  ss = stash show
+  #############
+  sup = submodule update --init --recursive --remote
+  #############
+  t = tag
+  tags = "!f() { git tag | sort --version-sort; }; f" # list tags version sorted
+  tagsg = tag -l   # list tags containing regular expression
+  # Find tags containing commit
+  ft = "!f() { git describe --always --contains $1; }; f"
+  #############
+  aliases = !git config -l | grep alias | cut -c 7- | sort
+  fetch-check = fetch --dry-run -v
+  go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # Switch to a branch, creating it if necessary
+  list-commit-files = "!git show --name-only $1 #"
+  list-conflicts = diff --name-only --diff-filter=U
+  list-staged-files = diff --name-only --cached
+  preview-diff = "!git diff ...$1 #"
+  in = !git remote update -p; git log ..@{u}  # shows commits that will come in from the remote
+  in-diff = !git remote update -p; git diff ..@{u}  # shows commits that will come in from the remote
+  out = log @{u}..    # shows commits that will go out to the remote
+  out-diff = diff @{u}..    # shows commits that will go out to the remote
+  preview-merge = "!f() { git stash | head -1 | grep -q 'No local changes to save'; x=$?; git merge --no-commit $1 > /dev/null 2>&1; git add -u > /dev/null 2>&1; git diff --staged; git reset --hard > /dev/null 2>&1; test $x -ne 0 && git stash pop > /dev/null 2>&1; }; f"
+  find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+  show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+  prune-all = !git prune-merged && git prune -v # Remove all merged branches, delete the refs to the branches that don't exist on the remote and purge unreachable objects (commits that aren't reachable in any branch or tag).
+  prune-merged = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git fetch -v -p"   # Remove all merged branches and delete the refs to the branches that don't exist on the remote.
+  release = "!git tag $1 && git push --tags #"
+  unrelease = "!git tag -d $1 && git push origin :v$1 #"
+  unstage = reset HEAD -- .
+  root = rev-parse --show-toplevel
+  snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+  standup = shortlog --since=yesterday
+  today = shortlog --since=midnight
+  nuke = !git clean -df && git reset --hard @{u}  # cleans up files that don’t belong and throws away any new commits
+  toss = reset --hard @{u}    # throws away any new commits
+  undo = "!undo() { git reset HEAD~${1:-1} --${2:-mixed}; }; undo"
+  update = "!git fetch origin $1:$1 #"
+  whois= "!git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\" #"
+  follow= "!git log --author=$1 #"
+  show-tree = lola --simplify-by-decoration
 [pull]
-	rebase = true
+  rebase = true
 [push]
-	default = simple
+  default = simple
 [help]
-	# Automatically correct and execute mistyped commands
-	autocorrect = 1
+  # Automatically correct and execute mistyped commands
+  autocorrect = 1
 [apply]
-    # Detect whitespace errors when applying a patch
-    whitespace = fix
+  # Detect whitespace errors when applying a patch
+  whitespace = fix
 [diff]
-    colorMoved = dimmed-zebra
+  colorMoved = dimmed-zebra
 # TODO: To Remove
 [include]
-    path = ~/.gitconfig_local
-    # TODO: To Remove
+  path = ~/.gitconfig_local
+  # TODO: To Remove
 [include]
-    path = ~/.gitconfig_private
+  path = ~/.gitconfig_private

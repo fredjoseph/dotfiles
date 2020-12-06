@@ -15,17 +15,17 @@ which() {
 #------------------------------------------------------------------
 
 cleanenv() {
-	if [ $# -ne 0]; then
-		env -i \
-			HOME=\"$HOME\" \
-			PATH=\"$PATH\" \
-			LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\" \
-			TERM=\"$TERM\" \
-			USER=\"$USER\" \
-			zsh -c $@
-	else
-		echo "Usage: cleanenv <program> [arglist]" 1>&2
-	fi
+  if [ $# -ne 0]; then
+    env -i \
+      HOME=\"$HOME\" \
+      PATH=\"$PATH\" \
+      LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\" \
+      TERM=\"$TERM\" \
+      USER=\"$USER\" \
+      zsh -c $@
+  else
+    echo "Usage: cleanenv <program> [arglist]" 1>&2
+  fi
 }
 
 # `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
@@ -58,13 +58,13 @@ deb() {
 }
 
 apt-clean() {
-    sudo apt-get clean
-    sudo apt-get autoclean
-    sudo apt-get autoremove
+  sudo apt-get clean
+  sudo apt-get autoclean
+  sudo apt-get autoremove
 }
 
 apt-list() {
-    apt list --installed | egrep "$1"
+  apt list --installed | egrep "$1"
 }
 
 # copy file content to clipboard

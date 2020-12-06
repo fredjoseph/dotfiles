@@ -131,16 +131,16 @@ function setdiff() {
 }
 
 function contains() {
-    local seeking=$1
-    shift
-    local array=$@
-    for v in ${array[@]}; do
-        if [ "$v" == "$seeking" ]; then
-            return 0;
-        fi
-    done
-    unset v
-   return 1;
+  local seeking=$1
+  shift
+  local array=$@
+  for v in ${array[@]}; do
+    if [ "$v" == "$seeking" ]; then
+      return 0;
+    fi
+  done
+  unset v
+  return 1;
 }
 ###############################################################################
 #                                                                             #
@@ -152,12 +152,12 @@ function contains() {
 
 # Add APT keys.
 if (( ${#apt_keys[@]} > 0 )); then
-    e_header "Adding APT keys (${#apt_keys[@]})"
-	for key in "${apt_keys[@]}"; do
-        e_arrow "$key"
-		wget -qO - $key | sudo apt-key add - > /dev/null 2>&1
-	done
-    unset key
+  e_header "Adding APT keys (${#apt_keys[@]})"
+  for key in "${apt_keys[@]}"; do
+    e_arrow "$key"
+    wget -qO - $key | sudo apt-key add - > /dev/null 2>&1
+  done
+  unset key
 fi
 
 # Add locales

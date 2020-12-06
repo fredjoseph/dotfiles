@@ -112,14 +112,14 @@ _pgsql_tables () {
 
     local _pgsql_table_sql
     _pgsql_table_sql="select n.nspname || '.' || c.relname \
-	from pg_catalog.pg_class c \
-		left join pg_catalog.pg_namespace n on n.oid = c.relnamespace \
-	where c.relkind in ('r', '') \
-		and n.nspname <> 'pg_catalog' \
-		and n.nspname <> 'information_schema' \
-		and n.nspname !~ '^pg_toast' \
-		and pg_catalog.pg_table_is_visible( c.oid ) \
-	order by 1"
+    from pg_catalog.pg_class c \
+        left join pg_catalog.pg_namespace n on n.oid = c.relnamespace \
+    where c.relkind in ('r', '') \
+        and n.nspname <> 'pg_catalog' \
+        and n.nspname <> 'information_schema' \
+        and n.nspname !~ '^pg_toast' \
+        and pg_catalog.pg_table_is_visible( c.oid ) \
+    order by 1"
 
     compadd "$@" - \
         $( psql $_pgsql_params[@] -Aqt -c $_pgsql_table_sql $db 2>/dev/null )
@@ -156,7 +156,7 @@ _pgsql_databases () {
 
     local _pgsql_db_sql
     _pgsql_db_sql="select d.datname from pg_catalog.pg_database d \
-	where d.datname <> 'template0'"
+    where d.datname <> 'template0'"
 
     compadd "$@" - \
             ${(f)_pgsql_services} \
@@ -221,21 +221,21 @@ _pgcli () {
     typeset -A opt_args
 
     _arguments -C -s \
-	{-d+,--dbname=}'[Database to connect to]:database to connect to:_pgsql_databases' \
+        {-d+,--dbname=}'[Database to connect to]:database to connect to:_pgsql_databases' \
         {-h+,--host=}'[Database host]:database host:_pgsql_host_or_dir' \
-	{-l,--list}'[List databases]' \
+        {-l,--list}'[List databases]' \
         {-p+,--port=}'[Database port]:database port number:_pgsql_ports' \
         {-U+,--username=}'[Connect as user]:connect as user:_pgsql_users' \
-	{-v,--version}'[Display version]' \
+        {-v,--version}'[Display version]' \
         {-W,--password}'[Prompt for password]' \
         {-w,--no-password}'[Never prompt for password]' \
-	--auto-vertical-output'[Automatically switch to vertical output mode if the result is wider than the terminal width]' \
-	--help'[Show help]' \
-	--less-chatty'[Skip intro on startup and goodbye on exit]' \
+        --auto-vertical-output'[Automatically switch to vertical output mode if the result is wider than the terminal width]' \
+        --help'[Show help]' \
+        --less-chatty'[Skip intro on startup and goodbye on exit]' \
         --prompt='[Prompt format (Default: "\u@\h:\d> ")]' \
         --row-limit='[Set threshold for row limit prompt. Use 0 to disable prompt]' \
-	--single-connection'[Do not use a separate connection for completions]' \
-	':PostgreSQL database:_pgsql_databases' \
+        --single-connection'[Do not use a separate connection for completions]' \
+        ':PostgreSQL database:_pgsql_databases' \
         ':PostgreSQL user:_pgsql_users'
 }
 

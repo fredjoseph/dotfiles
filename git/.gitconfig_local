@@ -1,16 +1,16 @@
 # Configuration specific to the local environment (corresponding to the current git branch)
 [user]
-	name = Frederic JOSEPH
-	email = fredjoseph@users.noreply.github.com
+  name = Frederic JOSEPH
+  email = fredjoseph@users.noreply.github.com
 [core]
-    pager = delta
+  pager = delta
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
 [delta]
-    features = line-numbers decorations
-    whitespace-error-style = 22 reverse
+  features = line-numbers decorations
+  whitespace-error-style = 22 reverse
 [delta "decorations"]
-    commit-decoration-style = yellow box ul
-    file-style = yellow ul
-    file-decoration-style = none
-    hunk-header-decoration-style = yellow box
+  commit-decoration-style = yellow box ul
+  file-style = yellow ul
+  file-decoration-style = none
+  hunk-header-decoration-style = yellow box

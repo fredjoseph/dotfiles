@@ -2,8 +2,8 @@
 # This file should be empty on the 'master' branch (used as template) and be filled in the git branches corresponding to specific environments.
 
 packages=(
-    caniuse-cmd
-    dockly
-    fx
-    yarn
+  caniuse-cmd
+  dockly
+  fx
+  yarn
 )

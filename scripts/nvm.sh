@@ -25,12 +25,12 @@ fi
 
 # COMMON (packages installed on all environments)
 packages=(
-    fkill-cli
-    how-2
-    http-server
-    kmdr
-    npkill
-    undollar
+  fkill-cli
+  how-2
+  http-server
+  kmdr
+  npkill
+  undollar
 )
 
 # CUSTOM (specific to the local environment corresponding to the current git branch)
@@ -41,8 +41,8 @@ _include $(dirname "$0")/nvm.custom
 ####################
 print_header "Installing NPM Packages"
 for package in "${packages[@]}"; do
-    print_arrow "$package"
-    npm install -g --quiet "$package"
+  print_arrow "$package"
+  npm install -g --quiet "$package"
 done
 
 # Save the list of packages as default packages (will be installed every time a new version of Node is installed)

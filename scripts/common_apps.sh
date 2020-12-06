@@ -44,18 +44,18 @@ install_zsh() {
 install_zsh
 
 install_fzf() {
-    if [ ! -d ~/.fzf ]; then
-      print_arrow "fzf"
-      git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-      ~/.fzf/install
-    fi
+  if [ ! -d ~/.fzf ]; then
+    print_arrow "fzf"
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+  fi
 }
 install_fzf
 
 install_tmux_plugin_manager() {
-    if [ ! -d ~/.tmux/plugins/tpm ]; then
-        print_arrow "TPM (tmux plugin manager)"
-        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    fi
+  if [ ! -d ~/.tmux/plugins/tpm ]; then
+      print_arrow "TPM (tmux plugin manager)"
+      git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  fi
 }
 install_tmux_plugin_manager

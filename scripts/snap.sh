@@ -14,7 +14,7 @@ cpackages=()
 
 # COMMON (packages installed on all environments)
 cpackages+=(
-    code
+  code
 )
 
 # CUSTOM (specific to the local environment corresponding to the current git branch)

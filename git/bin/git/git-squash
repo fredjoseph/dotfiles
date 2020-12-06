@@ -5,24 +5,24 @@
 
 SQUASH_MSG=
 for arg in "$@"; do
-    case "$arg" in
-        --squash-msg)
-            SQUASH_MSG=1
-            ;;
-        *)
-            # set the argument back
-            set -- "$@" "$arg"
-            ;;
-    esac
+  case "$arg" in
+    --squash-msg)
+      SQUASH_MSG=1
+      ;;
+    *)
+      # set the argument back
+      set -- "$@" "$arg"
+      ;;
+  esac
 
-    shift
+  shift
 done
 
 src="$1"
 msg="$2"
 if [[ -n "$msg" ]] && [[ -n "$SQUASH_MSG" ]]; then
-    >&2 echo "When commit message is given, --squash-msg is not allowed."
-    exit 1
+  >&2 echo "When commit message is given, --squash-msg is not allowed."
+  exit 1
 fi
 
 is_branch() {
@@ -59,8 +59,8 @@ prompt_continuation_if_squashing_default_branch() {
 squash_branch() {
   prompt_continuation_if_squashing_default_branch
   if [ -n "$SQUASH_MSG" ]; then
-      base=$(git merge-base "$src" @)
-      msg=$(git log "$base".."$src" --format="%s%n%n%b" --no-merges --reverse)
+    base=$(git merge-base "$src" @)
+    msg=$(git log "$base".."$src" --format="%s%n%n%b" --no-merges --reverse)
   fi
   git merge --squash "$src" || exit 1  # quits if `git merge` fails
   commit_if_msg_provided
@@ -68,7 +68,7 @@ squash_branch() {
 
 squash_current_branch() {
   if [ -n "$SQUASH_MSG" ]; then
-      msg=$(git log "$src"..@ --format="%s%n%n%b" --no-merges --reverse)
+    msg=$(git log "$src"..@ --format="%s%n%n%b" --no-merges --reverse)
   fi
   git reset --soft "$src" || exit 1    # quits if `git reset` fails
   commit_if_msg_provided
