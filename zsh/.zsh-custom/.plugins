@@ -34,10 +34,9 @@ fi
 fpath=($MY_ZSH_CUSTOM/completions $fpath)
 
 
-# ZSH Plugins
-#------------
-fpath=($private_plugins/zsh-defer $fpath)
-autoload -Uz zsh-defer
+#--------------------------------------
+#   ZSH Plugins
+#--------------------------------------
 
 # My Plugins
 #-----------
@@ -49,7 +48,7 @@ my_plugins_defer=()
 declare -A all_plugins
 for config_file ($plugins_path/**/*.plugin.zsh(N)); do
   _key=$(basename "$config_file")
-  all_plugins[_key]=$config_file
+  all_plugins[$_key]=$config_file
   case "${my_plugins_source[@]}" in 
     *$_key*) 
       source $config_file
@@ -63,16 +62,19 @@ unset plugins_path
 
 # Load the defer plugins in the order in which they are requested
 for plugin in "${my_plugins_defer[@]}"; do
-  if [ ${all_plugins[$plugin]+_} ]; then 
+  if [ ${all_plugins[$plugin]+_} ]; then
     zsh-defer source ${all_plugins[$plugin]}
-  done
+  fi
 done
 unset plugin
 unset all_plugins
 
 # External Plugins (load all plugins)
 #-----------------------------------
-plugins_path="$MY_ZSH_CUSTOM/plugins/private"
+plugins_path="$MY_ZSH_CUSTOM/private/plugins"
+
+fpath=($plugins_path/zsh-defer $fpath)
+autoload -Uz zsh-defer
 
 export NVM_AUTO_USE=true
 export NVM_DIR="$HOME/.nvm"
@@ -83,12 +85,12 @@ ext_plugins_defer=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
 declare -A all_plugins
 for config_file ($plugins_path/**/*.plugin.zsh(N)); do
   _key=$(basename "$config_file")
-  case "${ext_excluded_plugins[@]}" in 
-    *$_key*) 
+  case "${ext_excluded_plugins[@]}" in
+    *$_key*)
       continue
-      ;; 
+      ;;
   esac
-  all_plugins[_key]=$config_file
+  all_plugins[$_key]=$config_file
   case "${ext_plugins_defer[@]}" in
     *$_key*)
       continue
@@ -106,7 +108,7 @@ unset plugins_path
 for plugin in "${ext_plugins_defer[@]}"; do
   if [ ${all_plugins[$plugin]+_} ]; then 
     zsh-defer source ${all_plugins[$plugin]}
-  done
+  fi
 done
 unset plugin
 unset all_plugins

@@ -42,6 +42,7 @@ $(dirname "$0")/scripts/docker.sh
 # Symlinks
 print_header "Symlink configuration files"
 install_dotfiles
+print_header "Cleanup"
 }
 
 main() {

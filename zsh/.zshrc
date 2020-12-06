@@ -82,7 +82,7 @@ plugins=(command-not-found common-aliases docker docker-compose extract fd git t
 
 # Custom Completions/Plugins
 #---------------------------
-source ${MY_ZSH_CUSTOM}/plugins
+source ${MY_ZSH_CUSTOM}/.plugins
 typeset -gU fpath # Remove duplicate entries
 
 # Load OH-MY-ZSH (the script will load the completion system "compinit")
