@@ -72,8 +72,8 @@ zle -N pet-select
 stty -ixon
 bindkey '^s' pet-select
 
-# Private customizations (not stored in git)
-_include ${MY_ZSH_CUSTOM}/private/.zshrc
+# Local customizations (not stored in git)
+_include ${MY_ZSH_CUSTOM}/local/.zshrc
 
 #------------------------------------------------------------------
 #   Cleanup

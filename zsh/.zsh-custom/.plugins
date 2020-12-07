@@ -109,9 +109,9 @@ my_plugins_defer=()
 }
 unset plugins_path
 
-# External Plugins (load all plugins)
-#-----------------------------------
-plugins_path="$MY_ZSH_CUSTOM/private/plugins"
+# Locally installed Plugins (load all)
+#-------------------------------------
+plugins_path="$MY_ZSH_CUSTOM/local/plugins"
 
 fpath=($plugins_path/zsh-defer $fpath)
 autoload -Uz zsh-defer

@@ -103,28 +103,28 @@ __install_global_zsh_completion() {
   sudo curl -sL $1 -o /usr/local/share/zsh/site-functions/$2
 }
 
-# __get_private_zsh_plugin: Download the plugin file and move it to $MY_ZSH_CUSTOM/private/plugins
+# __get_local_zsh_plugin: Download the plugin file and move it to $MY_ZSH_CUSTOM/local/plugins
 # This function requires 2 parameters
 # 1. The completion file URL
-# 2. The target name to use in $MY_ZSH_CUSTOM/private/plugins
+# 2. The target name to use in $MY_ZSH_CUSTOM/local/plugins
 #
 # usage:
-#   __get_private_zsh_plugin https://github.com/wfxr/forgit/blob/master/forgit.plugin.zsh
+#   __get_local_zsh_plugin https://github.com/wfxr/forgit/blob/master/forgit.plugin.zsh
 #
-__get_private_zsh_plugin() {
-  mkdir -p "$MY_ZSH_CUSTOM/private/plugins/"
-  sudo curl -sL "$1" -o "$MY_ZSH_CUSTOM/private/plugins/$(basename "$1")"
+__get_local_zsh_plugin() {
+  mkdir -p "$MY_ZSH_CUSTOM/local/plugins/"
+  sudo curl -sL "$1" -o "$MY_ZSH_CUSTOM/local/plugins/$(basename "$1")"
 }
 
-# __clone_private_zsh_plugin: Clone the plugin repository into $MY_ZSH_CUSTOM/private/plugins
+# __clone_local_zsh_plugin: Clone the plugin repository into $MY_ZSH_CUSTOM/local/plugins
 # This function requires 1 parameter
 # 1. The git repository URL
 #
 # usage:
-#   __clone_private_zsh_plugin https://github.com/romkatv/zsh-defer.git zsh-defer
+#   __clone_local_zsh_plugin https://github.com/romkatv/zsh-defer.git zsh-defer
 #
-__clone_private_zsh_plugin() {
+__clone_local_zsh_plugin() {
   local repo_name=$(basename "$1" | cut -d. -f1)
-  [ -d "$MY_ZSH_CUSTOM/private/plugins/$repo_name" ] || git clone "$1" "$MY_ZSH_CUSTOM/private/plugins/$repo_name"
-  git -C "$MY_ZSH_CUSTOM/private/plugins/$repo_name" pull
+  [ -d "$MY_ZSH_CUSTOM/local/plugins/$repo_name" ] || git clone "$1" "$MY_ZSH_CUSTOM/local/plugins/$repo_name"
+  git -C "$MY_ZSH_CUSTOM/local/plugins/$repo_name" pull
 }

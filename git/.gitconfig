@@ -137,4 +137,4 @@
   path = ~/.gitconfig_local
   # TODO: To Remove
 [include]
-  path = ~/.gitconfig_private
+  path = ~/.gitconfig.local

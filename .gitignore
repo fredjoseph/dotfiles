@@ -1,7 +1,7 @@
-# Ignore everything in 'private' directory
-private/**
+# Ignore everything in 'local' directory
+local/**
 # Except the sub-directories (keep the directory structure) and '.gitkeep' file
-!private/**/
+!local/**/
 !**/.gitkeep
 
 *.zwc
