@@ -29,7 +29,6 @@ packages=(
   how-2
   http-server
   kmdr
-  npkill
   undollar
 )
 
@@ -47,3 +46,7 @@ done
 
 # Save the list of packages as default packages (will be installed every time a new version of Node is installed)
 printf '%s\n' "${packages[@]}" > ~/.nvm/default-packages
+
+if typeset -f _nvm_finalize > /dev/null; then
+  _nvm_finalize
+fi
