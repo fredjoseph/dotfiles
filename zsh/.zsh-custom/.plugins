@@ -88,7 +88,7 @@ my_plugins_defer=()
 
 () {
   local config_file key plugin
-  local declare -A all_plugins
+  declare -A all_plugins
   for config_file ($plugins_path/**/*.plugin.zsh(N)); do
     key=$(basename "$config_file")
     all_plugins[$key]=$config_file
@@ -124,7 +124,7 @@ ext_plugins_defer=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
 
 () {
   local config_file key plugin
-  local declare -A all_plugins
+  declare -A all_plugins
   for config_file ($plugins_path/**/*.plugin.zsh(N)); do
     key=$(basename "$config_file")
     case "${ext_excluded_plugins[@]}" in

@@ -72,6 +72,8 @@ zle -N pet-select
 stty -ixon
 bindkey '^s' pet-select
 
+eval "$(zoxide init zsh --no-aliases)"
+
 # Local customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/local/.zshrc
 

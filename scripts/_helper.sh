@@ -87,7 +87,7 @@ __install_zip() {
 #   __install_binary https://github.com/dbrgn/tealdeer/releases/download/v1.4.1/tldr-linux-x86_64-musl tldr
 #
 __install_binary() {
-  sudo curl -s $1 -o /usr/local/bin/$2
+  sudo curl -sL $1 -o /usr/local/bin/$2
   sudo chmod +x /usr/local/bin/$2
 }
 

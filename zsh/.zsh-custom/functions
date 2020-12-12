@@ -76,7 +76,7 @@ copy() {
 readme() {
   for readme in {readme,README}.{md,MD,markdown,mkd,txt,TXT}; do
     if [[ -x "$(command -v glow)" ]] && [[ -f "$readme" ]]; then
-      glow "$readme"
+      glow -p "$readme"
     elif [[ -x "$(command -v bat)" ]] && [[ -f "$readme" ]]; then
       bat "$readme"
     elif [[ -f "$readme" ]]; then
@@ -296,20 +296,25 @@ z() {
     cd $(zoxide query -l -- "$@" | head -1)
     return
   fi
-  zoxide query -l | fzf -1 +m --no-sort --height 40%
+  cd $(zoxide query -l | fzf -1 +m --no-sort --height 40%)
 }
 
 zi() {
-  zoxide query -l -- "$@" | fzf -1 +m --no-sort --height 40%
+  cd $(zoxide query -l -- "$@" | fzf -1 +m --no-sort --height 40%)
 }
 
-cdz () {
+cdz() {
   local i="$*"
   if test -d "$i"; then
     cd "$i"
   else
     z "$i"
   fi
+}
+
+# fzf: prioritize better matches over the most recent entries like 'hstr'
+fhistory() {
+  $(HISTTIMEFORMAT= history | tac | cut -d' ' -f4- | awk '!x[$0]++' | tac | fzf +s -e +m -n2..,..)
 }
 
 ########################################
