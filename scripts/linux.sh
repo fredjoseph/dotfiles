@@ -241,6 +241,10 @@ if (( ${#apt_unstable_packages[@]} > 0 )); then
     [[ "$(type -t preinstall_$package)" == function ]] && preinstall_$package
     sudo apt-get -qq -t unstable install "$package" > /dev/null 2>&1 && \
     [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
+    if [[ "$?" -gt 0 ]]; then
+      sudo apt-get -qq install "$package" > /dev/null 2>&1 && \
+      [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
+    fi
   done
   unset package
 fi
