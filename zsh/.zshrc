@@ -74,6 +74,8 @@ bindkey '^s' pet-select
 
 eval "$(zoxide init zsh --no-aliases)"
 
+export LS_COLORS="$(vivid generate snazzy 2>/dev/null)"
+
 # Local customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/local/.zshrc
 
