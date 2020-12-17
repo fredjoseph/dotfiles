@@ -53,11 +53,7 @@ export LESS_TERMCAP_me=$'\e[m'           # end mode
 export LESS_TERMCAP_ue=$'\e[m'           # end underline
 export LESS_TERMCAP_se=$'\e[m'           # end standout-mode
 
-# Activate "autocutsel" only if X server detected
-if pgrep Xorg >&/dev/null; then
-  autocutsel -selection PRIMARY -fork
-  autocutsel -fork
-fi
+source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
 
 export FZF_MARKS_COMMAND="fzf --height 40% --reverse -n 1 -d ' : '"
 export BAT_PAGER="less -iRX"
@@ -73,8 +69,6 @@ stty -ixon
 bindkey '^s' pet-select
 
 eval "$(zoxide init zsh --no-aliases)"
-
-export LS_COLORS="$(vivid generate snazzy 2>/dev/null)"
 
 # Local customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/local/.zshrc

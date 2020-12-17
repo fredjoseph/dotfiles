@@ -16,3 +16,9 @@
   done
   
 ) &!
+
+# Activate "autocutsel" only if X server detected
+if pgrep Xorg >&/dev/null; then
+  autocutsel -selection PRIMARY -fork
+  autocutsel -fork
+fi
