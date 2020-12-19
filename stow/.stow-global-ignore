@@ -1,0 +1,11 @@
+\.editorconfig
+\.gitlab-ci.yml
+\.travis
+\.gitattributes
+\.git
+\.dockerignore
+Dockerfile.*
+docker-compose.*
+
+LICENSE.*
+README.*

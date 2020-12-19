@@ -1,0 +1,41 @@
+unalias fd 2>/dev/null
+unalias duf 2>/dev/null
+
+# Aliases
+#--------
+alias ls='exa --group-directories-first -F'
+alias ll='ls --long --header --git'
+alias la='ll -a'
+alias cat="bat"
+
+alias tmux="tmux -2 -u" # force 256 colors AND UTF-8
+alias less="less -M" # verbose prompt
+alias please='eval "sudo $(fc -ln -1)"'
+alias fuck='eval "sudo $(fc -ln -1)"'
+alias hosts="sudo vi /etc/hosts"
+alias npmlist="npm list -g --depth 0"
+alias reload_zsh="source ~/.zshrc && echo 'Shell config reloaded from ~/.zshrc'"
+alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
+alias get="curl -sOL"
+alias top10="history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10"
+alias sad="sad --fzf='--height 100%'"
+alias sudo="sudo " # preserve aliases when using sudo
+
+# Changes to top-level directory of git repository.
+alias gtop="cd \$(git rev-parse --show-toplevel)"
+
+alias now="date '+%Y-%m-%d %H-:%M:%S'"
+alias timer='echo "Timer started. Stop with Ctrl-D." && date "+%a, %d %b %H:%M:%S" && time cat && date "+%a, %d %b %H:%M:%S"'
+
+alias cani="caniuse --oneline-browser | fzf --ansi"
+
+alias localip="hostname -I | awk '{print $1}'"
+alias publicip="curl https://watismijnip.nl 2>/dev/null | grep -io \"ipadress:\ [^\ ^<]*\" | awk -F' ' '{print $2}'"
+alias internet\?="ping 8.8.8.8"
+
+# Kill all the tabs in Chrome to free up memory
+# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+alias chromekill="ps ux | grep '[c]hromium --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+alias chromiumkill="ps ux | grep '[c]hromium --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+alias mvn-quick-install="mvn clean install -DskipTests -T2C"

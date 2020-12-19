@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+git-recent() { 
+  local format="\
+%(HEAD) \
+%(color:yellow)%(refname:short)%(color:reset)|\
+%(color:bold red)%(objectname:short)%(color:reset) \
+%(color:bold green)(%(committerdate:relative))%(color:reset) \
+%(color:bold blue)%(authorname)%(color:reset) \
+%(color:yellow)%(upstream:track)%(color:reset) \
+%(color:black)%(color:reset)|\
+%(contents:subject)\
+%(color:black)%(color:reset)|"
+  
+  git for-each-ref --count=${1:-10} --sort=-committerdate --color=always "refs/heads/" --format="$format" | column -ts '|' | fzf --ansi +m | sed "s/\* //" | awk '{print $1}' | xargs --no-run-if-empty git checkout
+}
+git-recent "$@"

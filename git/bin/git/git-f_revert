@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+git-revert() {
+
+  local pager=$(git config core.pager || echo 'less -R');
+  if [[ $pager =~ "delta" ]]; then
+    local pager_preview_options="--commit-style=omit";
+  fi
+  
+  # git command
+  local gitlog=(
+    git log
+    --color=always
+    --abbrev=7
+    --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr'
+  )
+  
+  local displayFn="grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % | $pager >/dev/tty'"
+
+  # fzf command
+  local fzf=(
+    fzf
+    --ansi --no-sort +m
+    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 | $pager $pager_preview_options; }; f {}"
+    --bind "f3:execute:
+                ($displayFn) << 'FZF-EOF'
+                {}
+                FZF-EOF"
+    --preview-window=right:60%
+  )
+
+  "${gitlog[@]}" | "${fzf[@]}" | cut -d' ' -f1 | xargs -t -o --no-run-if-empty git revert "$@"
+}
+git-revert "$@"

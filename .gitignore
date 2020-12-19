@@ -1,0 +1,7 @@
+# Ignore everything in 'local' directory
+local/**
+# Except the sub-directories (keep the directory structure) and '.gitkeep' file
+!local/**/
+!**/.gitkeep
+
+*.zwc

@@ -1,0 +1,203 @@
+#--------------------------------------
+#   Oh-My-Zsh
+#--------------------------------------
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="avit"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+
+#--------------------------------------
+#   Zsh Completions
+#--------------------------------------
+
+# By convention, file starting with "_" should contain "compdef" at first line and will be managed directly by zsh through fpath
+if [ -d ~/.zsh-custom/completions ]; then
+  for file in ~/.zsh-custom/completions/[^_]*(N); do
+    source $file
+  done
+  unset file
+fi
+
+fpath=($MY_ZSH_CUSTOM/completions $fpath)
+
+
+#--------------------------------------
+#   ZSH Plugins
+#--------------------------------------
+
+# Oh-My-Zsh Plugins
+#------------------
+plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux) # common plugins
+plugins+=(debian yarn mvn)
+
+# My Plugins
+#-----------
+plugins_path="$MY_ZSH_CUSTOM/plugins/"
+
+my_plugins_source=()
+my_plugins_defer=()
+
+() {
+  local config_file key plugin
+  declare -A all_plugins
+  for config_file ($plugins_path/**/*.plugin.zsh(N)); do
+    key=$(basename "$config_file")
+    all_plugins[$key]=$config_file
+    case "${my_plugins_source[@]}" in
+      *$key*)
+        source $config_file
+        continue
+        ;;
+    esac
+  done
+  
+  # Load the defer plugins in the order in which they are requested
+  for plugin in "${my_plugins_defer[@]}"; do
+    if [ ${all_plugins[$plugin]+_} ]; then
+      zsh-defer source ${all_plugins[$plugin]}
+    fi
+  done
+}
+unset plugins_path
+
+# Locally installed Plugins (load all)
+#-------------------------------------
+plugins_path="$MY_ZSH_CUSTOM/local/plugins"
+
+fpath=($plugins_path/zsh-defer $fpath)
+autoload -Uz zsh-defer
+
+export NVM_AUTO_USE=true
+export NVM_DIR="$HOME/.nvm"
+
+ext_excluded_plugins=(zsh-defer.plugin.zsh)
+ext_plugins_defer=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
+
+() {
+  local config_file key plugin
+  declare -A all_plugins
+  for config_file ($plugins_path/**/*.plugin.zsh(N)); do
+    key=$(basename "$config_file")
+    case "${ext_excluded_plugins[@]}" in
+      *$key*)
+        continue
+        ;;
+    esac
+    all_plugins[$key]=$config_file
+    case "${ext_plugins_defer[@]}" in
+      *$key*)
+        continue
+        ;;
+      *)
+        source $config_file
+        ;;
+    esac
+  done
+
+  # Load the defer plugins in the order in which they are requested
+  for plugin in "${ext_plugins_defer[@]}"; do
+    if [ ${all_plugins[$plugin]+_} ]; then 
+      zsh-defer source ${all_plugins[$plugin]}
+    fi
+  done
+}
+unset plugins_path
+
+
+#--------------------------------------
+#   Customizations
+#--------------------------------------
+# Oh-My-Zsh
+#----------
+# This speeds up pasting
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
+# https://github.com/zsh-users/zsh-autosuggestions/issues/351
+#ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
+
+# Misc
+#-----
+zsh-defer -c "fast-theme XDG:overlay >/dev/null"
+
+
+# Cleanup and launch initialization
+#----------------------------------
+typeset -gU fpath # Remove duplicate entries
+
+# Load Oh-My-Zsh (the script will load the completion system "compinit")
+source $ZSH/oh-my-zsh.sh
+# Skip the verification of insecure directories for the next launches of Oh-My-Zsh
+export ZSH_DISABLE_COMPFIX=true
+
+
+# Load the completion system "compinit" manually only if not already loaded by a ZSH framework
+# Checking the cached .zcompdump file adds a noticable delay to zsh startup => restrict it to once a day
+
+#autoload -U compinit
+#setopt EXTENDEDGLOB
+#if [[ -n ${ZDOTDIR:-${HOME}}/.zcompdump(#qN.mh+24) ]]; then
+#      compinit
+#      touch ${ZDOTDIR:-${HOME}}/.zcompdump
+#else
+#      compinit -C
+#fi
+#unsetopt EXTENDEDGLOB

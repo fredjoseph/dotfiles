@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git-ignore() {
+  local apiUrl="https://www.toptal.com/developers/gitignore/api";
+  curl -sL $apiUrl/list | tr "," "\n" | fzf +m --preview "curl -sL $apiUrl/{}" --bind "f3:execute(curl -sL $apiUrl/{} | less >/dev/tty)" | xargs --no-run-if-empty -I % sh -c "curl -sL $apiUrl/% > .gitignore";
+}
+git-ignore "$@"

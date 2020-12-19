@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+git-checkout() {
+  local format="\
+%(HEAD) \
+%(color:yellow)%(refname:short)%(color:reset)|\
+%(color:bold red)%(objectname:short)%(color:reset) \
+%(color:bold green)(%(committerdate:relative))%(color:reset) \
+%(color:bold blue)%(authorname)%(color:reset) \
+%(color:yellow)%(upstream:track)%(color:reset) \
+%(color:black)%(color:reset)|\
+%(contents:subject)\
+%(color:black)%(color:reset)|"
+  
+  git branch --all --sort=refname --color=always --format="$format" | column -ts '|' | fzf --ansi --tiebreak=index +m | sed "s/\* //" | awk '{print $1}' | xargs -t -o --no-run-if-empty git checkout "$@"
+}
+git-checkout "$@"
