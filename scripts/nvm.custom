@@ -1,2 +1,15 @@
 # List here all customizations required by your environment and not installed by default.
 # This file should be empty on the 'master' branch (used as template) and be filled in the git branches corresponding to specific environments.
+
+packages+=(
+  npkill
+  caniuse-cmd
+  dockly
+  fx
+  yarn
+  nb.sh
+)
+
+function _nvm_finalize() {
+  #sudo "$(which nb)" completions install
+}
