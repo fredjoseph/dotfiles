@@ -1,4 +1,0 @@
-# Configuration specific to the local environment (corresponding to the current git branch)
-[user]
-  name = Frederic JOSEPH
-  email = fredjoseph@users.noreply.github.com
