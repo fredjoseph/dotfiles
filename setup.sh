@@ -22,7 +22,7 @@ install_dotfiles() {
   rm -f ~/.zshrc
   rm -f ~/.gitconfig
   
-  stow -R bash git postgres ripgrep stow tmux vi zsh misc kde
+  stow -R bash git kde misc nvm postgres ripgrep stow tmux vi zsh
 }
 
 cleanup() {
