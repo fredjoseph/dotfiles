@@ -55,21 +55,6 @@ export LESS_TERMCAP_se=$'\e[m'           # end standout-mode
 
 source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
 
-export FZF_MARKS_COMMAND="fzf --height 40% --reverse -n 1 -d ' : '"
-export BAT_PAGER="less -iRX"
-
-# List all snippets with 'ctrl-s'
-function pet-select() {
-  BUFFER=$(pet search --query "$LBUFFER")
-  CURSOR=$#BUFFER
-  zle redisplay
-}
-zle -N pet-select
-stty -ixon
-bindkey '^s' pet-select
-
-eval "$(zoxide init zsh --no-aliases)"
-
 # Local customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/local/.zshrc
 
