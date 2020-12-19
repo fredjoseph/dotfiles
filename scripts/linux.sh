@@ -39,7 +39,6 @@ apt_packages+=(
   tree
   vim-gtk
   xclip
-  yakuake
 )
 
 apt_unstable_packages+=(

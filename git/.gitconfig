@@ -132,9 +132,5 @@
   whitespace = fix
 [diff]
   colorMoved = dimmed-zebra
-# TODO: To Remove
 [include]
   path = ~/.gitconfig_local
-  # TODO: To Remove
-[include]
-  path = ~/.gitconfig.local

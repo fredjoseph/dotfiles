@@ -4,18 +4,14 @@
 # Import helper functions
 . $(dirname "$0")/_helper.sh
 
-packages=()
-
-cpackages=()
-
 #############################
 # WHAT DO WE NEED TO INSTALL?
 #############################
 
 # COMMON (packages installed on all environments)
-cpackages+=(
-  code
-)
+packages=()
+
+cpackages=()
 
 # CUSTOM (specific to the local environment corresponding to the current git branch)
 _include $(dirname "$0")/snap.custom
