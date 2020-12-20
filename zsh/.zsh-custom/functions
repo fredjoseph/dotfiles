@@ -57,6 +57,23 @@ deb() {
   rm -f "$TEMP_DEB"
 }
 
+apt-install() {
+  local query_mode=false
+  if [[ "$1" =~ ^--query ]]; then
+    query_mode=true
+    shift
+  fi
+  if [[ -z "$1" ]] || $query_mode; then
+    fzf --multi --ansi --preview='apt-cache show {1}' \
+      --query="$1" \
+    < <(apt-cache search '.*' | sort |
+      sed -u -r "s|^([^ ]+)|${c_green}\1${c_reset}|") |
+    cut -d' ' -f1 | xargs -o --no-run-if-empty -I % sudo apt install "%"
+  else
+    sudo apt install "$@"
+  fi
+}
+
 apt-clean() {
   sudo apt-get clean
   sudo apt-get autoclean
