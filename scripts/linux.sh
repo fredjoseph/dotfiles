@@ -39,6 +39,7 @@ apt_packages+=(
   tree
   vim-gtk
   xclip
+  w3m
 )
 
 apt_unstable_packages+=(
