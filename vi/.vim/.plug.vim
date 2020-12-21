@@ -161,6 +161,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'editorconfig/editorconfig-vim'
 
+Plug 'mbbill/undotree'
+
 """ All of your Plugins must be added before the following line
 " Add plugins to &runtimepath
 call plug#end()   "required

@@ -16,6 +16,19 @@ Options:
 "
 }
 
+ask_for_sudo() {
+  # Ask for the administrator password upfront
+  sudo -v
+
+  # Update existing `sudo` time stamp until this script has finished
+  # https://gist.github.com/cowboy/3118588
+  while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+  done &> /dev/null &
+}
+
 install_dotfiles() {
   # Remove already present configuration files to avoid 'stow' conflict
   rm -f ~/.bashrc
@@ -23,6 +36,8 @@ install_dotfiles() {
   rm -f ~/.gitconfig
   
   stow -R bash git kde misc nvm postgres ripgrep stow tmux vi zsh
+  print_header "Apply App Settings"
+  $(dirname "$0")/scripts/settings.sh
 }
 
 cleanup() {
@@ -31,7 +46,7 @@ cleanup() {
 
 install_all() {
   # Ask for the administrator password upfront
-  sudo -v
+  ask_for_sudo
   # Global Linux
   $(dirname "$0")/scripts/linux.sh
   # Cool apps
