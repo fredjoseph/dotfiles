@@ -14,6 +14,7 @@ alias please='eval "sudo $(fc -ln -1)"'
 alias fuck='eval "sudo $(fc -ln -1)"'
 alias hosts="sudo vi /etc/hosts"
 alias npmlist="npm list -g --depth 0"
+alias zshrc="vim ~/.zshrc"
 alias reload_zsh="source ~/.zshrc && echo 'Shell config reloaded from ~/.zshrc'"
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias get="curl -sOL"
