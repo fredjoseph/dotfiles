@@ -64,7 +64,8 @@ Plug 'junegunn/fzf.vim'
 
 " Zoom in and out of a specific split pane (similar to tmux).
 " Usage: <C-w>m
-Plug 'dhruvasagar/vim-zoom'
+" Replaced by our own zoom function
+" Plug 'dhruvasagar/vim-zoom'
 
 " Pass focus events from tmux to Vim (useful for autoread and linting tools).
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -116,7 +117,10 @@ Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/vim-easy-align'
 
 " Auto-close quotes, parens, brackets...
-Plug 'Raimondi/delimitMate'
+"Plug 'Raimondi/delimitMate'
+" Usage:
+" <c-e>: fast wrap
+Plug 'jiangmiao/auto-pairs'
 
 Plug 'kien/rainbow_parentheses.vim'
 
@@ -161,6 +165,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'editorconfig/editorconfig-vim'
 
+" Usage:
+" <leader>u : toggle undotree
 Plug 'mbbill/undotree'
 
 """ All of your Plugins must be added before the following line
