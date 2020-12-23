@@ -44,14 +44,14 @@ fi
 #   Local Configuration
 #------------------------------------------------------------------
 
-# Colored man pages
-export LESS_TERMCAP_mb=$'\e[1;33m'       # begin blinking
-export LESS_TERMCAP_md=$'\e[1;33m'       # begin bold
-export LESS_TERMCAP_us=$'\e[4;36m'       # begin underline
-export LESS_TERMCAP_so=$'\e[30;47m'      # begin standout-mode - info box
-export LESS_TERMCAP_me=$'\e[m'           # end mode
-export LESS_TERMCAP_ue=$'\e[m'           # end underline
-export LESS_TERMCAP_se=$'\e[m'           # end standout-mode
+# Colored man pages (currently commented and "man" function overloaded in "${MY_ZSH_CUSTOM}/functions", should be uncommented if used by other programs)
+#export LESS_TERMCAP_mb=$'\e[1;33m'       # begin blinking
+#export LESS_TERMCAP_md=$'\e[1;33m'       # begin bold
+#export LESS_TERMCAP_us=$'\e[4;36m'       # begin underline
+#export LESS_TERMCAP_so=$'\e[30;47m'      # begin standout-mode - info box
+#export LESS_TERMCAP_me=$'\e[m'           # end mode
+#export LESS_TERMCAP_ue=$'\e[m'           # end underline
+#export LESS_TERMCAP_se=$'\e[m'           # end standout-mode
 
 source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
 

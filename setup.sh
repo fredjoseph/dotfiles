@@ -35,7 +35,7 @@ install_dotfiles() {
   rm -f ~/.zshrc
   rm -f ~/.gitconfig
   
-  stow -R bash git kde misc nvm postgres ripgrep stow tmux vi zsh
+  stow -R bash binaries git kde misc nvm postgres ripgrep stow tmux vi zsh
   print_header "Apply App Settings"
   $(dirname "$0")/scripts/settings.sh
 }

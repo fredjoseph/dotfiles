@@ -245,6 +245,29 @@ purge_kernels() {
   echo $(dpkg --list | grep linux-image | awk '{ print $2 }' | sort -V | sed -n '/'`uname -r`'/q;p') $(dpkg --list | grep linux-headers | awk '{ print $2 }' | sort -V | sed -n '/'"$(uname -r | sed "s/\([0-9.-]*\)-\([^0-9]\+\)/\1/")"'/q;p') | xargs sudo apt-get -y purge
 }
 
+man() {
+	env \
+		LESS_TERMCAP_mb=$'\e[1;33m' \
+		LESS_TERMCAP_md=$'\e[1;33m' \
+    LESS_TERMCAP_us=$'\e[4;36m' \
+    LESS_TERMCAP_so=$'\e[30;47m' \
+		LESS_TERMCAP_me=$'\e[m' \
+		LESS_TERMCAP_se=$'\e[m' \
+		LESS_TERMCAP_ue=$'\e[m' \
+		man "$@"
+}
+
+# Make a temporary directory and enter it
+tmpd() {
+	local dir
+	if [ $# -eq 0 ]; then
+		dir=$(mktemp -d)
+	else
+		dir=$(mktemp -d -t "${1}.XXXXXXXXXX")
+	fi
+	cd "$dir" || exit
+}
+
 #------------------------------------------------------------------
 #   Helpers with Fuzzy Search
 #------------------------------------------------------------------

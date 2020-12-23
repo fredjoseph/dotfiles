@@ -169,6 +169,10 @@ Plug 'editorconfig/editorconfig-vim'
 " <leader>u : toggle undotree
 Plug 'mbbill/undotree'
 
+" Usage:
+" :Tab /<pattern> : align on the given pattern
+Plug 'godlygeek/tabular'
+
 """ All of your Plugins must be added before the following line
 " Add plugins to &runtimepath
 call plug#end()   "required
