@@ -76,7 +76,7 @@ fpath=($MY_ZSH_CUSTOM/completions $fpath)
 
 # Oh-My-Zsh Plugins
 #------------------
-plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux) # common plugins
+plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux fancy-ctrl-z)
 plugins+=(debian yarn mvn)
 
 # My Plugins
