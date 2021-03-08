@@ -16,6 +16,7 @@ if [ -d "$HOME/bin" ]; then
 fi
 
 if [ -d "$HOME/bin/git" ]; then
+  # $HOME must be used here ('~' doesn't work)
   PATH="$PATH:$HOME/bin/git"
 fi
 
