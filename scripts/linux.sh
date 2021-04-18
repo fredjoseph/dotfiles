@@ -40,6 +40,7 @@ apt_packages+=(
   vim-gtk
   xclip
   w3m
+  bc
 )
 
 apt_unstable_packages+=(
