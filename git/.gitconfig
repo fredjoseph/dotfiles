@@ -135,6 +135,8 @@
   whitespace = fix
 [diff]
   colorMoved = dimmed-zebra
+[submodule]
+  recurse = true
 #--------------------
 # Local Configuration
 #--------------------
