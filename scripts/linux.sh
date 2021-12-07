@@ -46,6 +46,7 @@ apt_packages+=(
 apt_unstable_packages+=(
   git
   jq
+  exa
 )
 
 # Add unstable/sid repository
