@@ -22,13 +22,11 @@ install_utility_apps() {
   print_arrow "so"
   __install_tar_gz $(__get_github_release_url "samtay/so" "linux-gnu.tar.gz") so
   print_arrow "zoxide"
-  __install_binary $(__get_github_release_url "ajeetdsouza/zoxide" "x86_64.*linux-gnu") zoxide
+  __install_binary $(__get_github_release_url "ajeetdsouza/zoxide" "x86_64.*linux-musl.tar.gz") zoxide
   print_arrow "broot"
   __install_binary 'https://dystroy.org/broot/download/x86_64-linux/broot' broot
   __install_global_zsh_completion 'https://dystroy.org/broot/download/completion/_br' _br
   __install_global_zsh_completion 'https://dystroy.org/broot/download/completion/_broot' _broot
-  print_arrow "exa"
-  __install_zip $(__get_github_release_url "ogham/exa" "linux-x86_64.*.zip") exa-linux-x86_64 exa
   print_arrow "sd"
   __install_binary $(__get_github_release_url "chmln/sd" "x86_64.*linux-gnu") sd
   print_arrow "tmpmail"
@@ -52,6 +50,6 @@ install_zsh_plugins() {
   print_arrow "zsh-defer"
   __clone_local_zsh_plugin 'https://github.com/romkatv/zsh-defer.git'
   print_arrow "fast-syntax-highlighting"
-  __clone_local_zsh_plugin 'https://github.com/zdharma/fast-syntax-highlighting.git'
+  __clone_local_zsh_plugin 'https://github.com/zdharma-continuum/fast-syntax-highlighting.git'
 }
 install_zsh_plugins
