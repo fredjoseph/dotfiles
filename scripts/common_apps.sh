@@ -43,6 +43,12 @@ install_zsh() {
 }
 install_zsh
 
+install_common_zsh_plugins() {
+  print_arrow "zsh-defer"
+  __clone_local_zsh_plugin 'https://github.com/romkatv/zsh-defer.git'
+}
+install_common_zsh_plugins
+
 install_fzf() {
   if [ ! -d ~/.fzf ]; then
     print_arrow "fzf"
