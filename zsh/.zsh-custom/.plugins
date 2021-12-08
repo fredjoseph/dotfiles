@@ -99,7 +99,7 @@ my_plugins_defer=()
         ;;
     esac
   done
-  
+
   # Load the defer plugins in the order in which they are requested
   for plugin in "${my_plugins_defer[@]}"; do
     if [ ${all_plugins[$plugin]+_} ]; then
@@ -145,7 +145,7 @@ ext_plugins_defer=(fast-syntax-highlighting.plugin.zsh zsh-nvm.plugin.zsh)
 
   # Load the defer plugins in the order in which they are requested
   for plugin in "${ext_plugins_defer[@]}"; do
-    if [ ${all_plugins[$plugin]+_} ]; then 
+    if [ ${all_plugins[$plugin]+_} ]; then
       zsh-defer source ${all_plugins[$plugin]}
     fi
   done
@@ -178,6 +178,8 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 # Misc
 #-----
 # Add the customizations related to your specific environment here
+# Customization for zdharma
+zsh-defer -c "fast-theme XDG:overlay >/dev/null"
 
 # Cleanup and launch initialization
 #----------------------------------
