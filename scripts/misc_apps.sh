@@ -47,8 +47,6 @@ install_zsh_plugins() {
   local my_completion=$(git log -1 --date=short --format="%ad" -- $(dirname "$0")/../nvm/.zsh-custom/completions/_nvm)
   # FIXME: to be tested and switch
   if [[ $my_completion > $completion_date ]]; then print_warning "The completion file for '_nvm' seems outdated"; fi
-  print_arrow "zsh-defer"
-  __clone_local_zsh_plugin 'https://github.com/romkatv/zsh-defer.git'
   print_arrow "fast-syntax-highlighting"
   __clone_local_zsh_plugin 'https://github.com/zdharma-continuum/fast-syntax-highlighting.git'
 }
