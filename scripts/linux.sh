@@ -40,11 +40,13 @@ apt_packages+=(
   vim-gtk
   xclip
   w3m
+  bc
 )
 
 apt_unstable_packages+=(
   git
   jq
+  exa
 )
 
 # Add unstable/sid repository
@@ -222,7 +224,6 @@ sudo apt-get -qq -y upgrade
 installed_apt_packages="$(dpkg --get-selections | grep -v deinstall | awk 'BEGIN{FS="[\t:]"}{print $1}' | uniq)"
 apt_packages=($(setdiff "${apt_packages[*]}" "$installed_apt_packages"))
 
-
 if (( ${#apt_packages[@]} > 0 )); then
   e_header "Installing APT packages (${#apt_packages[@]})"
   for package in "${apt_packages[@]}"; do
@@ -234,6 +235,7 @@ if (( ${#apt_packages[@]} > 0 )); then
   unset package
 fi
 
+# Install all unstable packages whether they are already installed or not (install the latest versions)
 if (( ${#apt_unstable_packages[@]} > 0 )); then
   e_header "Installing unstable APT packages (${#apt_unstable_packages[@]})"
   for package in "${apt_unstable_packages[@]}"; do

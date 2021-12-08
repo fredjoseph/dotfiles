@@ -173,6 +173,9 @@ Plug 'mbbill/undotree'
 " :Tab /<pattern> : align on the given pattern
 Plug 'godlygeek/tabular'
 
+" devicons : requires a powerline font
+" Plug 'ryanoasis/vim-devicons'
+
 """ All of your Plugins must be added before the following line
 " Add plugins to &runtimepath
 call plug#end()   "required
