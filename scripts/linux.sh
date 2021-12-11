@@ -37,7 +37,7 @@ apt_packages+=(
   stow
   tmux
   tree
-  vim-gtk
+  vim-gtk3
   xclip
   w3m
   bc
