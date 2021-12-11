@@ -229,7 +229,7 @@ if (( ${#apt_packages[@]} > 0 )); then
   for package in "${apt_packages[@]}"; do
     e_arrow "$package"
     [[ "$(type -t preinstall_$package)" == function ]] && preinstall_$package
-    sudo apt-get -qq install "$package" > /dev/null 2>&1 && \
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y -qq install "$package" > /dev/null && \
     [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
   done
   unset package
@@ -241,10 +241,10 @@ if (( ${#apt_unstable_packages[@]} > 0 )); then
   for package in "${apt_unstable_packages[@]}"; do
     e_arrow "$package"
     [[ "$(type -t preinstall_$package)" == function ]] && preinstall_$package
-    sudo apt-get -qq -t unstable install "$package" > /dev/null 2>&1 && \
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y -qq -t unstable install "$package" > /dev/null && \
     [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
     if [[ "$?" -gt 0 ]]; then
-      sudo apt-get -qq install "$package" > /dev/null 2>&1 && \
+      DEBIAN_FRONTEND=noninteractive sudo apt-get -y -qq install "$package" > /dev/null && \
       [[ "$(type -t postinstall_$package)" == function ]] && postinstall_$package
     fi
   done
