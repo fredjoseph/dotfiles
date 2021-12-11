@@ -45,6 +45,8 @@ cleanup() {
 }
 
 install_all() {
+  # Update git config to avoid warnings
+  git config --global pull.ff only
   # Ask for the administrator password upfront
   ask_for_sudo
   # Global Linux
