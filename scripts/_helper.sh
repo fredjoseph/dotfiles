@@ -13,7 +13,7 @@ print_info() {
 
 print_warning() {
   # Print warning message (yellow background)
-  echo -e "\n\e[1;43;37m $@ \e[0m\n"; read -s -k '?Press any key to continue.'$'\n'
+  echo -e "\n\e[1;43;37m $@ \e[0m\n"; read -n 1 -rsp $'Press any key to continue...\n'
 }
 
 print_header() {
