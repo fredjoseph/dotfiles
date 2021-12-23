@@ -56,6 +56,8 @@ install_all() {
   # Cool apps
   $(dirname "$0")/scripts/common_apps.sh
   $(dirname "$0")/scripts/misc_apps.sh
+  # nix
+  $(dirname "$0")/scripts/nix.sh
   # Snap
   $(dirname "$0")/scripts/snap.sh
   # NVM
