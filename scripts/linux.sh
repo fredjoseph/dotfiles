@@ -152,7 +152,7 @@ function contains() {
 ####################
 
 # lib6c ignores the DEBIAN_FRONTEND environment variable and fires a prompt anyway => This should fix it
-echo 'libc6 libraries/restart-without-asking boolean true' | debconf-set-selections
+echo 'libc6 libraries/restart-without-asking boolean true' | sudo debconf-set-selections
 
 # Add APT keys.
 if (( ${#apt_keys[@]} > 0 )); then
@@ -278,4 +278,4 @@ fi
 rm -rf "$installers_path"
 
 # restore debconf configuration
-echo 'libc6 libraries/restart-without-asking boolean false' | debconf-set-selections
+echo 'libc6 libraries/restart-without-asking boolean false' | sudo debconf-set-selections
