@@ -54,8 +54,8 @@ __install_tar_gz() {
   local tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
   archive_file="$(echo "$1" | sed 's#.*/##')"
   wget -q --show-progress -O "$tmp_dir/$archive_file" $1
-  tar -xf "$tmp_dir/$archive_file"
-  sudo mv $2 /usr/local/bin/$3
+  tar -xf --directory "$tmp_dir" "$tmp_dir/$archive_file"
+  sudo mv "$tmp_dir/$2" /usr/local/bin/$3
   rm -rf "$tmp_dir"
 }
 
