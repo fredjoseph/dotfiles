@@ -175,11 +175,44 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 # https://github.com/zsh-users/zsh-autosuggestions/issues/351
 #ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
 
+# fzf-tab
+#--------
+zstyle ':fzf-tab:*' switch-group ctrl-p ctrl-n
+zstyle ':fzf-tab:*' show-group full
+zstyle ':fzf-tab:*' prefix ''
+# show file contents
+zstyle ':fzf-tab:complete:*' fzf-bindings 'f3:execute({_FTB_INIT_}([[ -d $realpath ]] && less -f <(tree -C $realpath) >/dev/tty 2>&1) || bat --style=numbers $realpath >/dev/tty 2>&1 || less -f $realpath >/dev/tty 2>&1),ctrl-y:execute-silent({_FTB_INIT_}echo $word | xclip)'
+zstyle ':fzf-tab:complete:*:*' fzf-preview '([[ -d ${(Q)realpath} ]] && exa -1 --group-directories-first -F -a ${(Q)realpath}) || ([[ \$(file --mime ${(Q)realpath}) =~ binary ]] && echo ${(Q)realpath} is a binary file) || (bat --file-name=${(Q)realpath} --color=always ${(Q)realpath} || less -f ${(Q)realpath}) 2>/dev/null | head -300'
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --group-directories-first -F -a $realpath'
+# [kill/ps] preview of full commandline arguments
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview \
+ '[[ $group == "[process ID]" ]] && ps --pid=$word -o cmd --no-headers -w -w'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
+# show systemd unit status
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+# environment variable
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
+	fzf-preview 'echo ${(P)word}'
+# man/run-help
+zstyle ':fzf-tab:complete:(\\|)run-help:*' fzf-preview 'run-help $word'
+zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'man $word'
+
 # Misc
 #-----
 # Add the customizations related to your specific environment here
 # Customization for zdharma
 zsh-defer -c "fast-theme XDG:overlay >/dev/null"
+
+# fzf-marks
+export FZF_MARKS_COMMAND="fzf --height 40% --reverse -n 1 -d ' : '"
 
 # Cleanup and launch initialization
 #----------------------------------
