@@ -55,7 +55,6 @@ fi
 
 source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
 
-export FZF_MARKS_COMMAND="fzf --height 40% --reverse -n 1 -d ' : '"
 export BAT_PAGER="less -iRX"
 
 # List all snippets with 'ctrl-s'
