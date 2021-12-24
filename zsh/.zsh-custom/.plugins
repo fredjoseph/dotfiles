@@ -69,6 +69,8 @@ fi
 
 fpath=($MY_ZSH_CUSTOM/completions $fpath)
 
+# Completions installed from nix-env
+fpath=(~/.nix-profile/share/zsh/site-functions $fpath)
 
 #--------------------------------------
 #   ZSH Plugins
