@@ -12,27 +12,8 @@ install_utility_apps() {
   mkdir -p ~/bin
   print_arrow "has"
   curl -sL https://git.io/_has > ~/bin/has && chmod +x ~/bin/has
-  print_arrow "tldr"
-  __install_binary $(__get_github_release_url "dbrgn/tealdeer" "x86_64-musl") tldr
-  __install_global_zsh_completion 'https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer' _tldr
-  print_arrow "tokei"
-  __install_tar_gz $(__get_github_release_url "XAMPPRocky/tokei" "x86_64.*linux-gnu.tar.gz") tokei
-  print_arrow "bandwhich"
-  __install_tar_gz $(__get_github_release_url "imsnif/bandwhich" "linux-musl.tar.gz") bandwhich
-  print_arrow "so"
-  __install_tar_gz $(__get_github_release_url "samtay/so" "linux-gnu.tar.gz") so
-  print_arrow "zoxide"
-  __install_tar_gz $(__get_github_release_url "ajeetdsouza/zoxide" "x86_64.*linux-musl.tar.gz") zoxide
-  print_arrow "broot"
-  __install_binary 'https://dystroy.org/broot/download/x86_64-linux/broot' broot
-  __install_global_zsh_completion 'https://dystroy.org/broot/download/completion/_br' _br
-  __install_global_zsh_completion 'https://dystroy.org/broot/download/completion/_broot' _broot
-  print_arrow "sd"
-  __install_binary $(__get_github_release_url "chmln/sd" "x86_64.*linux-gnu") sd
   print_arrow "tmpmail"
   curl -sL "https://git.io/tmpmail" > ~/bin/tmpmail && chmod +x ~/bin/tmpmail
-  print_arrow "gitui"
-  __install_tar_gz $(__get_github_release_url "extrawurst/gitui" "linux-musl.tar.gz") gitui
 }
 install_utility_apps
 
