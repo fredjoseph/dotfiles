@@ -48,5 +48,7 @@ install_zsh_plugins() {
   if [[ $my_completion < $completion_date ]]; then print_warning "The completion file for '_nvm' seems outdated"; fi
   print_arrow "fast-syntax-highlighting"
   __clone_local_zsh_plugin 'https://github.com/zdharma-continuum/fast-syntax-highlighting.git'
+  print_arrow "fzf-tab"
+  __clone_local_zsh_plugin 'https://github.com/Aloxaf/fzf-tab.git'
 }
 install_zsh_plugins
