@@ -28,6 +28,10 @@ if [ -d "$HOME/.yarn" ]; then
   PATH="$PATH:~/.yarn-global/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin"
 fi
 
+if [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+fi
+
 # WSL fixes
 if grep -qE "(Microsoft|WSL)" /proc/version; then
 	# Fix wrong permissions with mkdir command
