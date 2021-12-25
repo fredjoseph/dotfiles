@@ -34,13 +34,13 @@ fi
 
 # WSL fixes
 if grep -qE "(Microsoft|WSL)" /proc/version; then
-	# Fix wrong permissions with mkdir command
-	if [ "$(umask)" "==" '000' ]; then
-		umask 0022
-	fi
+  # Fix wrong permissions with mkdir command
+  if [ "$(umask)" "==" '000' ]; then
+    umask 0022
+  fi
 
-	# Fix '_z_precmd:1: nice(5) failed: operation not permitted'
-	unsetopt BG_NICE
-	# Access local X-server with VcXsrv
-	export DISPLAY=:0
+  # Fix '_z_precmd:1: nice(5) failed: operation not permitted'
+  unsetopt BG_NICE
+  # Access local X-server with VcXsrv
+  export DISPLAY=:0
 fi
