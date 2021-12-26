@@ -69,6 +69,13 @@ bindkey '^s' pet-select
 
 eval "$(zoxide init zsh --no-aliases)"
 
+nix_functions=(
+  br
+)
+for func in "${nix_functions[@]}"; do
+  _include ~/.nix-profile/share/zsh/site-functions/$func
+done
+
 # Local customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/local/.zshrc
 
