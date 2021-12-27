@@ -21,6 +21,15 @@ source ${MY_ZSH_CUSTOM}/.plugins
 source ${MY_ZSH_CUSTOM}/aliases
 source ${MY_ZSH_CUSTOM}/functions
 
+# nix
+#----
+nix_functions=(
+  br
+)
+for func in "${nix_functions[@]}"; do
+  _include ~/.nix-profile/share/zsh/site-functions/$func
+done
+
 #------------------------------------------------------------------
 #   Common Configuration
 #------------------------------------------------------------------
@@ -53,10 +62,12 @@ fi
 #export LESS_TERMCAP_ue=$'\e[m'           # end underline
 #export LESS_TERMCAP_se=$'\e[m'           # end standout-mode
 
-source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
-
 export BAT_PAGER="less -iRX"
 
+source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
+
+# pet
+#----
 # List all snippets with 'ctrl-s'
 function pet-select() {
   BUFFER=$(pet search --query "$LBUFFER")
@@ -67,14 +78,12 @@ zle -N pet-select
 stty -ixon
 bindkey '^s' pet-select
 
-eval "$(zoxide init zsh --no-aliases)"
+function prev() {
+  PREV=$(fc -lrn | head -n 1)
+  sh -c "pet new `printf %q "$PREV"`"
+}
 
-nix_functions=(
-  br
-)
-for func in "${nix_functions[@]}"; do
-  _include ~/.nix-profile/share/zsh/site-functions/$func
-done
+eval "$(zoxide init zsh --no-aliases)"
 
 # Local customizations (not stored in git)
 _include ${MY_ZSH_CUSTOM}/local/.zshrc
