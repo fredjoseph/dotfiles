@@ -2,12 +2,21 @@
 # This file should be empty on the 'master' branch (used as template) and be filled in the git branches corresponding to specific environments.
 
 packages+=(
-  zoxide
-  tealdeer
-  broot
-  so
-  sd
-  peco
-  gitui
   bandwhich
+  broot
+  delta
+  direnv
+  duf
+  entr
+  gitui
+  glow
+  gron
+  hyperfine
+  ncdu
+  peco
+  pet
+  sd
+  so
+  tealdeer
+  zoxide
 )
