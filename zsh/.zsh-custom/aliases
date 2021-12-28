@@ -19,7 +19,6 @@ alias reload_zsh="source ~/.zshrc && echo 'Shell config reloaded from ~/.zshrc'"
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias get="curl -sOL"
 alias top10="history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10"
-alias sad="sad --fzf='--height 100%'"
 alias sudo="sudo " # preserve aliases when using sudo
 
 # Changes to top-level directory of git repository.
