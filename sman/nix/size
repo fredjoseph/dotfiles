@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# <package> prints package size
+# ex. sd nix size exa
+
+set -euo pipefail
+
+path="$(which $1)"
+nix-store -q --size $(nix-store -qR $(readlink -e $path) ) | \
+    awk '{ a+=$path } END { print a }' | \
+    ~/.nix-profile/bin/numfmt --to=iec-i
+

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# add gcroots for shell.nix
+
+set -euo pipefail
+
+nix-build shell.nix -A inputDerivation -o .nix-shell-inputs >/dev/null
+nix-shell shell.nix

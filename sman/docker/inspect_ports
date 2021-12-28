@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# inspect ip/ports
+
+set -euo pipefail
+
+docker inspect --format "{{ .Name }} # {{ .NetworkSettings.IPAddress }} # {{ .NetworkSettings.Ports }}" $(docker ps -q) | tr -s '#' '\t' | column -t
