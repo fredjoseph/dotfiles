@@ -15,6 +15,10 @@ if [ -d "$HOME/bin" ]; then
   PATH="$PATH:$HOME/bin"
 fi
 
+if [ -d "$HOME/.local/bin" ]; then
+  PATH="$PATH:$HOME/.local/bin"
+fi
+
 if [ -d "$HOME/bin/git" ]; then
   # $HOME must be used here ('~' doesn't work)
   PATH="$PATH:$HOME/bin/git"
@@ -25,7 +29,7 @@ if [ -d "$HOME/.npm-global/bin" ]; then
 fi
 
 if [ -d "$HOME/.yarn" ]; then
-  PATH="$PATH:~/.yarn-global/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin"
+  PATH="$PATH:$HOME/.yarn-global/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin"
 fi
 
 if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
