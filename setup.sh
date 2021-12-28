@@ -37,7 +37,7 @@ install_dotfiles() {
 
   mkdir -p ~/.vim
 
-  stow -R bash binaries git nvm ripgrep stow tmux vi zsh
+  stow -R bash binaries git nvm ripgrep stow tmux vi zsh sman
   print_header "Apply App Settings"
   $(dirname "$0")/scripts/settings.sh
 }
