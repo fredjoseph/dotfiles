@@ -66,23 +66,6 @@ export BAT_PAGER="less -iRX"
 
 source ${MY_ZSH_CUSTOM}/ls_colors 2>/dev/null
 
-# pet
-#----
-# List all snippets with 'ctrl-s'
-function pet-select() {
-  BUFFER=$(pet search --query "$LBUFFER")
-  CURSOR=$#BUFFER
-  zle redisplay
-}
-zle -N pet-select
-stty -ixon
-bindkey '^s' pet-select
-
-function prev() {
-  PREV=$(fc -lrn | head -n 1)
-  sh -c "pet new `printf %q "$PREV"`"
-}
-
 eval "$(zoxide init zsh --no-aliases)"
 
 # Local customizations (not stored in git)
