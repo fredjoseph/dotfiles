@@ -21,6 +21,14 @@ source ${MY_ZSH_CUSTOM}/.plugins
 source ${MY_ZSH_CUSTOM}/aliases
 source ${MY_ZSH_CUSTOM}/functions
 
+# nix
+#----
+nix_functions=(
+)
+for func in "${nix_functions[@]}"; do
+  _include ~/.nix-profile/share/zsh/site-functions/$func
+done
+
 #------------------------------------------------------------------
 #   Common Configuration
 #------------------------------------------------------------------
