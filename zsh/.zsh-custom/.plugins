@@ -85,7 +85,7 @@ plugins+=(debian yarn mvn)
 #-----------
 plugins_path="$MY_ZSH_CUSTOM/plugins/"
 
-my_plugins_source=()
+my_plugins_source=(pet.plugin.zsh)
 my_plugins_defer=()
 
 () {
