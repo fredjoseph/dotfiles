@@ -15,6 +15,7 @@ fi
 
 # COMMON (packages installed on all environments)
 packages=(
+  coreutils
   exa
   nix-tree
 )
