@@ -15,6 +15,7 @@ packages+=(
   ncdu
   peco
   pet
+  sad
   sd
   so
   tealdeer
