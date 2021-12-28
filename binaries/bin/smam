@@ -153,7 +153,7 @@ if [[ -z "$body" ]]; then
 fi
 }
 
-smam() (
+sman() (
 set -euo pipefail
 
 if [[ -n ${ZSH_EVAL_CONTEXT+x} ]]; then
@@ -162,7 +162,7 @@ if [[ -n ${ZSH_EVAL_CONTEXT+x} ]]; then
     set -o KSH_ARRAYS
 fi
 
-local target=${SD_ROOT:-$HOME/smam}
+local target=${SD_ROOT:-$HOME/sman}
 local arg
 
 while [[ $# -gt 0 ]]; do
@@ -247,11 +247,11 @@ fi
 if [[ -n ${ZSH_EVAL_CONTEXT+x} ]]; then
     # we are in zsh
     if [[ "$ZSH_EVAL_CONTEXT" = toplevel ]]; then
-        smam "$@"
+        sman "$@"
     fi
 elif [[ -n ${BASH_SOURCE[0]+x} ]]; then
     # we are in bash
     if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
-        smam "$@"
+        sman "$@"
     fi
 fi
