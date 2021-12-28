@@ -7,7 +7,3 @@ apt_packages+=(
   yakuake
   vlc
 )
-
-# https://github.com/ms-jpq/sad
-deb_installed+=(sad)
-deb_sources+=($(__get_github_release_url "ms-jpq/sad" "x86_64.*.deb"))
