@@ -16,6 +16,7 @@ fi
 # COMMON (packages installed on all environments)
 packages=(
   exa
+  nix-tree
 )
 
 # CUSTOM (specific to the local environment corresponding to the current git branch)
