@@ -9,17 +9,6 @@ if [ ! -d "/nix" ]; then
 fi
 . ~/.nix-profile/etc/profile.d/nix.sh
 
-#############################
-# WHAT DO WE NEED TO INSTALL?
-#############################
-
-# COMMON (packages installed on all environments)
-packages=(
-  coreutils
-  exa
-  nix-tree
-)
-
 # CUSTOM (specific to the local environment corresponding to the current git branch)
 _include $(dirname "$0")/nix.custom
 
@@ -27,7 +16,4 @@ _include $(dirname "$0")/nix.custom
 # ACTUALLY DO THINGS
 ####################
 print_header "Installing Packages"
-for package in "${packages[@]}"; do
-  print_arrow "$package"
-  nix-env -iA nixpkgs.$package
-done
+nix-env -irf $(dirname "$0")/../nix/user.nix

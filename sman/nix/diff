@@ -1,0 +1,14 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p janet jq bash
+
+set -euo pipefail
+
+# prints what will happen if you run sync
+
+query() {
+  nix-env -q "$@" --json | jq -r '.[] | .pname + " " + .version'
+}
+
+janet "$(dirname "$0")/version-diff.janet" \
+  <(query) \
+  <(query -af ~/user.nix)
