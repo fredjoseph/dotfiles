@@ -30,6 +30,7 @@ packages=(
   http-server
   kmdr
   undollar
+  kill-tabs
 )
 
 # CUSTOM (specific to the local environment corresponding to the current git branch)
