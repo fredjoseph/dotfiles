@@ -78,7 +78,7 @@ fpath=(~/.nix-profile/share/zsh/site-functions $fpath)
 
 # Oh-My-Zsh Plugins
 #------------------
-plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux fancy-ctrl-z)
+plugins=(command-not-found common-aliases docker docker-compose extract fd git tmux fancy-ctrl-z per-directory-history)
 plugins+=(debian yarn mvn)
 
 # My Plugins

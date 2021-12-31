@@ -33,6 +33,7 @@ done
 #------------------------------------------------------------------
 #   Common Configuration
 #------------------------------------------------------------------
+export HISTORY_IGNORE="(ls|ll|la|exa|cd|pwd|exit|clear|bg|fg|cd -|cd ..|..)"
 # FZF
 #----
 if ! [ $(command -v "fzf") ] && [ -f ~/.fzf.zsh ]; then
