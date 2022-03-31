@@ -36,6 +36,10 @@ if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
   . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 fi
 
+if [ -e "/etc/profile.d/apps-bin-path.sh" ]; then
+    . /etc/profile.d/apps-bin-path.sh
+fi
+
 # WSL fixes
 if grep -qE "(Microsoft|WSL)" /proc/version; then
   # Fix wrong permissions with mkdir command
