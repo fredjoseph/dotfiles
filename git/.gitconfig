@@ -120,8 +120,9 @@
   toss = reset --hard @{u}    # throws away any new commits
   undo = "!undo() { git reset HEAD~${1:-1} --${2:-mixed}; }; undo"
   update = "!git fetch origin $1:$1 #"
-  whois= "!git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\" #"
-  follow= "!git log --author=$1 #"
+  whois = "!git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\" #"
+  rank = shortlog -s -n --no-merges
+  follow = "!git log --author=$1 #"
   show-tree = lola --simplify-by-decoration
   wip = !git add --all; git ci -m WIP
 [pull]
