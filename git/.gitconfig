@@ -125,6 +125,8 @@
   follow = "!git log --author=$1 #"
   show-tree = lola --simplify-by-decoration
   wip = !git add --all; git ci -m WIP
+  for-group = !git for-each-repo --config=group.$1 for-group-cmd
+  for-group-cmd = !sh -c 'echo \"\\033[33m \nPath: `pwd`\n \\033[0m\" && shift && git $@' -
 [pull]
   rebase = true
 [push]
@@ -139,6 +141,7 @@
   colorMoved = dimmed-zebra
 [submodule]
   recurse = true
+[group]
 #--------------------
 # Local Configuration
 #--------------------
